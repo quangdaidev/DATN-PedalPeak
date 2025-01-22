@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f2f7fc;
+  --foreground: #171717;
+  --main-50: #2c05e6;
+  --main-200: #1d0bbf;
+  --main-400: #160180;
+  --main-600: #17056e;
+  --main-800: #100157;
+}
+
+/* ct = custom */
+/* .ct-top-menu-expanded {
+  @apply absolute top-10 z-50 bg-white;
+} */
+.ct-top-menu-item {
+  @apply cursor-pointer py-1 hover:text-gray-800 relative after:absolute after:bottom-0 after:left-0 after:bg-blue-200 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300;
+}
+
+.ct-icon {
+  @apply w-5 h-5 inline-block;
+}
+
+.ct-badge-circle {
+  @apply text-xs text-center rounded-full px-1.5;
+}
+
+.ct-sub-headline {
+  @apply  flex justify-center items-center mb-24;
+}
+
+.ct-sub-headline-label {
+  @apply uppercase mx-4 tracking-widest text-gray-500 font-medium text-[20px];
+}
+
+.ct-sub-headline-deco-line{
+  @apply w-12 h-px bg-gray-400;
+}
+
+.ct-button {
+  @apply text-center uppercase tracking-wider py-4 px-8 text-[14] font-semibold cursor-pointer hover:bg-opacity-90;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
