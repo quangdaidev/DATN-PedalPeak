@@ -5,7 +5,8 @@ import './globals.css';
 import Home from './Pages/Home';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
-import axios from 'axios';
+import ProductDetails from './Pages/ProductDetails';
+// import axios from 'axios';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" exact={true} element={<Home/>} />
+          <Route path="/product/:id" exact={true} element={<ProductDetails/>} />
         </Routes>
         <Footer />
           {/* {children} */}

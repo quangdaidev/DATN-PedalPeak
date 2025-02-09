@@ -1,7 +1,7 @@
 import React from "react";
 import Slider from "react-slick";
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { IoIosArrowRoundForward } from "react-icons/io";
+// import { IoIosArrowRoundBack } from "react-icons/io";
+// import { IoIosArrowRoundForward } from "react-icons/io";
 
 
 const HomeBanner =()=>{
@@ -22,9 +22,9 @@ const HomeBanner =()=>{
         <>
             <div className="homeBannerSection">
                 <Slider {...settings}>
-                        <img className="h-[520px]" src="/img/products/banner1.jpg"></img>
-                        <img className="h-[520px]" src="/img/products/banner2.jpg"></img>
-                        <img className="h-[520px]" src="/img/products/banner3.jpg"></img>
+                        <img className="h-[520px]" alt="" src="/img/products/banner1.jpg"></img>
+                        <img className="h-[520px]" alt="" src="/img/products/banner2.jpg"></img>
+                        <img className="h-[520px]" alt="" src="/img/products/banner3.jpg"></img>
                 </Slider>
             </div>
            

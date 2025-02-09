@@ -1,6 +1,17 @@
 import { Link } from 'react-router-dom';
 import HomeBanner from '../../Components/HomeBanner';
 
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+// import required modules
+import {Pagination, Mousewheel, Keyboard  } from 'swiper/modules';
+import ProductItem from '../../Components/ProductItem';
+
 const Home =()=>{
 
     return ( 
@@ -57,424 +68,255 @@ const Home =()=>{
                 <div className="ct-sub-headline-label ">Sản phẩm mới</div>
                 <div className="ct-sub-headline-deco-line "></div>
             </div>
-            <div className="new-products w-[100%] mx-auto mb-24">
-                <div className="grid grid-cols-3 gap-6">
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[474px] bg-contain bg-no-repeat bg-center">
-                            <Link href="">
-                            <div className=" h-full hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">
-                                <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>
-                                <div className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</div>
-                            </div>
-                            </Link>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/11`}>
-                            <div className="text-xl mb-3 hover:text-blue-900 overflow-hidden line-clamp-2">Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000 VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                    <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[474px] bg-contain bg-no-repeat bg-center">
-                        <Link href="">
-                        <div className=" h-full hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">
-                            <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>
-                            <div className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</div>
-                        </div>
-                        </Link>
-                    </div>
-                    <div className="text-center my-8">
-                        <Link href={`/chitiet/11`}>
-                        <div className="text-xl mb-3 hover:text-blue-900 overflow-hidden line-clamp-2">Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                        </Link>
-                        <div className="">
-                        <span className="text-xl text-blue-900">6.990.000 VND</span>
-                            <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                        </div>
-                    </div>
-                    </div>
-                    <div className="ct-product-card">
-                    <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[474px] bg-contain bg-no-repeat bg-center">
-                        <Link href="">
-                        <div className=" h-full hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">
-                            <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>
-                            <div className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</div>
-                        </div>
-                        </Link>
-                    </div>
-                    <div className="text-center my-8">
-                        <Link href={`/chitiet/11`}>
-                        <div className="text-xl mb-3 hover:text-blue-900 overflow-hidden line-clamp-2">Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                        </Link>
-                        <div className="">
-                        <span className="text-xl text-blue-900">6.990.000 VND</span>
-                            <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
+            <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                pagination={{
+                clickable: true,
+                }}
+                mousewheel={true}
+                keyboard={true}
+                modules={[Pagination, Mousewheel, Keyboard]}
+                className="mySwiper"
+            >
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+            </Swiper>
         
             {/* End products */}
 
-            <div className="ct-sub-headline">
+            <div className="ct-sub-headline mt-16">
                 <div className="ct-sub-headline-deco-line "></div>
                 <div className="ct-sub-headline-label ">Xe đạp đường phố</div>
                 <div className="ct-sub-headline-deco-line "></div>
             </div>
-            <div className="new-products w-[100%] mx-auto mb-24">
-                <div className="grid grid-cols-4 gap-6">
-                    <div className="ct-product-card">
-                    <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                        <div>
-                            <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="text-center my-8">
-                        <Link href={`/chitiet/1`}>
-                            <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                        </Link>
-                        <div className="">
-                            <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                            <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                        </div>
-                    </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        
+            <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                pagination={{
+                clickable: true,
+                }}
+                mousewheel={true}
+                keyboard={true}
+                modules={[Pagination, Mousewheel, Keyboard]}
+                className="mySwiper"
+            >
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+            </Swiper>
             {/* End products */}
 
-            <div className="ct-sub-headline">
-                <div className="ct-sub-headline-deco-line "></div>
-                <div className="ct-sub-headline-label ">Xe đạp đường phố</div>
-                <div className="ct-sub-headline-deco-line "></div>
-            </div>
-            <div className="new-products w-[100%] mx-auto mb-24">
-                <div className="grid grid-cols-4 gap-6">
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                    <div className="text-center my-8">
-                        <Link href={`/chitiet/1`}>
-                            <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                        </Link>
-                        <div className="">
-                            <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                            <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                        </div>
-                    </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* End products */}
-
-            <div className="ct-sub-headline">
+            <div className="ct-sub-headline mt-16">
                 <div className="ct-sub-headline-deco-line "></div>
                 <div className="ct-sub-headline-label ">Xe đạp nữ</div>
                 <div className="ct-sub-headline-deco-line "></div>
             </div>
-            <div className="new-products w-[100%] mx-auto mb-24">
-                <div className="grid grid-cols-4 gap-6">
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                pagination={{
+                clickable: true,
+                }}
+                mousewheel={true}
+                keyboard={true}
+                modules={[Pagination, Mousewheel, Keyboard]}
+                className="mySwiper"
+            >
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+            </Swiper>
             {/* End products */}
 
-            <div className="ct-sub-headline">
+            <div className="ct-sub-headline mt-16">
                 <div className="ct-sub-headline-deco-line "></div>
                 <div className="ct-sub-headline-label ">Xe đạp trẻ em</div>
                 <div className="ct-sub-headline-deco-line "></div>
             </div>
-            <div className="new-products w-[100%] mx-auto mb-24">
-                <div className="grid grid-cols-4 gap-6">
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="ct-product-card">
-                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                            <div>
-                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center my-8">
-                            <Link href={`/chitiet/1`}>
-                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                            </Link>
-                            <div className="">
-                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Swiper
+                slidesPerView={4}
+                spaceBetween={30}
+                pagination={{
+                clickable: true,
+                }}
+                mousewheel={true}
+                keyboard={true}
+                modules={[Pagination, Mousewheel, Keyboard]}
+                className="mySwiper"
+            >
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <ProductItem/>
+                </SwiperSlide>
+            </Swiper>
             {/* End products */}
 
-            <div className="ct-sub-headline">
+            <div className="ct-sub-headline mt-16">
                 <div className="ct-sub-headline-deco-line "></div>
                 <div className="ct-sub-headline-label ">Xe đạp gấp</div>
                 <div className="ct-sub-headline-deco-line "></div>
             </div>
             <div className="new-products w-[100%] mx-auto mb-24">
+                <div className="grid grid-cols-4 gap-6">
+                    <div className="ct-product-card">
+                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
+                            <div>
+                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
+                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
+                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-center my-8">
+                            <Link href={`/chitiet/1`}>
+                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
+                            </Link>
+                            <div className="">
+                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
+                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="ct-product-card">
+                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
+                            <div>
+                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
+                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
+                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-center my-8">
+                            <Link href={`/chitiet/1`}>
+                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
+                            </Link>
+                            <div className="">
+                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
+                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="ct-product-card">
+                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
+                            <div>
+                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
+                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
+                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-center my-8">
+                            <Link href={`/chitiet/1`}>
+                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
+                            </Link>
+                            <div className="">
+                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
+                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="ct-product-card">
+                        <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
+                            <div>
+                                <div className=" h-[350px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
+                                    <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
+                                    <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="text-center my-8">
+                            <Link href={`/chitiet/1`}>
+                                <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
+                            </Link>
+                            <div className="">
+                                <span className="text-xl text-blue-900">6.990.000đ VND</span>
+                                <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div className="grid grid-cols-4 gap-6">
                     <div className="ct-product-card">
                         <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
