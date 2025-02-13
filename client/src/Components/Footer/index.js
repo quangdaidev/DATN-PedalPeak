@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 const SearchBox=()=>{
     return (
-        <footer className="w-[100%] mx-auto pd-24 mb-24 text-gray-500 text-sm">
+      <div className="bg-white  w-[99vw] relative left-[calc(-49.5vw+50%)]">
+        <footer className="w-[100%] mx-auto pd-24 pl-52 pt-14 pb-14 text-gray-500 text-sm ">
           <div className="flex gap-8">
             <div className="basis-2/6">
               <div className="font-bold text-xl mb-4 text-gray-800">PedalPeak</div>
@@ -36,6 +37,7 @@ const SearchBox=()=>{
             </div>
           </div>
         </footer>
+      </div>
     )
 }
 

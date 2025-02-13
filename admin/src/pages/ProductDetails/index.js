@@ -13,8 +13,8 @@ import Rating from "@mui/material/Rating";
 import { FaReply } from "react-icons/fa";
 import { MdFilterVintage } from "react-icons/md";
 import { IoIosColorPalette } from "react-icons/io";
-import { MdPhotoSizeSelectActual } from "react-icons/md";
-import { IoIosPricetags } from "react-icons/io";
+// import { MdPhotoSizeSelectActual } from "react-icons/md";
+// import { IoIosPricetags } from "react-icons/io";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdRateReview } from "react-icons/md";
 import { BsPatchCheckFill } from "react-icons/bs";
@@ -101,49 +101,49 @@ const ProductDetails = () => {
                 >
                   <div className="item">
                     <img
-                      src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item">
                     <img
-                      src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item">
                     <img
-                      src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item">
                     <img
-                      src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item">
                     <img
-                      src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item">
                     <img
-                      src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item">
                     <img
-                      src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item">
                     <img
-                      src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
@@ -155,49 +155,49 @@ const ProductDetails = () => {
                 >
                   <div className="item" onClick={() => goToSlide(1)}>
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE2CbGBE9Rw_Tz6WVrnPIhY4iF4bMtwiYuS0dGTQ4WLn37GB-5z6pwuFBqQxdKDW1n4Qs&usqp=CAU"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item" onClick={() => goToSlide(2)}>
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE2CbGBE9Rw_Tz6WVrnPIhY4iF4bMtwiYuS0dGTQ4WLn37GB-5z6pwuFBqQxdKDW1n4Qs&usqp=CAU"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item" onClick={() => goToSlide(3)}>
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE2CbGBE9Rw_Tz6WVrnPIhY4iF4bMtwiYuS0dGTQ4WLn37GB-5z6pwuFBqQxdKDW1n4Qs&usqp=CAU"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item" onClick={() => goToSlide(4)}>
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE2CbGBE9Rw_Tz6WVrnPIhY4iF4bMtwiYuS0dGTQ4WLn37GB-5z6pwuFBqQxdKDW1n4Qs&usqp=CAU"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item" onClick={() => goToSlide(5)}>
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE2CbGBE9Rw_Tz6WVrnPIhY4iF4bMtwiYuS0dGTQ4WLn37GB-5z6pwuFBqQxdKDW1n4Qs&usqp=CAU"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item" onClick={() => goToSlide(6)}>
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE2CbGBE9Rw_Tz6WVrnPIhY4iF4bMtwiYuS0dGTQ4WLn37GB-5z6pwuFBqQxdKDW1n4Qs&usqp=CAU"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item" onClick={() => goToSlide(7)}>
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE2CbGBE9Rw_Tz6WVrnPIhY4iF4bMtwiYuS0dGTQ4WLn37GB-5z6pwuFBqQxdKDW1n4Qs&usqp=CAU"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>
                   <div className="item" onClick={() => goToSlide(8)}>
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSE2CbGBE9Rw_Tz6WVrnPIhY4iF4bMtwiYuS0dGTQ4WLn37GB-5z6pwuFBqQxdKDW1n4Qs&usqp=CAU"
+                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
                   </div>

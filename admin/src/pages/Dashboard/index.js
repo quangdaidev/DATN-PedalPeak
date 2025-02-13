@@ -11,8 +11,8 @@ import { IoIosTimer } from "react-icons/io";
 import Button from "@mui/material/Button";
 import { Chart } from "react-google-charts";
 
-import InputLabel from "@mui/material/InputLabel";
-import FormHelperText from "@mui/material/FormHelperText";
+// import InputLabel from "@mui/material/InputLabel";
+// import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
@@ -210,7 +210,7 @@ const Dashboard = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -266,7 +266,7 @@ const Dashboard = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -322,7 +322,7 @@ const Dashboard = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -378,7 +378,7 @@ const Dashboard = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -434,7 +434,7 @@ const Dashboard = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -490,7 +490,7 @@ const Dashboard = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -546,7 +546,7 @@ const Dashboard = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -602,7 +602,7 @@ const Dashboard = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -658,7 +658,7 @@ const Dashboard = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>

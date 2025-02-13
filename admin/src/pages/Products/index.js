@@ -1,17 +1,17 @@
-import { HiDotsVertical } from "react-icons/hi";
+// import { HiDotsVertical } from "react-icons/hi";
 import { FaUserCircle } from "react-icons/fa";
 import { IoMdCart } from "react-icons/io";
 import { MdShoppingBag } from "react-icons/md";
-import { GiStarsStack } from "react-icons/gi";
-import Menu from "@mui/material/Menu";
+// import { GiStarsStack } from "react-icons/gi";
+// import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useContext, useEffect, useState } from "react";
-import { IoIosTimer } from "react-icons/io";
+// import { IoIosTimer } from "react-icons/io";
 import Button from "@mui/material/Button";
-import { Chart } from "react-google-charts";
+// import { Chart } from "react-google-charts";
 
-import InputLabel from "@mui/material/InputLabel";
-import FormHelperText from "@mui/material/FormHelperText";
+// import InputLabel from "@mui/material/InputLabel";
+// import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
@@ -19,7 +19,7 @@ import { FaEye } from "react-icons/fa";
 import { FaPencilAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Pagination from "@mui/material/Pagination";
-import { MyContext } from "../../App";
+// import { MyContext } from "../../App";
 
 import Rating from "@mui/material/Rating";
 import { Link } from "react-router-dom";
@@ -184,7 +184,7 @@ const Products = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -248,7 +248,7 @@ const Products = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -312,7 +312,7 @@ const Products = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -376,7 +376,7 @@ const Products = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -438,7 +438,7 @@ const Products = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -500,7 +500,7 @@ const Products = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -562,7 +562,7 @@ const Products = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -624,7 +624,7 @@ const Products = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>
@@ -686,7 +686,7 @@ const Products = () => {
                       <div className="imgWrapper">
                         <div className="img card shadow m-0">
                           <img
-                            src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg"
+                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                             className="w-100"
                           />
                         </div>

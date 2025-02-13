@@ -56,8 +56,8 @@ const Header =()=>{
                                             Tài khoản
                                         </span>                  
                                         <ul className="absolute top-7 left-0 hidden w-48 bg-white shadow-lg group-hover:block">
-                                            <li className="block p-2 text-gray-500 hover:text-white hover:bg-gray-400"><Link to="/dang-ky">Đăng ký</Link></li>
-                                            <li className="block p-2 text-gray-500 hover:text-white hover:bg-gray-400"><Link to="/dang-nhap">Đăng nhập</Link></li>
+                                            <li className="block p-2 text-gray-500 hover:text-white hover:bg-gray-400"><Link to="/register">Đăng ký</Link></li>
+                                            <li className="block p-2 text-gray-500 hover:text-white hover:bg-gray-400"><Link to="/login">Đăng nhập</Link></li>
                                         </ul>
                                     </div>
                                 {/* {user? (<div>

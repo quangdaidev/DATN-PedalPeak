@@ -10,7 +10,7 @@ const ProductItem =()=>{
                 <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
                     <div>
                         <div className=" h-[346px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                            <div className="absolute w-[100px] bg-slate-300 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
+                            <div className="absolute w-[100px] bg-slate-200 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
                             <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
                         </div>
                     </div>

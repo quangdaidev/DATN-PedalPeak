@@ -5,7 +5,9 @@ import './globals.css';
 import Home from './Pages/Home';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
+import Login from './Pages/Login';
 import ProductDetails from './Pages/ProductDetails';
+import Register from './Pages/Register';
 // import axios from 'axios';
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" exact={true} element={<Home/>} />
+          <Route path="/login" exact={true} element={<Login/>} />
+          <Route path="/register" exact={true} element={<Register/>} />
           <Route path="/product/:id" exact={true} element={<ProductDetails/>} />
         </Routes>
         <Footer />

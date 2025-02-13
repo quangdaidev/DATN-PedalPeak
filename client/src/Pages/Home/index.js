@@ -442,13 +442,13 @@ const Home =()=>{
                         </div>
                         <div className="text-left my-6">
                             <Link href="">
-                            <div className="text-xl mb-3 hover:text-blue-900">Top 5 xe đạp thể thao HOT nhất 2024</div>
+                            <div className="text-xl mb-3 hover:text-blue-900">Top 5 xe đạp thể thao HOT nhất 2025</div>
                             </Link>
                             <div className="text-gray-500 leading-7 mb-3">
-                            Cùng PedalPeak điểm qua 5 mẫu xe thể thao phổ biết nhất năm 2024.
+                            Cùng PedalPeak điểm qua 5 mẫu xe thể thao phổ biết nhất năm 2025.
                             </div>
                             <div className="text-gray-500 leading-7 uppercase text-[13px] font-semibold tracking-widest">
-                            tháng 11, 2024
+                            tháng 2, 2025
                             </div>
                         </div>
                     </div>
@@ -463,13 +463,13 @@ const Home =()=>{
                         </div>
                         <div className="text-left my-6">
                             <Link href="">
-                            <div className="text-xl mb-3 hover:text-blue-900">Top 5 xe đạp thể thao HOT nhất 2024</div>
+                            <div className="text-xl mb-3 hover:text-blue-900">Top 5 xe đạp thể thao HOT nhất 2025</div>
                             </Link>
                             <div className="text-gray-500 leading-7 mb-3">
-                            Cùng PedalPeak điểm qua 5 mẫu xe thể thao phổ biết nhất năm 2024.
+                            Cùng PedalPeak điểm qua 5 mẫu xe thể thao phổ biết nhất năm 2025.
                             </div>
                             <div className="text-gray-500 leading-7 uppercase text-[13px] font-semibold tracking-widest">
-                            tháng 11, 2024
+                            tháng 2, 2025
                             </div>
                         </div>
                     </div>
@@ -484,13 +484,13 @@ const Home =()=>{
                         </div>
                         <div className="text-left my-6">
                             <Link href="">
-                            <div className="text-xl mb-3 hover:text-blue-900">Top 5 xe đạp thể thao HOT nhất 2024</div>
+                            <div className="text-xl mb-3 hover:text-blue-900">Top 5 xe đạp thể thao HOT nhất 2025</div>
                             </Link>
                             <div className="text-gray-500 leading-7 mb-3">
-                            Cùng PedalPeak điểm qua 5 mẫu xe thể thao phổ biết nhất năm 2024.
+                            Cùng PedalPeak điểm qua 5 mẫu xe thể thao phổ biết nhất năm 2025.
                             </div>
                             <div className="text-gray-500 leading-7 uppercase text-[13px] font-semibold tracking-widest">
-                            tháng 11, 2024
+                            tháng 2, 2025
                             </div>
                         </div>
                     </div>  
