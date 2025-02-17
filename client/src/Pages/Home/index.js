@@ -11,6 +11,7 @@ import 'swiper/css/pagination';
 // import required modules
 import {Pagination, Mousewheel, Keyboard  } from 'swiper/modules';
 import ProductItem from '../../Components/ProductItem';
+import HomeCatSlider from '../../Components/HomeCatSlider';
 
 const Home =()=>{
 
@@ -32,6 +33,8 @@ const Home =()=>{
                 </div> */}
             </div>
             {/* End slider */}
+
+            <HomeCatSlider/>
 
             <div className="ct-sub-headline">
                 <div className="ct-sub-headline-deco-line "></div>

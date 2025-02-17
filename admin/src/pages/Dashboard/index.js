@@ -192,7 +192,7 @@ const Dashboard = () => {
                   <th>UID</th>
                   <th style={{ width: "300px" }}>PRODUCT</th>
                   <th>CATEGORY</th>
-                  <th>BRAND</th>
+                  {/* <th>BRAND</th> */}
                   <th>PRICE</th>
                   <th>STOCK</th>
                   <th>RATING</th>
@@ -216,16 +216,15 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="info pl-3">
-                        <h6>Tops and skirt set for Female...</h6>
+                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
                         <p>
-                          Women's exclusive summer Tops and skirt set for Female
-                          Tops and skirt set
+                          Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td>womans </td>
-                  <td>richman</td>
+                  <td>Xe đạp đường phố </td>
+                  {/* <td>richman</td> */}
                   <td>
                     <div style={{ width: "70px" }}>
                       <del className="old">$21.00</del>
@@ -272,16 +271,15 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="info pl-3">
-                        <h6>Tops and skirt set for Female...</h6>
+                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
                         <p>
-                          Women's exclusive summer Tops and skirt set for Female
-                          Tops and skirt set
+                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td>womans </td>
-                  <td>richman</td>
+                  <td>Xe đạp đường phố </td>
+                  {/* <td>richman</td> */}
                   <td>
                     <div style={{ width: "70px" }}>
                       <del className="old">$21.00</del>
@@ -328,16 +326,15 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="info pl-3">
-                        <h6>Tops and skirt set for Female...</h6>
+                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
                         <p>
-                          Women's exclusive summer Tops and skirt set for Female
-                          Tops and skirt set
+                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td>womans </td>
-                  <td>richman</td>
+                  <td>Xe đạp đường phố </td>
+                  {/* <td>richman</td> */}
                   <td>
                     <div style={{ width: "70px" }}>
                       <del className="old">$21.00</del>
@@ -384,16 +381,15 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="info pl-3">
-                        <h6>Tops and skirt set for Female...</h6>
+                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
                         <p>
-                          Women's exclusive summer Tops and skirt set for Female
-                          Tops and skirt set
+                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td>womans </td>
-                  <td>richman</td>
+                  <td>Xe đạp đường phố </td>
+                  {/* <td>richman</td> */}
                   <td>
                     <div style={{ width: "70px" }}>
                       <del className="old">$21.00</del>
@@ -440,16 +436,15 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="info pl-3">
-                        <h6>Tops and skirt set for Female...</h6>
+                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
                         <p>
-                          Women's exclusive summer Tops and skirt set for Female
-                          Tops and skirt set
+                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td>womans </td>
-                  <td>richman</td>
+                  <td>Xe đạp đường phố </td>
+                  {/* <td>richman</td> */}
                   <td>
                     <div style={{ width: "70px" }}>
                       <del className="old">$21.00</del>
@@ -496,16 +491,15 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="info pl-3">
-                        <h6>Tops and skirt set for Female...</h6>
+                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
                         <p>
-                          Women's exclusive summer Tops and skirt set for Female
-                          Tops and skirt set
+                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td>womans </td>
-                  <td>richman</td>
+                  <td>Xe đạp đường phố </td>
+                  {/* <td>richman</td> */}
                   <td>
                     <div style={{ width: "70px" }}>
                       <del className="old">$21.00</del>
@@ -552,16 +546,15 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="info pl-3">
-                        <h6>Tops and skirt set for Female...</h6>
+                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
                         <p>
-                          Women's exclusive summer Tops and skirt set for Female
-                          Tops and skirt set
+                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td>womans </td>
-                  <td>richman</td>
+                  <td>Xe đạp đường phố </td>
+                  {/* <td>richman</td> */}
                   <td>
                     <div style={{ width: "70px" }}>
                       <del className="old">$21.00</del>
@@ -608,16 +601,15 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="info pl-3">
-                        <h6>Tops and skirt set for Female...</h6>
+                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
                         <p>
-                          Women's exclusive summer Tops and skirt set for Female
-                          Tops and skirt set
+                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td>womans </td>
-                  <td>richman</td>
+                  <td>Xe đạp đường phố </td>
+                  {/* <td>richman</td> */}
                   <td>
                     <div style={{ width: "70px" }}>
                       <del className="old">$21.00</del>
@@ -664,16 +656,15 @@ const Dashboard = () => {
                         </div>
                       </div>
                       <div className="info pl-3">
-                        <h6>Tops and skirt set for Female...</h6>
+                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
                         <p>
-                          Women's exclusive summer Tops and skirt set for Female
-                          Tops and skirt set
+                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
                         </p>
                       </div>
                     </div>
                   </td>
-                  <td>womans </td>
-                  <td>richman</td>
+                  <td>Xe đạp đường phố </td>
+                  {/* <td>richman</td> */}
                   <td>
                     <div style={{ width: "70px" }}>
                       <del className="old">$21.00</del>

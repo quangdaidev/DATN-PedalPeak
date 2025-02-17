@@ -210,12 +210,11 @@ const ProductDetails = () => {
                 <h6 className="mb-4">Product Details</h6>
 
                 <h4>
-                  Formal suits for men wedding slim fit 3 piece dress business
-                  party jacket
+                  Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C
                 </h4>
 
                 <div className="productInfo mt-4">
-                  <div className="row mb-2">
+                  {/* <div className="row mb-2">
                     <div className="col-sm-3 d-flex align-items-center">
                       <span className="icon">
                         <MdBrandingWatermark />
@@ -226,7 +225,7 @@ const ProductDetails = () => {
                     <div className="col-sm-9">
                       <span>Ecstasy</span>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="row">
                     <div className="col-sm-3 d-flex align-items-center">
@@ -237,7 +236,7 @@ const ProductDetails = () => {
                     </div>
 
                     <div className="col-sm-9">
-                      <span>Man's</span>
+                      <span>Xe đạp đường phố</span>
                     </div>
                   </div>
 
@@ -254,22 +253,22 @@ const ProductDetails = () => {
                         <div className="row">
                           <ul className="list list-inline tags sml">
                             <li className="list-inline-item">
-                              <span>SUITE</span>
+                              <span>Xe đạp</span>
                             </li>
                             <li className="list-inline-item">
-                              <span>PARTY</span>
+                              <span>Đường phố</span>
                             </li>
                             <li className="list-inline-item">
-                              <span>PARTY</span>
+                              <span>Thể thao</span>
                             </li>
                             <li className="list-inline-item">
-                              <span>DRESS</span>
+                              <span>Giá rẻ</span>
                             </li>
                             <li className="list-inline-item">
-                              <span>SMART</span>
+                              <span>Xe đạp nam</span>
                             </li>
                             <li className="list-inline-item">
-                              <span>MAN</span>
+                              <span>Xe đạp nữ</span>
                             </li>
                           </ul>
                         </div>
@@ -290,13 +289,13 @@ const ProductDetails = () => {
                         <div className="row">
                           <ul className="list list-inline tags sml">
                             <li className="list-inline-item">
-                              <span>RED</span>
+                              <span>Đỏ</span>
                             </li>
                             <li className="list-inline-item">
-                              <span>BLUE</span>
+                              <span>Xanh</span>
                             </li>
                             <li className="list-inline-item">
-                              <span>WHITE</span>
+                              <span>Trắng</span>
                             </li>
                           </ul>
                         </div>
@@ -313,7 +312,7 @@ const ProductDetails = () => {
                     </div>
 
                     <div className="col-sm-9">
-                      <span>Man's</span>
+                      <span>Trắng</span>
                     </div>
                   </div>
 
@@ -326,7 +325,7 @@ const ProductDetails = () => {
                     </div>
 
                     <div className="col-sm-9">
-                      <span>(68) Piece</span>
+                      <span>(16) Inch</span>
                     </div>
                   </div>
 
@@ -352,7 +351,7 @@ const ProductDetails = () => {
                     </div>
 
                     <div className="col-sm-9">
-                      <span>02 Feb 2020</span>
+                      <span>02 Feb 2024</span>
                     </div>
                   </div>
                 </div>
@@ -362,7 +361,7 @@ const ProductDetails = () => {
 
           <div className="p-4">
             <h6 className="mt-4 mb-3">Product Description</h6>
-            <p>Lorem ipsum dolor</p>
+            <p>Xe đạp khung sườn nhập khẩu...</p>
 
             <br />
 

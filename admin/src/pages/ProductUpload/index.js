@@ -305,7 +305,7 @@ const ProductUpload = () => {
                                             alt={"image"}
                                             effect="blur"
                                             className="w-100"
-                                            src={'https://mironcoder-hotash.netlify.app/images/product/single/01.webp'} />
+                                            src={'https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg'} />
                                     </div>
                                 </div>
 

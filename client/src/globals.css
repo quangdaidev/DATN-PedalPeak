@@ -58,7 +58,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:Be Vietnam Pro, Arial, Helvetica, sans-serif;
 }
 
 .homeBannerSection {
@@ -73,4 +73,74 @@ body {
 }
 .homeBannerSection .slick-arrow.slick-prev {
   @apply left-7 
+}
+
+.nav li .submenu button { @apply font-normal}
+.nav li:hover .submenu{ @apply opacity-[1]  top-[100%];}
+.nav li .submenu li:hover .button-lv1{ @apply !text-[#ff5252]}
+.nav li .submenu li .submenu{ @apply top-[0%] left-[120%] opacity-0 ;}
+.nav li .submenu li:hover .submenu{ @apply left-full  opacity-[1] ;}
+.nav li .submenu li .submenu button{ @apply font-normal bg-[ring-gray-700] ;}
+.nav li .submenu li .submenu button:hover{ @apply !text-[#ff5252] ;}
+
+
+/* For the swiper-button-prev and swiper-button-next */
+.swiper-button-prev,
+.swiper-button-next {
+  @apply flex items-center justify-center bg-white rounded-full w-[45px] h-[45px] min-w-[45px] shadow-[1px_3px_#ff5252,0_1px_2px_#ff5252] !important;
+}
+
+/* For the after pseudo-elements */
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  @apply text-[22px] text-black !important;
+}
+
+/* For homeCatSlider */
+.homeCatSlider {
+  @apply overflow-visible !important;
+}
+
+/* For swiper-button-prev and swiper-button-next inside homeCatSlider */
+.homeCatSlider .swiper-button-prev,
+.homeCatSlider .swiper-button-next {
+  @apply w-[30px] h-[30px] min-w-[30px];
+}
+
+/* For the after pseudo-elements inside homeCatSlider */
+.homeCatSlider .swiper-button-prev:after,
+.homeCatSlider .swiper-button-next:after {
+  @apply text-[16px] !important;
+}
+
+/* Position adjustments for prev and next buttons inside homeCatSlider */
+/* .homeCatSlider .swiper-button-prev {
+  @apply left-[-10px] !important;
+}
+
+.homeCatSlider .swiper-button-next {
+  @apply right-[-10px] !important;
+} */
+
+
+/* Đặt border cho phần tử .item */
+.homeCatSlider .item {
+  @apply border border-b-slate-400;
+}
+
+/* Hover effect cho .swiper-button-prev và .swiper-button-next */
+.homeCatSlider .swiper-button-prev:hover,
+.homeCatSlider .swiper-button-next:hover {
+  @apply bg-[#ff5252] !important;
+}
+
+/* Hover effect cho các pseudo-element :after của .swiper-button-prev và .swiper-button-next */
+.homeCatSlider .swiper-button-prev:hover::after,
+.homeCatSlider .swiper-button-next:hover::after {
+  @apply text-white !important;
+}
+
+/* Hover effect cho ảnh trong .item */
+.homeCatSlider .item:hover img {
+  @apply scale-110; /* Để áp dụng scale(1.1) */
 }

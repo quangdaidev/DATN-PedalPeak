@@ -8,6 +8,7 @@ import { useState } from 'react';
 import SearchBox from './SearchBox';
 
 import Badge from '@mui/material/Badge';
+import Button from '@mui/material/Button';
 
 // import Tooltip from '@mui/material/Tooltip';
 // import IconButton from '@mui/material/IconButton';
@@ -19,18 +20,59 @@ const Header =()=>{
     return (
         <> 
             <div className="bg-white fixed top-0 left-0 z-50 w-full">
-                <div className="content-wrapper font-Karla max-w-screen-2xl text-base mx-auto px-8">  
+                <div className="content-wrapper font-custom max-w-screen-2xl text-base mx-auto px-8">  
                     <header className="py-6">
                         <nav className="flex flex-row justify-between items-center relative">
                             <div className="logo basis-2/12  text-xl font-semibold cursor-pointer">
                             PedalPeak 
                             </div>
-                            <ul  className=" basis-5/12 flex items-center justify-center gap-8 uppercase text-sm text-gray-500 font-medium">
+
+                            <ul className="nav basis-5/12 flex items-center justify-center gap-8 uppercase text-sm text-gray-500">
                                 <li className="ct-top-menu-item">
                                     <Link to="/" className="">Trang chủ</Link>
                                 </li>
-                                <li className="ct-top-menu-item">
+                                <li className="ct-top-menu-item group">
                                     <Link to="/sanpham" className="">Sản phẩm</Link>
+
+                                    <div className="submenu absolute top-[100%] left-[0%] min-w-[200px] bg-white shadow-lg">
+                                        <ul className=" hidden group-hover:block font">
+                                            <li className="block ">
+                                                <Link className="" to="/">
+                                                    <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none button-lv1">San pham 1</Button>
+                                                </Link>
+                                            </li>
+                                            <li className="block relative">
+                                                <Link to="/">
+                                                    <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none button-lv1">San pham 2</Button>
+                                                    <div className="submenu absolute top-[100%] left-[0%] min-w-[200px] bg-white shadow-lg transition-all">
+                                                    <ul className="t">
+                                                        <li className="">
+                                                            <Link to="/">
+                                                                <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none">San pham 1</Button>
+                                                            </Link>
+                                                        </li>
+                                                        <li className="relative">
+                                                            <Link to="/">
+                                                                <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none">San pham 2</Button>
+                                                                
+                                                            </Link>
+                                                        </li>
+                                                        <li className="">
+                                                            <Link to="/">
+                                                                <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none">San pham 1</Button>
+                                                            </Link>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                </Link>
+                                            </li>
+                                            <li className="block">
+                                                <Link to="/">
+                                                    <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none button-lv1">San pham 1</Button>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </li>
                                 <li className="ct-top-menu-item">
                                     <Link to="" className="">Bài viết</Link>
@@ -46,7 +88,7 @@ const Header =()=>{
                                 <SearchBox/>
                             </div>  
 
-                            <ul className="basis-3/12 flex justify-end gap-8 items-center ml-16 text-sm text-gray-500 font-medium">
+                            <ul className=" nav basis-3/12 flex justify-end gap-8 items-center ml-16 text-sm text-gray-500">
                                 <li className="ct-top-menu-item relative group">  
                                     <div>
                                         <Badge badgeContent={4} color="primary">
@@ -55,10 +97,13 @@ const Header =()=>{
                                         <span className="uppercase mx-2">
                                             Tài khoản
                                         </span>                  
-                                        <ul className="absolute top-7 left-0 hidden w-48 bg-white shadow-lg group-hover:block">
-                                            <li className="block p-2 text-gray-500 hover:text-white hover:bg-gray-400"><Link to="/register">Đăng ký</Link></li>
-                                            <li className="block p-2 text-gray-500 hover:text-white hover:bg-gray-400"><Link to="/login">Đăng nhập</Link></li>
+                                        <ul className=" nav hidden group-hover:block">
+                                            <div className="submenu absolute top-[100%] left-[0%] min-w-[150px] bg-white shadow-lg">
+                                                <li className="block"><Link to="/register"><Button className="!text-gray-500 button-lv1 w-full !text-left !justify-start !rounded-none ">Đăng ký</Button></Link></li>
+                                                <li className="block"><Link to="/login"><Button className="!text-gray-500 button-lv1 w-full !text-left !justify-start !rounded-none ">Đăng nhập</Button></Link></li>
+                                            </div>
                                         </ul>
+
                                     </div>
                                 {/* {user? (<div>
                                         <UserIcon className="ct-icon" />
@@ -78,6 +123,7 @@ const Header =()=>{
                                         </ul>
                                     </div>)} */}
                                 </li>
+                                
                                 <li className="ct-top-menu-item">
                                     <button type="button" onClick={() => { console.log("Button clicked, opening dialog...");setOpen(true)}} className="flex items-center justify-center">
                                     {/* <IconButton color="primary"> */}
