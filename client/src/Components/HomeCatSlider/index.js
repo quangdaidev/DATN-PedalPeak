@@ -11,7 +11,7 @@ import 'swiper/css/navigation';
 
 
 // import required modules
-import { FreeMode, Pagination, Navigation } from 'swiper/modules';
+import { FreeMode,  Navigation } from 'swiper/modules';
 
 const HomeCatSlider =()=>{
     return (

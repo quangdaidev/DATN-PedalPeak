@@ -1,7 +1,7 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import HomeBanner from '../../Components/HomeBanner';
 
-import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
@@ -13,7 +13,49 @@ import {Pagination, Mousewheel, Keyboard  } from 'swiper/modules';
 import ProductItem from '../../Components/ProductItem';
 import HomeCatSlider from '../../Components/HomeCatSlider';
 
+import {LiaShippingFastSolid} from "react-icons/lia";
+
+
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+
+
+import ProductsSlider from '../../Components/ProductsSlider';
+import AdsBannerSlider from '../../Components/AdsBannerSlider';
+
+
 const Home =()=>{
+
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+      };
+
+      function CustomTabPanel(props) {
+        const { children, value, index, ...other } = props;
+      
+        return (
+          <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+          >
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+          </div>
+        );
+      }
+      
+      function a11yProps(index) {
+        return {
+          id: `simple-tab-${index}`,
+          'aria-controls': `simple-tabpanel-${index}`,
+        };
+      }
+      
 
     return ( 
         <main>
@@ -35,6 +77,74 @@ const Home =()=>{
             {/* End slider */}
 
             <HomeCatSlider/>
+
+            <section className="bg-white pt-4">
+                <div className="container">
+                    <div className="flex items-center justify-between">
+                         <div className="leftSec w-[60%]">
+                            <Box sx={{ width: '100%' }}>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                        <Tab label="Item One" {...a11yProps(0)} />
+                                        <Tab label="Item Two" {...a11yProps(1)} />
+                                        <Tab label="Item Three" {...a11yProps(2)} />
+                                    </Tabs>
+                                </Box>
+                            </Box>
+                            {/* <Box sx={{ width: '100%' }}>
+                                <Tabs
+                                    value={value}
+                                    onChange={handleChange}
+                                    textColor="secondary"
+                                    indicatorColor="secondary"
+                                    aria-label="secondary tabs example"
+                                >
+                                    <Tab value="one" label="Item One" />
+                                    <Tab value="two" label="Item Two" />
+                                    <Tab value="three" label="Item Three" />
+                                </Tabs>
+                            </Box> */}
+                        </div>
+                        <div className=" rightSec pr-10">
+                            <h2 className="text-[20px] font-[600]">Popular Products</h2>
+                            <p className="text-[14px] font-[400]">Do not miss the current offers until the
+                            end of March.</p>
+                        </div>
+                    </div>
+                    <CustomTabPanel value={value} index={0}>
+                        <ProductsSlider items={5}/>
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={1}>
+                        Item Two
+                    </CustomTabPanel>
+                    <CustomTabPanel value={value} index={2}>
+                        Item Three
+                    </CustomTabPanel>       
+                   
+
+                </div>
+            </section>
+
+
+<section className="py-16 ¦bg-white">
+	<div className="container">
+		<div className="freeShipping w-[80%] m-auto py-4 p-4 border-2 border-[#ff5252] flex items-center justify-between rounded-md">
+			<div className="col1 flex items-center gap-4 mb-5">
+				<LiaShippingFastSolid className="text-[50px]" /> 
+				<span className="text-[20px] font-[600] uppercase">Free Shipping </span> 
+			</div>
+			<div className="col2">
+				<p className="mb-0 font-[500]">Free Delivery Now On Your First Order and over
+				$200</p>
+			</div>
+
+			<p> - Only $200*</p>
+		</div>
+
+		<AdsBannerSlider items={4} />
+	</div>
+</section>
+
 
             <div className="ct-sub-headline">
                 <div className="ct-sub-headline-deco-line "></div>

@@ -144,3 +144,16 @@ body {
 .homeCatSlider .item:hover img {
   @apply scale-110; /* Để áp dụng scale(1.1) */
 }
+
+.swiper-button-prev,.swiper-button-next{ @apply flex justify-center items-center bg-white rounded-full w-11 h-11 min-w-11 shadow-[0_1px_3px_rgba(238,238,238,0.12),1px_2px_rgba(238,238,238,0.24)] transition-all duration-200}
+
+.swiper-button-prev:after,.swiper-button-next:after{@apply text-[22px] text-black !important}
+
+.smlBtn .swiper-button-prev,.smlBtn .swiper-button-next{@apply w-[7.5] h-[7.5] min-w-[7.5] top-[55%] !important;}
+.smlBtn .swiper-button-prev:after, .smlBtn .swiper-button-next:after{@apply text-[22px] text-black !important }
+
+.MuiTabs-indicator{@apply bg-[#ff5252] !important}
+.MuiTab-textColorPrimary.Mui-seclected{@apply text-[#ff5252] !important}
+/* 
+.productsSlider .swiper-wrapper{@apply p-[3.75] ml-[-15px] mr-[-15px] } */
+
