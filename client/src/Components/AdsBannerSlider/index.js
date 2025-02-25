@@ -10,13 +10,25 @@ import BannerBox from "../BannerBox";
 
 const AdsBannerSlider = (props) =>{
     return (
-        <div className="py-5 w-full">
+        <div className="pt-5 px-6 w-full">
             <Swiper 
                 slidesPerView={props.items}
                 spaceBetween={10}
                 navigation={[Navigation]}
                 className="smlBtn"
             >
+                <SwiperSlide>
+                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                </SwiperSlide>
                 <SwiperSlide>
                     <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
                 </SwiperSlide>

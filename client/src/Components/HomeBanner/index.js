@@ -20,7 +20,7 @@ const HomeBanner =()=>{
 
     return (
         <>
-            <div className="homeBannerSection">
+            <div className="homeBannerSection mt-[120px]">
                 <Slider {...settings}>
                         <img className="h-[520px]" alt="" src="/img/products/banner1.jpg"></img>
                         <img className="h-[520px]" alt="" src="/img/products/banner2.jpg"></img>

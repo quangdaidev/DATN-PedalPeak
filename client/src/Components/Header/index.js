@@ -24,9 +24,9 @@ const Header =()=>{
                     <header className="py-6">
                         <nav className="flex flex-row justify-between items-center relative">
                             <div className="logo basis-2/12  text-xl font-semibold cursor-pointer">
-                            PedalPeak 
+                                <img alt="" src="/img/products/logopedalpeak-2.png" classNamr=""/>
                             </div>
-
+                          
                             <ul className="nav basis-5/12 flex items-center justify-center gap-8 uppercase text-sm text-gray-500">
                                 <li className="ct-top-menu-item">
                                     <Link to="/" className="">Trang chủ</Link>

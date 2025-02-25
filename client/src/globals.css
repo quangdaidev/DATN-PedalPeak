@@ -33,7 +33,7 @@
 }
 
 .ct-sub-headline {
-  @apply  flex justify-center items-center mb-24;
+  @apply  flex justify-center items-center mt-6 mb-14;
 }
 
 .ct-sub-headline-label {
