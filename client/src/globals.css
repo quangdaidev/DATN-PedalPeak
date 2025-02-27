@@ -23,7 +23,9 @@
 .ct-top-menu-item {
   @apply cursor-pointer py-1 hover:text-gray-800 relative after:absolute after:bottom-0 after:left-0 after:bg-blue-500 after:h-0.5 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300;
 }
-
+.link {
+  @apply cursor-pointer py-1 hover:text-primary-600
+}
 .ct-icon {
   @apply w-5 h-5 inline-block;
 }
@@ -157,3 +159,14 @@ body {
 /* 
 .productsSlider .swiper-wrapper{@apply p-[3.75] ml-[-15px] mr-[-15px] } */
 
+.MuiCheckbox-root{@apply p-2 !important}
+
+.btn-org{@apply bg-[#ff5252] text-white font-semibold text-[22px] !important}
+.btn-org:hover{@apply bg-slate-900 !important}
+
+.ReactCollapse--collapse {
+  @apply transition-all;
+}
+
+.itemViewActions button.active svg{@apply bg-[#ff5252] opacity-[1] !important }
+.Mui-selected.MuiPaginationItem-page{@apply bg-[#ff5252] text-white !important}

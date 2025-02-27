@@ -16,12 +16,18 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         'main': {
-          50 : '#2c05e6',
-          200: '#1d0bbf',
-          400: '#160180',
-          600: '#17056e',
-          800: '#100157',
-        }
+          50 : 'blue',
+          200: 'blue',
+          400: 'blue',
+          600: 'blue',
+          800: 'blue',
+        },
+        'primary': {
+         600: 'orange',
+        },
+        'second': {
+          700: 'gray',
+         }
       },
       keyframes: {
         slideDown: {

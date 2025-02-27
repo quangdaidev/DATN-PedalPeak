@@ -353,13 +353,13 @@ const Home =()=>{
                         </video>
                     </div>
                 
-                    <div className="bassic-1/2 text-left pr-6">
+                    <div className="basis-1/2 text-left pr-6">
                         <div className="text-3xl leading-10 mb-6">Hệ thống cửa hàng PedalPeak</div>
                         <div className="text-gray-500 leading-7 mb-6">Hệ thống cửa hàng PedalPeak được thành lập vào năm 2019, 
-                        với sứ mệnh mang đến <br></br> những sản phẩm xe đạp chất lượng cao và dịch vụ tốt nhất cho người tiêu dùng Việt Nam. <br></br>
-                        Kể từ khi ra mắt, PedalPeak đã nhanh chóng phát triển và trở thành một trong những  <br></br> nhà phân phối 
-                        xe đạp hàng đầu tại Việt Nam. Với cam kết không ngừng nâng cao chất lượng <br></br>sản phẩm và dịch vụ, PedalPeak
-                        đã xây dựng được lòng tin từ khách hàng và cộng đồng <br></br> yêu xe đạp khắp cả nước.
+                        với sứ mệnh mang đến những sản phẩm xe đạp chất lượng cao và dịch vụ tốt nhất cho người tiêu dùng Việt Nam.
+                        Kể từ khi ra mắt, PedalPeak đã nhanh chóng phát triển và trở thành một trong những nhà phân phối 
+                        xe đạp hàng đầu tại Việt Nam. Với cam kết không ngừng nâng cao chất lượng sản phẩm và dịch vụ, PedalPeak
+                        đã xây dựng được lòng tin từ khách hàng và cộng đồng yêu xe đạp khắp cả nước.
                         </div>
                         <div className="">
                         <Link className="text-xl text-blue-800 hover:text-main-600 relative after:absolute after:-bottom-2 after:left-0

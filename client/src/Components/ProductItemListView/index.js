@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from 'react-router-dom';
 
 
-import "../ProductItem/style.css";
+import "../ProductItemListView/style.css";
 
 import Rating from '@mui/material/Rating';
 import Button from "@mui/material/Button";
@@ -11,9 +11,11 @@ import {FaRegHeart} from "react-icons/fa";
 import {IoGitCompareOutline} from "react-icons/io5";
 import {MdZoomOutMap} from "react-icons/md";
 
+import { MdOutlineShoppingCart } from "react-icons/md";
+
 import Tooltip from "@mui/material/Tooltip";
 
-const ProductItem =(props)=>{
+const ProductItemListView =()=>{
     
 
     return (
@@ -38,8 +40,8 @@ const ProductItem =(props)=>{
                 </div>
             </div> */}
 
-            <div className="productItem !bg-slate-100 shadow-lg rounded-md overflow-hidden border-[1px] border-gray-500 border-1 mb-14">
-                <div className="group imgWrapper w-[100%] h-[350px] overflow-hidden rounded-md relative"> 
+            <div className="productItemListView !bg-slate-100 shadow-lg rounded-md overflow-hidden border-[1px] border-gray-500 border-1 mb-14 flex items-center">
+                <div className="group imgWrapper w-[30%] h-[350px] overflow-hidden rounded-md relative"> 
                     <img alt="" src='/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg' className="h-[350px] bg-contain bg-no-repeat"/>
                     <img alt="" src="https://xedapgiakho.com/wp-content/uploads/2023/11/Xe-Dap-Touring-DTFLY-R-024-600x420.jpg" className="h-[350px] bg-contain bg-no-repeat transition-all duration-700 absolute top-0 left-0 opacity-0 group-hover:opacity-100"/>
 
@@ -68,15 +70,24 @@ const ProductItem =(props)=>{
                     </div>
                 </div>
 
-                <div className='info p-3'>
-                    <h6 className="text-[13px]"><Link to="/" className='link transition-all'>Soylent Green</Link></h6>
-                    <h3 className="overflow-hidden line-clamp-2 text-[14px] mt-1 font-[500] mb-2 text-[rgba(0,0,0,0.9)]"> <Link to="/" className='link transition-all'>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</Link></h3>
+                <div className='info p-3 py-5 px-8 w-[75%]'>
+                    <h6 className="text-[15px]"><Link to="/" className='link transition-all'>Soylent Green</Link></h6>
+                    <h3 className="overflow-hidden line-clamp-2 text-[18px] mt-3 font-[500] mb-3 text-[rgba(0,0,0,0.9)]"> <Link to="/" className='link transition-all'>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</Link></h3>
+
+                    <p className="text-[14px] mb-3">Xe Đạp Địa Hình MTB Fascino FS126S 26 Inch là một sản phẩm nhập khẩu chính hãng. 
+                    Phù hợp cả nam và nữ có chiều cao từ 1m55 trở lên. Chiếc xe đạp thể thao này phù hợp cho nhiều hoạt động khác nhau như đi học, đi làm hay các hoạt động thể thao ngoài trời.</p>
+                    
                     <Rating name="size-small" defaultValue={4} size="small" readOnly/>
 
                     <div className="flex items-center gap-4">
                         <span className="oldPrice line-through text-gray-500 text-[15px] font-[500]">7.200.000000đ</span>
                         <span className="price text-orange-600 text-[15px] font-[600]">6.990.000đ</span> 
                     </div>
+
+                    <div className="mt-3">
+                        <Button className="btn-org flex gap-2"><MdOutlineShoppingCart className="text-[20px]"/>Thêm vào giỏ hàng</Button>
+                    </div>
+
                 </div>
             </div>
 
@@ -84,4 +95,4 @@ const ProductItem =(props)=>{
     )
 }
 
-export default ProductItem;
+export default ProductItemListView;

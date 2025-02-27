@@ -1,0 +1,2 @@
+.productItem .title{ @apply leading-[18px]}
+.productItem .actions button:hover svg{ @apply text-white !important}

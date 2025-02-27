@@ -8,6 +8,7 @@ import Footer from './Components/Footer';
 import Login from './Pages/Login';
 import ProductDetails from './Pages/ProductDetails';
 import Register from './Pages/Register';
+import ProductListing from './Pages/ProductListing';
 // import axios from 'axios';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" exact={true} element={<Home/>} />
+          <Route path="/productListing" exact={true} element={<ProductListing/>} />
           <Route path="/login" exact={true} element={<Login/>} />
           <Route path="/register" exact={true} element={<Register/>} />
           <Route path="/product/:id" exact={true} element={<ProductDetails/>} />
