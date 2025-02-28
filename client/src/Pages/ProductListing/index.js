@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Sidebar } from "../../Components/Sidebar";
 
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import ProductItem from "../../Components/ProductItem";
@@ -52,7 +52,7 @@ const ProductListing = () =>{
                     </div>
 
                     <div className="rightContent w-[80%] py-3">
-                        <div className="bg-slate-400 p-2 w-full mb-4 rounded-md flex items-center justify-between">
+                        <div className="bg-slate-300 p-2 w-full mb-4 rounded-md flex items-center justify-between">
                             <div className="coll flex items-center itemViewActions">
                                 <Button
                                 className={`!w-[40px] !h-[40px] !min-w-[40px] ! rounded-full text-[#000] ${itemView === "list" && 'active'}`}
@@ -71,7 +71,7 @@ const ProductListing = () =>{
                             </div>
 
                             <div className="col2 ml-auto flex items-center justify-end">
-                                <span className="text-[14px] font-[500] pl-3 text-black">Sắp xếp theo</span>
+                                <span className="text-[14px] font-[500] pl-3 mr-3 text-black">Sắp xếp theo</span>
                                 
                                 <Button
                                     id="demo-positioned-button"

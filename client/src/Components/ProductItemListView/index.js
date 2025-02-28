@@ -7,13 +7,13 @@ import "../ProductItemListView/style.css";
 import Rating from '@mui/material/Rating';
 import Button from "@mui/material/Button";
 
-import {FaRegHeart} from "react-icons/fa";
-import {IoGitCompareOutline} from "react-icons/io5";
-import {MdZoomOutMap} from "react-icons/md";
+// import {FaRegHeart} from "react-icons/fa";
+// import {IoGitCompareOutline} from "react-icons/io5";
+// import {MdZoomOutMap} from "react-icons/md";
 
 import { MdOutlineShoppingCart } from "react-icons/md";
 
-import Tooltip from "@mui/material/Tooltip";
+// import Tooltip from "@mui/material/Tooltip";
 
 const ProductItemListView =()=>{
     
@@ -49,9 +49,9 @@ const ProductItemListView =()=>{
                     <span className="discount flex items-center absolute top-[10px] left-[10px] z-50 bg-orange-600 text-white rounded-lg p-1 text-[12px] font-[500]">
                     -10%
                     </span> 
-                    <button className="absolute bg-blue-900 text-white w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
+                    {/* <button className="absolute bg-blue-900 text-white w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button> */}
 
-                    <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-4 flex-col w-[50px] transition-all duration-300 group-hover:top-[15px]">
+                    {/* <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-4 flex-col w-[50px] transition-all duration-300 group-hover:top-[15px]">
                         <Tooltip title="Chi tiết" placement="left-start">
                             <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black  hover:!bg-blue-900 hover:text-white group">
                                 <MdZoomOutMap className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
@@ -67,11 +67,11 @@ const ProductItemListView =()=>{
                                 <FaRegHeart className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
                             </Button>
                         </Tooltip>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className='info p-3 py-5 px-8 w-[75%]'>
-                    <h6 className="text-[15px]"><Link to="/" className='link transition-all'>Soylent Green</Link></h6>
+                    <h6 className="text-[15px] !font-[400]"><Link to="/" className='link transition-all'>Soylent Green</Link></h6>
                     <h3 className="overflow-hidden line-clamp-2 text-[18px] mt-3 font-[500] mb-3 text-[rgba(0,0,0,0.9)]"> <Link to="/" className='link transition-all'>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</Link></h3>
 
                     <p className="text-[14px] mb-3">Xe Đạp Địa Hình MTB Fascino FS126S 26 Inch là một sản phẩm nhập khẩu chính hãng. 

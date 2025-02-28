@@ -63,6 +63,10 @@ body {
   font-family:Be Vietnam Pro, Arial, Helvetica, sans-serif;
 }
 
+p{@apply text-[14px] leading-[26px] mb-[10px] mt-[10px]}
+
+h1,h2,h3,h4,h5,h6{@apply font-semibold}
+
 .homeBannerSection {
   @apply relative overflow-hidden;
 }
@@ -161,12 +165,33 @@ body {
 
 .MuiCheckbox-root{@apply p-2 !important}
 
-.btn-org{@apply bg-[#ff5252] text-white font-semibold text-[22px] !important}
-.btn-org:hover{@apply bg-slate-900 !important}
+.btn-org{@apply bg-[#ff5252] text-white font-semibold text-[18px] px-4 !important}
+.btn-org:hover{@apply bg-blue-900 !important}
 
 .ReactCollapse--collapse {
   @apply transition-all;
 }
 
-.itemViewActions button.active svg{@apply bg-[#ff5252] opacity-[1] !important }
+.itemViewActions button.active svg{@apply text-[#ff5252] opacity-[1] !important }
 .Mui-selected.MuiPaginationItem-page{@apply bg-[#ff5252] text-white !important}
+
+.zoomProductSliderThumbs .swiper-wrapper{@apply pt-[38px] !important}
+
+.zoomProductSliderThumbs .swiper-button-next{@apply hover:bg-[#ff5252] hover:text-white bottom-0 w-[100%] left-0 h-[30px] rounded-none shadow-none !important;}
+.zoomProductSliderThumbs .swiper-button-next:after{@apply rotate-90 !important;}
+.zoomProductSliderThumbs .swiper-button-prev{@apply hover:bg-[#ff5252] hover:text-white top-[20px] left-0  w-[100%] h-[30px]  rounded-none shadow-none  !important;}
+
+.zoomProductSliderThumbs .swiper-button-prev:after{@apply rotate-90 !important;}
+
+.productContent .actions button{@apply min-w-[40px] h-[30px] border-2 border-solid !important}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none ;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.reviewScroll::-webkit-scrollbar{@apply w-[5px] !important}
+.reviewScroll::-webkit-scrollbar-thumb{@apply bg-slate-300 !important}
+

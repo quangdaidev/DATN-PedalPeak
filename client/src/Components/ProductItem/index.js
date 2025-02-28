@@ -68,8 +68,8 @@ const ProductItem =(props)=>{
                     </div>
                 </div>
 
-                <div className='info p-3'>
-                    <h6 className="text-[13px]"><Link to="/" className='link transition-all'>Soylent Green</Link></h6>
+                <div className='info p-3 py-5'>
+                    <h6 className="text-[13px] !font-[400]"><Link to="/" className='link transition-all'>Soylent Green</Link></h6>
                     <h3 className="overflow-hidden line-clamp-2 text-[14px] mt-1 font-[500] mb-2 text-[rgba(0,0,0,0.9)]"> <Link to="/" className='link transition-all'>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</Link></h3>
                     <Rating name="size-small" defaultValue={4} size="small" readOnly/>
 

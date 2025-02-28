@@ -87,8 +87,8 @@ const Home =()=>{
                             <Box sx={{ width: '100%' }}>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                     <Tabs  value={value} onChange={handleChange} aria-label="basic tabs example">
-                                        <Tab className="!text-[16px]" label="Bán chạy" {...a11yProps(0)} />
-                                        <Tab className="!text-[16px]" label="Dành cho bạn" {...a11yProps(1)} />
+                                        <Tab className="!text-[16px]" label="Sản phẩm bán chạy" {...a11yProps(0)} />
+                                        <Tab className="!text-[16px]" label="Sản phẩm khuyến mãi" {...a11yProps(1)} />
                                         <Tab className="!text-[16px]" label="Sản phẩm đề xuất" {...a11yProps(2)} />
                                     </Tabs>
                                 </Box>
@@ -338,7 +338,7 @@ const Home =()=>{
                 </div>
             </section>
             {/* End products */}
-           
+{/*            
            <section className="bg-white pt-10 mb-20 pb-1">
                 <div className="ct-sub-headline">
                     <div className="ct-sub-headline-deco-line "></div>
@@ -368,7 +368,7 @@ const Home =()=>{
                     </div>
                 
                 </div>
-            </section>
+            </section> */}
             {/* End story */}
 
             <section className="bg-white pt-10 mb-20 ">
