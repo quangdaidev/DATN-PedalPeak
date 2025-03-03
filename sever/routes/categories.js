@@ -142,13 +142,10 @@ router.put(`/:id`, async (req, res) => {
       status: false,
     });
   }
-  
+
 
   res.send(category);
-  // res.status(200).json({
-  //   message: "the category is updated!",
-  //   status: true,
-  // });
+
 });
 
 // categorySchema.virtual("id").get(function () {
