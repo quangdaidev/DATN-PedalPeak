@@ -3,7 +3,8 @@ const { Product } = require("../models/product.js");
 const express = require("express");
 const router = express.Router();
 const pLimit = require("p-limit");
-const cloudinary = require("../utils/cloudinary.js");
+// const cloudinary = require("../utils/cloudinary.js");
+const cloudinary = require("cloudinary").v2;
 
 router.get(`/`, async (req, res) => {
   const productList = await Product.find().populate("category");

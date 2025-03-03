@@ -1,19 +1,30 @@
+// import { createRequire } from "module";
+// const require = createRequire(import.meta.url);
+
 const express = require("express");
 const router = express.Router();
 const { Category } = require("../models/category");
 const cloudinary = require("cloudinary").v2;
 const pLimit = require("p-limit");
-const { default: mongoose } = require("mongoose");
+// import pLimit from 'p-limit';
+// const { default: mongoose } = require("mongoose");
 
-cloudinary.config({
-  cloud_name: process.env.cloudinary_Config_Cloud_Name,
-  api_Key: process.env.cloudinary_Config_api_key,
-  api_secret: process.env.cloudinary_Conig_api_secret,
+// cloudinary.config({
+//   cloud_name: process.env.cloudinary_Config_Cloud_Name,
+//   api_Key: process.env.cloudinary_Config_api_key,
+//   api_secret: process.env.cloudinary_Config_api_secret,
+// });
+
+  // Configuration
+  cloudinary.config({ 
+    cloud_name: 'pedalpeak', 
+    api_key: '772484797329468', 
+    api_secret: 'ri813V_nTj1QfCIlmKIbBoFmDWs' // Click 'View API Keys' above to copy your API secret
 });
 
 // Lấy danh sách tất cả categories
 router.get("/", async (req, res) => {
-  const categoryList = await Categort.fine();
+  const categoryList = await Category.find();
 
   if (!categoryList) {
     res.status(500).json({ success: false });
@@ -32,9 +43,9 @@ router.get(`/:id`, async (req, res) => {
   return res.status(200).send(category);
 });
 
-router.delete(`:/id`, async (req, res) => {
-  const deletCategory = await Category.findByIdAndDelete(req.params.id);
-  if (!deletCategory) {
+router.delete(`/:id`, async (req, res) => {
+  const deleteCategory = await Category.findByIdAndDelete(req.params.id);
+  if (!deleteCategory) {
     res.status(404).json({
       message: "Category not found!",
       success: false,
@@ -87,7 +98,34 @@ router.post(`/create`, async (req, res) => {
   res.status(201).json(category);
 });
 
+
 router.put(`/:id`, async (req, res) => {
+
+  const limit = pLimit(2);
+
+  const imagesToUpload = req.body.images.map((image) => {
+    return limit(async () => {
+      const result = await cloudinary.uploader.upload(image);
+      return result;
+    });
+  });
+
+  const uploadStatus = await Promise.all(imagesToUpload);
+
+  
+  if (!uploadStatus || uploadStatus.length === 0) {
+    return res.status(500).json({
+      error: "images cannot upload!",
+      status: false,
+    });
+  }
+
+  // const imgurl = uploadStatus.map((item) => {
+  //   return item.secure_url;
+  // });
+
+  const imgurl = uploadStatus.map((item) => item.secure_url);
+  
   const category = await Category.findByIdAndUpdate(
     req.params.id,
     {
@@ -104,22 +142,24 @@ router.put(`/:id`, async (req, res) => {
       status: false,
     });
   }
+  
 
-  res.status(200).json({
-    message: "the category is updated!",
-    status: true,
-  });
+  res.send(category);
+  // res.status(200).json({
+  //   message: "the category is updated!",
+  //   status: true,
+  // });
 });
 
-categorySchema.virtual("id").get(function () {
-  return this._id.toHexString();
-});
+// categorySchema.virtual("id").get(function () {
+//   return this._id.toHexString();
+// });
 
-categorySchema.set("toJSON", {
-  virtuals: true,
-});
+// categorySchema.set("toJSON", {
+//   virtuals: true,
+// });
 
-exports.Category = mongoose.model("Category", categorySchema);
+// exports.Category = mongoose.model("Category", categorySchema);
 
 module.exports = router;
-exports.categorySchema = categorySchema;
+// exports.categorySchema = categorySchema;

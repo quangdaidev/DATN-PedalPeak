@@ -5,14 +5,17 @@ const categorySchema = mongoose.Schema({
         type: String,
         required: true
     },
-    images: {
+    images: [
+        {
         type: String,
         required: true
-    },
+        }
+    ],
     color: {
         type: String,
         required: true
     }
 });
 
-module.exports = mongoose.model('Category', categorySchema);
+// module.exports = mongoose.model('Category', categorySchema);
+exports.Category = mongoose.model('Category', categorySchema);
