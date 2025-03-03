@@ -11,7 +11,7 @@ const categorySchema = mongoose.Schema({
         required: true
         }
     ],
-    color: {
+    status: {
         type: String,
         required: true
     }

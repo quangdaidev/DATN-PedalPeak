@@ -83,7 +83,7 @@ router.post(`/create`, async (req, res) => {
   let category = new Category({
     name: req.body.name,
     images: imgurl,
-    color: req.body.color,
+    status: req.body.status,
   });
 
   if (!category) {
@@ -131,7 +131,7 @@ router.put(`/:id`, async (req, res) => {
     {
       name: req.body.name,
       images: imgurl,
-      color: req.body.color,
+      status: req.body.status,
     },
     { new: true }
   );
