@@ -44,12 +44,15 @@ router.post(`/create`, async (req, res) => {
   }
 
   let product = new Product({
-    MaDM: req.body.MaDM,
-    TenSP: req.body.TenSP,
+    category: req.body.category,
+    name: req.body.name,
     image: imgurl,
-    GiaNiemYet: req.body.GiaNiemYet,
-    GiaKhuyenMai: req.body.GiaKhuyenMai,
-    MoTa: req.body.MoTa,
+    old_price: req.body.old_price,
+    price: req.body.price,
+    brand:req.body.brand,
+    color:req.body.color,
+    desc: req.body.desc,
+    status:req.body.status,
   });
 
   product = await product.save();
@@ -92,12 +95,15 @@ router.put(`/:id`, async (req, res) => {
   const product = await Product.findByIdAndUpdate(
     req.params.id,
     {
-      MaDM: req.body.MaDM,
-      TenSP: req.body.TenSP,
+      category: req.body.category,
+      name: req.body.name,
       image: imgurl,
-      GiaNiemYet: req.body.GiaNiemYet,
-      GiaKhuyenMai: req.body.GiaKhuyenMai,
-      MoTa: req.body.MoTa,
+      old_price: req.body.old_price,
+      price: req.body.price,
+      brand:req.body.brand,
+      color:req.body.color,
+      desc: req.body.desc,
+      status:req.body.status,
     },
     { new: true }
   );

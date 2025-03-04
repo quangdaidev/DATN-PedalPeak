@@ -1,28 +1,44 @@
 const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema({
-  MaDM: {
+  
+category: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
     require: true,
   },
-  TenSP: {
+  name: {
     type: String,
     required: true,
   },
-  Image: {
+  image: [{
+    type: String,
+    require: true,
+  }],
+  brand: {
     type: String,
     require: true,
   },
-  GiaNiemYet: {
+  old_price: {
     type: Number,
     default: 0,
   },
-  GiaKhuyenMai: {
+  price: {
     type: Number,
     default: 0,
   },
-  MoTa: {
+  
+ 
+  color: [{
+    type: String,
+    require: true,
+  }],
+  status: {
+    type: String,
+    require: true,
+  },
+
+  desc: {
     type: String,
     require: true,
   },
