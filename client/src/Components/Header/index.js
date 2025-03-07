@@ -4,6 +4,11 @@ import { FaUser } from "react-icons/fa";
 import { MdCloseFullscreen } from "react-icons/md";
 
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import {GoTriangleDown} from "react-icons/go";
+import Rating from '@mui/material/Rating';
+
 import { useState } from 'react';
 import SearchBox from './SearchBox';
 
@@ -15,6 +20,21 @@ import Button from '@mui/material/Button';
 
 
 const Header =()=>{
+
+    const [colorAnchorEl, setColorAnchorEl] = useState(null);
+    const openColor = Boolean(colorAnchorEl);
+    const [selectedColor, setSelectedColor] = useState("Đen");
+    const handleClickColor = (event) => {
+        setColorAnchorEl(event.currentTarget);
+    };
+
+    const handleCloseColor = (value) => {
+        setColorAnchorEl(null);
+        if(value!==null){
+            setSelectedColor(value)      
+        }
+    };
+
     const [open, setOpen] = useState(false);
 
     return (
@@ -186,7 +206,7 @@ const Header =()=>{
 
                                                         <div className="mt-8">
                                                             <div className="flow-root">
-                                                                <ul className="-my-6 divide-y divide-gray-200">
+                                                                <ul className="-my-6 divide-y divide-gray-200">                                                                      
                                                                         <li className="flex py-6">
                                                                             <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                                                 <div  style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[96px] bg-contain bg-no-repeat" ></div>
@@ -200,15 +220,38 @@ const Header =()=>{
                                                                                         </h3>
                                                                                         <p className="ml-4">6.990.000đ</p>
                                                                                     </div>
-                                                                                    <br></br>
+
+                                                                                    <Rating name="size-small" defaultValue={4} size="small" readOnly/>
+                                                                                    
                                                                                     {/* <p className="mt-1 text-sm text-gray-500">Đen</p> */}
                                                                                 </div>
-                                                                                <div className="flex flex-1 items-end justify-between text-sm">
+                                                                                <div className="mt-2 flex flex-1 items-end justify-between text-sm">
                                                                                     {/* <span className="text-gray-500">Số lượng: </span><input type="number" min={1} defaultValue={item.quantity}  className='max-w-14 border p-2 rounded mt-4' 
                                                                                     onChange={(e:any) => dispatch(updateQuantity({ item: item, quantity:Number(e.target.defaultValue)}))}
                                                                         
                                                                                     />  */}
                                                                                 <div className="flex items-center space-x-2">
+                                                                                    <div className="relative">
+                                                                                        <span className="flex items-center justify-center bg-slate-200 text-[11px] font-[600] py-1 px-2 rounded-md cursor-pointer">
+                                                                                        <button className="w-16" onClick={handleClickColor}>Màu: {selectedColor} </button> <GoTriangleDown/>
+                                                                                        </span>
+
+                                                                                        <Menu
+                                                                                            id="color-menu"
+                                                                                            anchorEl={colorAnchorEl}
+                                                                                            open={openColor}
+                                                                                            onClose={() => handleCloseColor(null)}
+                                                                                            MenuListProps={{
+                                                                                            'aria-labelledby': 'basic-button',
+                                                                                            }}
+                                                                                        >
+                                                                                            <MenuItem onClick={()=>handleCloseColor('Đen')}>Đen</MenuItem>
+                                                                                            <MenuItem onClick={()=>handleCloseColor('Trắng')}>Trắng</MenuItem>
+                                                                                            <MenuItem onClick={()=>handleCloseColor('Xám')}>Xám</MenuItem>
+                                                                                            <MenuItem onClick={()=>handleCloseColor('Vàng')}>Vàng</MenuItem>
+                                                                                        </Menu>
+                                                                                    </div>                                                        
+
                                                                                     <button
                                                                                         className="px-2 py-1 bg-gray-300 rounded"
                                                                                     >
@@ -223,7 +266,7 @@ const Header =()=>{
                                                                                 </div>
                                                                                 
                                                                                     <div className="flex">
-                                                                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 ">
                                                                                             Xóa
                                                                                         </button>
                                                                                     </div>
@@ -243,15 +286,38 @@ const Header =()=>{
                                                                                         </h3>
                                                                                         <p className="ml-4">6.990.000đ</p>
                                                                                     </div>
-                                                                                    <br></br>
+
+                                                                                    <Rating name="size-small" defaultValue={4} size="small" readOnly/>
+                                                                                    
                                                                                     {/* <p className="mt-1 text-sm text-gray-500">Đen</p> */}
                                                                                 </div>
-                                                                                <div className="flex flex-1 items-end justify-between text-sm">
+                                                                                <div className="mt-2 flex flex-1 items-end justify-between text-sm">
                                                                                     {/* <span className="text-gray-500">Số lượng: </span><input type="number" min={1} defaultValue={item.quantity}  className='max-w-14 border p-2 rounded mt-4' 
                                                                                     onChange={(e:any) => dispatch(updateQuantity({ item: item, quantity:Number(e.target.defaultValue)}))}
                                                                         
                                                                                     />  */}
                                                                                 <div className="flex items-center space-x-2">
+                                                                                    <div className="relative">
+                                                                                        <span className="flex items-center justify-center bg-slate-200 text-[11px] font-[600] py-1 px-2 rounded-md cursor-pointer">
+                                                                                        <button className="w-16" onClick={handleClickColor}>Màu: {selectedColor} </button> <GoTriangleDown/>
+                                                                                        </span>
+
+                                                                                        <Menu
+                                                                                            id="color-menu"
+                                                                                            anchorEl={colorAnchorEl}
+                                                                                            open={openColor}
+                                                                                            onClose={() => handleCloseColor(null)}
+                                                                                            MenuListProps={{
+                                                                                            'aria-labelledby': 'basic-button',
+                                                                                            }}
+                                                                                        >
+                                                                                            <MenuItem onClick={()=>handleCloseColor('Đen')}>Đen</MenuItem>
+                                                                                            <MenuItem onClick={()=>handleCloseColor('Trắng')}>Trắng</MenuItem>
+                                                                                            <MenuItem onClick={()=>handleCloseColor('Xám')}>Xám</MenuItem>
+                                                                                            <MenuItem onClick={()=>handleCloseColor('Vàng')}>Vàng</MenuItem>
+                                                                                        </Menu>
+                                                                                    </div>                                                        
+
                                                                                     <button
                                                                                         className="px-2 py-1 bg-gray-300 rounded"
                                                                                     >
@@ -266,7 +332,7 @@ const Header =()=>{
                                                                                 </div>
                                                                                 
                                                                                     <div className="flex">
-                                                                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 ">
                                                                                             Xóa
                                                                                         </button>
                                                                                     </div>

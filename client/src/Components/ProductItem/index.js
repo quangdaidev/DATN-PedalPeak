@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Link } from 'react-router-dom';
 
 
@@ -12,9 +12,11 @@ import {IoGitCompareOutline} from "react-icons/io5";
 import {MdZoomOutMap} from "react-icons/md";
 
 import Tooltip from "@mui/material/Tooltip";
+import { MyContext } from "../../App";
 
-const ProductItem =(props)=>{
+const ProductItem =()=>{
     
+    const context = useContext(MyContext);
 
     return (
         <>
@@ -51,7 +53,9 @@ const ProductItem =(props)=>{
 
                     <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-4 flex-col w-[50px] transition-all duration-300 group-hover:top-[15px]">
                         <Tooltip title="Chi tiết" placement="left-start">
-                            <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black  hover:!bg-blue-900 hover:text-white group">
+                            <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black  hover:!bg-blue-900 hover:text-white group"
+                            onClick={()=>context.setOpenProductDetailsModal(true)}
+                            >
                                 <MdZoomOutMap className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
                             </Button>
                         </Tooltip>

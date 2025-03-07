@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Link } from 'react-router-dom';
 
 
@@ -7,16 +7,18 @@ import "../ProductItemListView/style.css";
 import Rating from '@mui/material/Rating';
 import Button from "@mui/material/Button";
 
-// import {FaRegHeart} from "react-icons/fa";
-// import {IoGitCompareOutline} from "react-icons/io5";
-// import {MdZoomOutMap} from "react-icons/md";
+import {FaRegHeart} from "react-icons/fa";
+import {IoGitCompareOutline} from "react-icons/io5";
+import {MdZoomOutMap} from "react-icons/md";
 
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { MyContext } from "../../App";
 
-// import Tooltip from "@mui/material/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 
 const ProductItemListView =()=>{
     
+    const context = useContext(MyContext);
 
     return (
         <>
@@ -51,9 +53,11 @@ const ProductItemListView =()=>{
                     </span> 
                     {/* <button className="absolute bg-blue-900 text-white w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button> */}
 
-                    {/* <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-4 flex-col w-[50px] transition-all duration-300 group-hover:top-[15px]">
+                    <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-4 flex-col w-[50px] transition-all duration-300 group-hover:top-[15px] opacity-0 group-hover:opacity-100">
                         <Tooltip title="Chi tiết" placement="left-start">
-                            <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black  hover:!bg-blue-900 hover:text-white group">
+                            <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black  hover:!bg-blue-900 hover:text-white group"
+                            onClick={()=>context.setOpenProductDetailsModal(true)}
+                            >
                                 <MdZoomOutMap className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
                             </Button>
                         </Tooltip>
@@ -67,7 +71,7 @@ const ProductItemListView =()=>{
                                 <FaRegHeart className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
                             </Button>
                         </Tooltip>
-                    </div> */}
+                    </div>
                 </div>
 
                 <div className='info p-3 py-5 px-8 w-[75%]'>

@@ -195,3 +195,10 @@ input[type=number]::-webkit-outer-spin-button {
 .reviewScroll::-webkit-scrollbar{@apply w-[5px] !important}
 .reviewScroll::-webkit-scrollbar-thumb{@apply bg-slate-300 !important}
 
+.productDetailsModal .MuiDialogContent-root{@apply p-0 !important}
+
+#color-menu .MuiButtonBase-root{@apply text-[12px] !important}
+
+.otpBox input{@apply border-2 rounded-[4px] border-solid border-blue-400 outline-none !important}
+.otpBox input:focus{@apply border-4 rounded-[4px] border-solid !important }
+.otpPage .container{@apply h-[90vh] flex !important}

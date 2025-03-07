@@ -67,7 +67,7 @@ export const ProductZoom = () => {
                 </Swiper>
             </div>
 
-            <div className="zoomContainer w-[85%] h-[520px] overflow-hidden shadow-[0_4px_6px_rgba(0,0,0,0.1)]">
+            <div className="zoomContainer w-[85%] overflow-hidden shadow-[0_4px_6px_rgba(0,0,0,0.1)] flex items-center">
                 <Swiper
                     ref={zoomSliderBig}
                     slidesPerView={1}

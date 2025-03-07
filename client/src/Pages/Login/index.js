@@ -1,9 +1,33 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, {useContext, useState} from "react";
+import { Link, useNavigate } from 'react-router-dom';
 
 import { FaFacebook } from "react-icons/fa";
+import Button from "@mui/material/Button";
+import {IoMdEye} from "react-icons/io";
+import {IoMdEyeOff} from "react-icons/io";
+import { MyContext } from "../../App";
 
 const Login=()=>{
+
+    const [isShowPassword, setIsShowPassword] = useState(false);
+
+    // const [formFields, setFormFields] = useState({
+    //     email:'',
+    //     password:''
+    // })
+
+    const context = useContext(MyContext);
+    const history = useNavigate();
+
+    const forgotPassword =()=>{
+        // if(formFields.email!==""){
+        //     context.openAlertBox("tttttt");
+        //     history("/verify");
+        // }
+        context.openAlertBox("success","OTP gửi thành công!");
+        history("/verify");
+    }
+
     return (
         <div>
             <div className="flex h-screen mt-20">
@@ -49,15 +73,24 @@ const Login=()=>{
                         required
                         autoComplete="email" className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
                     </div>
-                    <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
-                    <input 
-                        id="password"
-                        name="password"
-                        type="password"
-                        required
-                        autoComplete="current-password" className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
+                    <div className=" relative">
+                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mật khẩu</label>
+                        <input 
+                            id="password"
+                            name="password"
+                            type={isShowPassword===false ? 'password' : 'text'}
+                            required
+                            autoComplete="current-password" className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"                              
+                        />
+                        <Button className="!absolute top-[28px] right-[8px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-black"
+                        onClick={()=>setIsShowPassword(!isShowPassword)}
+                        >
+                        {
+                            isShowPassword===true ?  <IoMdEye className="text-[20px] opacity-75"/> :  <IoMdEyeOff className="text-[20px] opacity-75"/>
+                        }                          
+                        </Button>
                     </div>
+                    <p className="mt-10 link cursor-pointer text-[14px] font-[600]" onClick={forgotPassword}>Quên mật khẩu?</p>
                     <div>
                     {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
                     <button type="submit" className="w-full bg-gray-700 text-white p-2 rounded-md hover:bg-gray-800  focus:bg-gray focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300">Đăng nhập</button>

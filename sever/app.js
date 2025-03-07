@@ -20,12 +20,13 @@ app.options("*", cors());
 // Middleware
 app.use(bodyParser.json());
 
+
 // Kết nối MongoDB
 mongoose
-  // .connect(process.env.CONNECTION_STRING, {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  // })
+//   // .connect(process.env.CONNECTION_STRING, {
+//   //   useNewUrlParser: true,
+//   //   useUnifiedTopology: true,
+//   // })
   .connect(process.env.CONNECTION_STRING)
   .then(() => console.log("Đã kết nối đến MongoDB!"))
   .catch((err) => console.error("Lỗi kết nối MongoDB:", err));
