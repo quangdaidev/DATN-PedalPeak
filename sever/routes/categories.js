@@ -96,7 +96,9 @@ router.post(`/create`, async (req, res) => {
   category = await category.save();
 
   res.status(201).json(category);
+
 });
+
 
 
 router.put(`/:id`, async (req, res) => {

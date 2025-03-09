@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import HomeBanner from '../../Components/HomeBanner';
 
@@ -26,8 +26,22 @@ import Button from '@mui/material/Button';
 import ProductsSlider from '../../Components/ProductsSlider';
 import AdsBannerSlider from '../../Components/AdsBannerSlider';
 
+import {fetchDataFromApi} from "../../utils/api";
 
 const Home =()=>{
+
+    const [catData, setCatData] = useState([]);;
+
+    useEffect(()=>{
+        fetchDataFromApi("/api/categories").then((res)=>{
+            setCatData(res);
+        })
+
+        const filterKey="67c5c8c5d0e2d348c2f5b13f";
+        fetchDataFromApi(`/api/products/?category=${filterKey}`).then((item)=>{
+            
+        })
+    },[])
 
     const [value, setValue] = React.useState(0);
 
@@ -61,7 +75,7 @@ const Home =()=>{
 
     return ( 
         <main>
-            <div className="slider mb-24 mt-20">
+            <div className="slider mb-14 mt-20">
                 <HomeBanner/>
                 {/* <img className="bg-cover bg-center " src="/img/products/banner1.jpg"></img>
                 <div className="flex space-x-4 pt-4">
@@ -78,7 +92,11 @@ const Home =()=>{
             </div>
             {/* End slider */}
 
-            <HomeCatSlider/>
+            {
+                catData?.length!==0 &&  <HomeCatSlider catData={catData}/>
+            }
+
+          
 
             <section className="bg-white pt-4">
                 <div className="container">

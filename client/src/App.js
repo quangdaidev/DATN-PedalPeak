@@ -23,6 +23,8 @@ import { ProductDetailsComponent } from './Components/ProductDetails';
 
 import toast, { Toaster } from 'react-hot-toast';
 import ForgotPassword from './Pages/ForgotPassword';
+import MyList from './Pages/MyList';
+import Checkout from './Pages/Checkout';
 
 const MyContext = createContext();
 
@@ -69,8 +71,10 @@ function App() {
               <Route path="/login" exact={true} element={<Login/>} />
               <Route path="/verify" exact={true} element={<Verify/>} />
               <Route path="/forgot-password" exact={true} element={<ForgotPassword/>} />
+              <Route path="/myList" exact={true} element={<MyList/>} />
               <Route path="/register" exact={true} element={<Register/>} />
               <Route path="/product/:id" exact={true} element={<ProductDetailsV2/>} />
+              <Route path="/checkout" exact={true} element={<Checkout/>} />
             </Routes>
             <Footer />
               {/* {children} */}

@@ -28,7 +28,6 @@ category: {
     default: 0,
   },
   
- 
   color: [{
     type: String,
     require: true,

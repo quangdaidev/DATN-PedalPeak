@@ -8,8 +8,9 @@ import Rating from '@mui/material/Rating';
 import Button from "@mui/material/Button";
 
 import {FaRegHeart} from "react-icons/fa";
-import {IoGitCompareOutline} from "react-icons/io5";
+// import {IoGitCompareOutline} from "react-icons/io5";
 import {MdZoomOutMap} from "react-icons/md";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 import Tooltip from "@mui/material/Tooltip";
 import { MyContext } from "../../App";
@@ -59,9 +60,9 @@ const ProductItem =()=>{
                                 <MdZoomOutMap className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
                             </Button>
                         </Tooltip>
-                        <Tooltip title="Chia sẻ" placement="left-start">
+                        <Tooltip title="Thêm vào giỏ" placement="left-start">
                             <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black hover:!bg-blue-900 hover:text-white group">
-                                <IoGitCompareOutline className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
+                                <MdOutlineShoppingCart className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
                             </Button>
                         </Tooltip>
                         <Tooltip title="Theo dõi" placement="left-start">

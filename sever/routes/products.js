@@ -15,6 +15,7 @@ router.get(`/`, async (req, res) => {
   res.send(productList);
 });
 
+
 router.post(`/create`, async (req, res) => {
   const category = await Category.findById(req.body.category);
   if (!category) {
