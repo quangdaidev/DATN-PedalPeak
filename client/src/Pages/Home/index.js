@@ -74,7 +74,7 @@ const Home =()=>{
       
 
     return ( 
-        <main>
+        <main ClassName="scrollbar">
             <div className="slider mb-14 mt-20">
                 <HomeBanner/>
                 {/* <img className="bg-cover bg-center " src="/img/products/banner1.jpg"></img>
@@ -92,9 +92,9 @@ const Home =()=>{
             </div>
             {/* End slider */}
 
-            {
+            {/*
                 catData?.length!==0 &&  <HomeCatSlider catData={catData}/>
-            }
+            */}
 
           
 

@@ -25,6 +25,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import ForgotPassword from './Pages/ForgotPassword';
 import MyList from './Pages/MyList';
 import Checkout from './Pages/Checkout';
+import MyAccount from './Pages/MyAccount';
 
 const MyContext = createContext();
 
@@ -33,6 +34,8 @@ function App() {
   const [openProductDetailsModal, setOpenProductDetailsModal] = useState(false);
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState('lg');
+  const [isLogin, setIsLogin] = useState(true);
+
 
   // const handleClickOpenProductDetailsModal = () => {
   //   setOpenProductDetailsModal(true);
@@ -53,7 +56,9 @@ function App() {
 
   const values = {
     setOpenProductDetailsModal,
-    openAlertBox
+    openAlertBox,
+    isLogin,
+    setIsLogin
   }
 
   return (
@@ -75,6 +80,7 @@ function App() {
               <Route path="/register" exact={true} element={<Register/>} />
               <Route path="/product/:id" exact={true} element={<ProductDetailsV2/>} />
               <Route path="/checkout" exact={true} element={<Checkout/>} />
+              <Route path="/my-account" exact={true} element={<MyAccount/>} />
             </Routes>
             <Footer />
               {/* {children} */}
