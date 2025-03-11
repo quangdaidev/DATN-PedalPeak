@@ -1,25 +1,44 @@
-
 import { Link } from 'react-router-dom';
-import { FaUser } from "react-icons/fa";
+import { FaRegUser } from "react-icons/fa6";
+
 import { MdCloseFullscreen } from "react-icons/md";
 
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import {GoTriangleDown} from "react-icons/go";
 import Rating from '@mui/material/Rating';
+import { GoTriangleDown } from "react-icons/go";
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import SearchBox from './SearchBox';
 
 import Badge from '@mui/material/Badge';
 import Button from '@mui/material/Button';
+
+import { MyContext } from "../../App";
+
+import Divider from '@mui/material/Divider';
+
+import Logout from '@mui/icons-material/Logout';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
 // import Tooltip from '@mui/material/Tooltip';
 // import IconButton from '@mui/material/IconButton';
 
 
 const Header =()=>{
+    const context = useContext(MyContext);
+
+    const [acAnchorEl, setAcAnchorEl] = useState(null);
+    const openAc = Boolean(acAnchorEl);
+    const handleClickAc = (event) => {
+        setAcAnchorEl(event.currentTarget);
+    };
+    const handleCloseAc = () => {
+        setAcAnchorEl(null);
+    };
 
     const [colorAnchorEl, setColorAnchorEl] = useState(null);
     const openColor = Boolean(colorAnchorEl);
@@ -37,11 +56,12 @@ const Header =()=>{
 
     const [open, setOpen] = useState(false);
 
+
     return (
         <> 
             <div className="bg-white fixed top-0 left-0 z-50 w-full">
                 <div className="content-wrapper font-custom max-w-screen-2xl text-base mx-auto px-8">  
-                    <header className="py-6">
+                    <header className="py-3 ">
                         <nav className="flex flex-row justify-between items-center relative">
                             <div className="logo basis-2/12  text-xl font-semibold cursor-pointer">
                                 <img alt="" src="/img/products/logopedalpeak-2.png" classNamr=""/>
@@ -110,21 +130,93 @@ const Header =()=>{
 
                             <ul className=" nav basis-3/12 flex justify-end gap-8 items-center ml-16 text-sm text-gray-500">
                                 <li className="ct-top-menu-item relative group">  
-                                    <div>
-                                        <Badge badgeContent={4} color="primary">
-                                            <FaUser className="ct-icon" />
-                                        </Badge> 
-                                        <span className="uppercase mx-2">
-                                            Tài khoản
-                                        </span>                  
-                                        <ul className=" nav hidden group-hover:block">
-                                            <div className="submenu absolute top-[100%] left-[0%] min-w-[150px] bg-white shadow-lg">
-                                                <li className="block"><Link to="/register"><Button className="!text-gray-500 button-lv1 w-full !text-left !justify-start !rounded-none ">Đăng ký</Button></Link></li>
-                                                <li className="block"><Link to="/login"><Button className="!text-gray-500 button-lv1 w-full !text-left !justify-start !rounded-none ">Đăng nhập</Button></Link></li>
+                                   
+                                        {
+                                            context.isLogin === false ?
+                                            <div >
+                                                <Badge badgeContent={4} color="primary">
+                                                    <FaRegUser className="ct-icon" />
+                                                </Badge> 
+                                                <span className="uppercase mx-2">
+                                                    Tài khoản
+                                                </span>     
+                                                <ul className=" nav hidden group-hover:block">
+                                                    <div className="submenu absolute top-[100%] left-[0%] min-w-[150px] bg-white shadow-lg">
+                                                        <li className="block"><Link to="/register"><Button className="!text-gray-500 button-lv1 w-full !text-left !justify-start !rounded-none ">Đăng ký</Button></Link></li>
+                                                        <li className="block"><Link to="/login"><Button className="!text-gray-500 button-lv1 w-full !text-left !justify-start !rounded-none ">Đăng nhập</Button></Link></li>
+                                                    </div>
+                                                </ul>
                                             </div>
-                                        </ul>
+                                            :
 
-                                    </div>
+                                            <div>
+                                                <Badge badgeContent={4} color="primary">
+                                                    <FaRegUser className="ct-icon" />
+                                                </Badge> 
+                                                <span className=" mx-2" onClick={handleClickAc}>
+                                                    Xin chào user
+                                                </span>   
+                                                <ul>
+                                                <Menu
+                                                    anchorEl={acAnchorEl}
+                                                    id="account-menu"
+                                                    open={openAc}
+                                                    onClose={handleCloseAc}
+                                                    onClick={handleCloseAc}
+                                                    slotProps={{
+                                                    paper: {
+                                                        elevation: 0,
+                                                        sx: {
+                                                        overflow: 'visible',
+                                                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                                        mt: 1.5,
+                                                        '& .MuiAvatar-root': {
+                                                            width: 32,
+                                                            height: 32,
+                                                            ml: -0.5,
+                                                            mr: 1,
+                                                        },
+                                                        '&::before': {
+                                                            content: '""',
+                                                            display: 'block',
+                                                            position: 'absolute',
+                                                            top: 0,
+                                                            right: 14,
+                                                            width: 10,
+                                                            height: 10,
+                                                            bgcolor: 'background.paper',
+                                                            transform: 'translateY(-50%) rotate(45deg)',
+                                                            zIndex: 0,
+                                                        },
+                                                        },
+                                                    },
+                                                    }}
+                                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                                >
+                                                    <Link to="/my-account">
+                                                        <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
+                                                            <PersonOutlineIcon color="action" fontSize="small" /> <span className="text-[16px]">Tài khoản</span>
+                                                        </MenuItem>
+                                                    </Link>
+                                                    <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
+                                                        <ShoppingCartCheckoutIcon color="action" fontSize="small" /> <span className="text-[16px]">Đơn hàng</span>
+                                                    </MenuItem>
+                                                    <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
+                                                        <FavoriteBorderIcon color="action" fontSize="small" /> <span className="text-[16px]">Yêu thích</span>
+                                                    </MenuItem>
+                                            
+                                                    <Divider />
+                                                    <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
+                                                        <Logout color="action" fontSize="small" /> <span className="text-[16px]">Đăng xuất</span>
+                                                    </MenuItem>
+                                                </Menu>
+                                                </ul>  
+                                               
+                                            </div>
+                                        }             
+
+                                   
                                 {/* {user? (<div>
                                         <UserIcon className="ct-icon" />
                                             Xin chào, {user[Object.keys(user)[2]]}                       
