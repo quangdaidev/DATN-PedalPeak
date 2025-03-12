@@ -169,8 +169,15 @@ h1,h2,h3,h4,h5,h6{@apply font-semibold}
 
 .MuiCheckbox-root{@apply p-2 !important}
 
-.btn-org{@apply bg-[#ff5252] text-white font-semibold text-[18px] px-4 !important}
-.btn-org:hover{@apply bg-blue-900 !important}
+.btn-org{@apply bg-blue-900 text-white font-semibold text-[18px] px-4 !important}
+.btn-org:hover{@apply bg-[#ff5252] !important}
+
+.btn-org.btn-border{@apply bg-white text-blue-900 border  border-solid border-blue-900 font-semibold text-[18px] px-4 !important}
+.btn-org.btn-border:hover{@apply bg-[#ff5252] text-white border  border-solid border-[#ff5252] !important}
+
+
+.btn-lg{@apply text-[18px] px-[20px] py-[10px] !important}
+.btn-sm{@apply text-[14px] px-[15px] py-[8px] !important}
 
 .ReactCollapse--collapse {
   @apply transition-all;
@@ -211,3 +218,19 @@ input[type=number]::-webkit-outer-spin-button {
 .scroll::-webkit-scrollbar-thumb{@apply bg-slate-300 !important}
 
 #account-menu .MuiPaper-root{@apply w-[160px] !important}
+
+.myAccountTabs li a {
+  @apply relative block;
+}
+
+.myAccountTabs li a::before {
+  @apply content-[""] absolute top-1/2 left-0 w-[2px] h-1/2 bg-blue-800 transition-all duration-300 ease-in-out opacity-0;
+}
+
+.myAccountTabs li a.active::before {
+  @apply h-full opacity-100 top-0;
+}
+
+.myAccountTabs li a.active button svg {
+  @apply text-blue-800 opacity-100 !important;
+}

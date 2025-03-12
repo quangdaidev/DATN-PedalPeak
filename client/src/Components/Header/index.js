@@ -194,22 +194,28 @@ const Header =()=>{
                                                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                                                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                                                 >
-                                                    <Link to="/my-account">
+                                                    <Link to="/my-account" className="w-full block">
                                                         <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
                                                             <PersonOutlineIcon color="action" fontSize="small" /> <span className="text-[16px]">Tài khoản</span>
                                                         </MenuItem>
                                                     </Link>
-                                                    <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
-                                                        <ShoppingCartCheckoutIcon color="action" fontSize="small" /> <span className="text-[16px]">Đơn hàng</span>
-                                                    </MenuItem>
-                                                    <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
-                                                        <FavoriteBorderIcon color="action" fontSize="small" /> <span className="text-[16px]">Yêu thích</span>
-                                                    </MenuItem>
+                                                    <Link to="/my-orders" className="w-full block">
+                                                        <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
+                                                            <ShoppingCartCheckoutIcon color="action" fontSize="small" /> <span className="text-[16px]">Đơn hàng</span>
+                                                        </MenuItem>
+                                                    </Link>
+                                                    <Link to="/my-list" className="w-full block">
+                                                        <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
+                                                            <FavoriteBorderIcon color="action" fontSize="small" /> <span className="text-[16px]">Yêu thích</span>
+                                                        </MenuItem>
+                                                    </Link>
                                             
                                                     <Divider />
-                                                    <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
-                                                        <Logout color="action" fontSize="small" /> <span className="text-[16px]">Đăng xuất</span>
-                                                    </MenuItem>
+                                                    <Link to="/logout" className="w-full block">
+                                                        <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
+                                                            <Logout color="action" fontSize="small" /> <span className="text-[16px]">Đăng xuất</span>
+                                                        </MenuItem>
+                                                    </Link>
                                                 </Menu>
                                                 </ul>  
                                                
