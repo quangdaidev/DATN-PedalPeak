@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
+    invoice_recepipt: {
+        type: String,
+        default: ""
+    },
     userId: {
         type: mongoose.Schema.ObjectId,
         ref: "User"
@@ -34,6 +38,7 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         default: 0
     }
+ 
 }, {
     timestamps: true
 }); // Đóng đúng vị trí của schema
