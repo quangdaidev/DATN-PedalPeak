@@ -1,12 +1,15 @@
 import jwt from "jsonwebtoken";
 
 const auth = async (request, response, next) => {
+
   try {
-    const token = request.cookies.accessToken || request?.headers?.authorization?.split(" ")[1];
+
+    console.log("teken:-------:::", request?.headers)
+    const token = request.cookies.accessToken || request?.headers?.authorization?.split(" ")[1] || request?.headers;
 
     if (!token) {
       return response.status(401).json({
-        message: "Provide token"
+        message: "Vui lòng cung cấp mã token"
       });
     }
 
@@ -14,7 +17,7 @@ const auth = async (request, response, next) => {
 
 if (!decode) {
   return response.status(401).json({
-    message: "unauthorized access",
+    message: "Bạn đang truy cập trái phép!",
     error: true,
     success: false
   });
@@ -27,9 +30,11 @@ next();
 
   } catch (error) {
     return response.status(500).json({
-      message: "You have not login", // error.message || error,
+      message: "Bạn đã kết thúc phiên đăng nhập", // error.message || error,
       error: true,
       success: false
     });
   }
 };
+
+export default auth
