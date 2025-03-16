@@ -20,7 +20,7 @@ const userSchema = mongoose.Schema({
         default: ""
     },
     mobile: {
-        type: Number,
+        type: String,
         default: null
     },
     address_details: [

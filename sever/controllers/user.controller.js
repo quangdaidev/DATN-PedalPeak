@@ -6,6 +6,17 @@ import VerificationEmail from '../utils/verifyEmailTemplate.js';
 import generatedAccessToken from '../utils/generatedAccessToken.js';
 import generatedRefreshToken from '../utils/generatedRefreshToken.js';
 
+import { v2 as cloudinary} from 'cloudinary';
+import fs from "fs";
+import { error } from 'console';
+
+cloudinary.config({
+    cloud_name: process.env.cloudinary_Config_Cloud_Name,
+    api_key: process.env.cloudinary_Config_api_key,
+    api_secret: process.env.cloudinary_Config_api_secret,
+    secure: true,
+})
+
 export async function registerUserController(request, response) {
     try {
         let user;
@@ -118,7 +129,7 @@ export async function loginUserController(request, response) {
 
         const user = await UserModel.findOne({ email: email });
 
-        if (user.status!="Hoạt động") {
+        if (user.status!=="Hoạt động") {
             response.status(400).json({
                 message: "Liên hệ admin để kích hoạt lại tài khoản",
                 error: true,
@@ -126,11 +137,18 @@ export async function loginUserController(request, response) {
             });
         }
 
+        if (user.verify_email!==true) {
+            response.status(400).json({
+                message: "Vui lòng xác thực email của bạn",
+                error: true,
+                success: false
+            });
+        }
 
         const checkPassword = await bcryptjs.compare(password, user.password);
 
         if (!checkPassword) {
-            response.status(400).json({
+            return response.status(400).json({
                 message: "Mật khẩu không đúng!",
                 error: true,
                 success: false
@@ -203,6 +221,387 @@ export async function logoutController(request, response) {
             error: true,
             success: false
         });
+    }
+}
+
+// Upload image avatar
+var imagesArr = [];
+export async function userAvatarController(request, response) {
+
+    try {
+        imagesArr = [];
+
+        const userId = request.userId; // auth middleware
+        const image = request.files;
+
+        const user = await UserModel.findOne({ _id: userId});
+
+        // first remove image from cloudinary
+        
+        const imgUrl = user.avatar;
+        const urlArr = imgUrl.split("/");
+        const avatar_image = urlArr[urlArr.length - 1];
+
+        const imageName =avatar_image.split(".")[0];
+
+        if (imageName) {
+            const res = await cloudinary.uploader.destroy(
+                imageName,
+                (error, result) => {
+                    // console.log(error, res);
+                }
+            );
+        }
+
+        if(!user){
+            return response.status(500).json({
+                message: "Không tìm thấy tài khoản người dùng",
+                error: true,
+                success: false
+            })
+        }
+
+        const options ={
+            use_filename: true,
+            unique_filename: false,
+            overwrite: false,
+        };
+
+        for (let i=0; i<image?.length; i++){
+            
+            const img = await cloudinary.uploader.upload(
+                image[i].path,
+                options,
+                function (error, result) {
+                    // console.log(result);
+                    imagesArr.push(result.secure_url);
+                    fs.unlinkSync(`uploads/${request.files[i].filename}`);
+                    // console.log(request.files[i].filename)
+                }
+            );
+        }
+        user.avatar = imagesArr[0];
+        await user.save();
+
+        return response.status(200).json({
+            _id: userId,
+            avatar: imagesArr[0]
+        });
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+
+}
+
+export async function removeImageFromCloudinary(request, response) {
+    const imgUrl = request.query.img; // '/api/user?img=?img1.jpg'
+    const urlArr = imgUrl.split("/");
+    const image = urlArr[urlArr.length - 1];
+    const imageName = image.split(".")[0];
+    if (imageName) {
+        const res = await cloudinary.uploader.destroy(
+            imageName,
+            (error, result) => {
+                // console.log(error, res);
+            }
+        );
+        if (res) {
+            response.status(200).send(res);
+        }
+    }
+}
+
+// update user details
+export async function updateUserDetails(request, response) {
+    try {
+        const userId = request.userId; // auth middleware
+        const {name, email, mobile, password} = request.body;
+        const userExist = await UserModel.findById(userId);
+        if(!userExist){
+            return response.status(400).send('Tài khoản không tồn tại!');
+        }
+            
+        let verifyCode = "";
+        if (email !== userExist.email) {
+            verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        let hashPassword = "";
+        if (password) {
+            const salt = await bcryptjs.genSalt(10);
+            hashPassword = await bcryptjs.hash(password, salt);
+        } else {
+            hashPassword = userExist.password
+        }
+
+        const updateUser = await UserModel.findByIdAndUpdate(
+            userId,
+            {
+                name: name,
+                mobile: mobile,
+                email: email,
+                verify_email: email !== userExist.email ? false : true,
+                password: hashPassword,
+                otp:verifyCode!=="" ? verifyCode : null,
+                otpExpires:verifyCode!=="" ? Date.now() + 600000 : ''
+            },
+            { new: true}
+        )
+
+        // send verification email
+        if (email !== userExist.email) {
+            await sendEmailFun({
+                to: email,
+                subject: "Xác minh email từ PedalPeak",
+                text: "",
+                html: VerificationEmail(userExist.name, verifyCode)
+            })        
+        }
+        
+        return response.json({
+            message: "Cập nhật tài khoản thành công",
+            error: false,
+            success: true,
+            user: updateUser
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+// forgot pass not login
+export async function forgotPasswordController(request, response) {
+    try {
+        const {email} = request.body;
+        const user = await UserModel.findOne({email:email});
+        if (!user) {
+            return response.status(400).json({
+                message: "Email này chưa được đăng ký!",
+                error: true,
+                success: false
+            })
+        }else{
+            let verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+            
+            const updateUser = await UserModel.findByIdAndUpdate(
+                user?._id,
+                {
+                    opt: verifyCode,
+                    otpExpires: Date.now() + 600000
+                }
+                
+            )
+            
+            user.otp = verifyCode;
+            user.otpExpires = Date.now() + 600000;
+            await user.save();
+         
+            await sendEmailFun({
+                to: email,
+                subject: "Xác nhận email từ PedalPeak",
+                text: "",
+                html: VerificationEmail(user.name, verifyCode)
+            })
+
+            return response.json({
+                message: "Mật khẩu mới đã được gửi tới email của bạn",
+                error: false,
+                success: true
+            })
+        }
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+export async function verifyForgotPasswordOtp(request, response) {
+    try {
+        const {email, otp} = request.body;
+
+        const user = await UserModel.findOne({email:email});
+
+        if (!user) {
+            return response.status(400).json({
+                message: "Email này chưa được đăng ký!",
+                error: true,
+                success: false
+            })
+        }
+        if(!email || !otp){
+            return response.status(400).json({
+                message: "Bạn cần cung cấp email và mã OTP",
+                error: true,
+                success: false
+            })
+        }
+        if(otp !== user.otp){
+            return response.status(400).json({
+                message: "Mã OTP không đúng!",
+                error: true,
+                success: false
+            })
+        }
+        const currentTime = new Date().toISOString();
+        if (user.otpExpires < currentTime) {
+            return response.status(400).json({
+                message: "Mã OTP đã hết hạn!",
+                error: true,
+                success: false
+            })
+        }
+        user.otp = "";
+        user.otpExpires ="";
+        await user.save();
+        return response.status(400).json({
+            message: "Xác nhận mã OTP thành công!",
+            error: false,
+            success: true
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+// reset password
+export async function resetpassword(request, response) {
+    try {
+        const {email, newPassword, confirmPassword} = request.body;
+        if (!email || !newPassword || !confirmPassword) {
+            return response.status(400).json({
+                message: "Vui lòng điền đầy đủ thông tin"
+            })
+        }
+
+        const user = await UserModel.findOne({email});
+
+        if (!user) {
+            return response.status(400).json({
+                message: "Email này chưa được đăng ký!",
+                error: true,
+                success: false
+            })
+        }
+        if (newPassword !== confirmPassword) {
+            return response.status(400).json({
+                message: "Mật khẩu mới và Xác nhận mật khẩu mới không khớp!",
+                error: true,
+                success: false
+            })
+        }
+
+        const salt = await bcryptjs.genSalt(10);
+        const hashPassword = await bcryptjs.hash(confirmPassword, salt);
+
+        user.password = hashPassword;
+
+        await user.save();
+
+        const update = await UserModel.findByIdAndUpdate(user._id,{
+            password: hashPassword
+        })
+
+        return response.json({
+            message: "Cập nhật mật khẩu thành công!",
+            error: false,
+            success: true
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+// refresh token controller
+export async function refreshToken(request, response) {
+    try {
+        const refreshToken = request.cookies.refreshToken || request?.header?.authorization?.split(" ")[1] || request?.headers?.refreshToken// [bearer token]
+        if (!refreshToken) {
+            return response.status(401).json({
+                message: "Mã token không hợp lệ!",
+                error: true,
+                success: false
+            })
+        }
+        const verifyToken = await jwt.verify(refreshToken,process.env.SECRET_KEY_REFRESH_TOKEN);
+       
+        if (!verifyToken) {
+            return response.status(401).json({
+                message: "Mã token đã hết hạn!",
+                error: true,
+                success: false
+            })
+        }
+
+        const userId = verifyToken?._id;
+
+        const newAccessToken = await generatedAccessToken(userId);
+
+        const cookiesOption = {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        }
+
+        response.cookie('accessToken',newAccessToken,cookiesOption);
+
+        return response.json({
+            message: "Mã token mới đã được tạo thành công!",
+            error: false,
+            success: true,
+            data: {
+                accessToken: newAccessToken
+            }
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+
+// login user details
+export async function userDetails(request, response) {
+    try {
+        const userId = request.userId;
+
+        const user = await UserModel.findById(userId).select('-password -refresh_token');
+       
+        return response.json({
+            message: "Thông tin chi tiết tài khoản",
+            error: false,
+            success: true,
+            data: user
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
     }
 }
 
@@ -310,6 +709,12 @@ export async function registerEmailController(request, response) {
         });
     }
 }
+
+
+
+
+
+
 
 
 

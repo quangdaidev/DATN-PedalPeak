@@ -27,6 +27,7 @@ import MyList from './Pages/MyList';
 import Checkout from './Pages/Checkout';
 import MyAccount from './Pages/MyAccount';
 import Orders from './Pages/Orders';
+import { TestApi } from './Pages/testAPI';
 
 const MyContext = createContext();
 
@@ -72,6 +73,7 @@ function App() {
             {/* <SearchProvider>  */}
             <Header />
             <Routes>
+              <Route path="/test-api" exact={true} element={<TestApi/>} />
               <Route path="/" exact={true} element={<Home/>} />
               <Route path="/productListing" exact={true} element={<ProductListing/>} />
               <Route path="/login" exact={true} element={<Login/>} />
