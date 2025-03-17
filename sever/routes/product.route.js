@@ -1,7 +1,12 @@
 import { Router } from "express";
 import auth from '../middlewares/auth.js';
 import upload from '../middlewares/multer.js';
-import { createProduct, deleteProduct, getAllFeaturedProducts, getAllProducts, getAllProductsByCatId, getAllProductsByCatName, getAllProductsByPrice, getAllProductsByRating, getAllProductsBySubCatName, getAllProductsByThirdLavelCatId, getAllProductsByThirdLavelCatName, getProduct, getProductsCount, removeImageFromCloudinary, updateProduct, uploadImages } from "../controllers/product.controller";
+import { uploadImages, createProduct, deleteProduct, getAllFeaturedProducts, 
+    getAllProducts, getAllProductsByCatId, getAllProductsByCatName, 
+    getAllProductsByPrice, getAllProductsByRating, getAllProductsBySubCatName, 
+    getAllProductsByThirdLavelCatId, getAllProductsByThirdLavelCatName, 
+    getProduct, getProductsCount, removeImageFromCloudinary, updateProduct, 
+ } from "../controllers/product.controller.js";
 
 const productRouter = Router();
 
