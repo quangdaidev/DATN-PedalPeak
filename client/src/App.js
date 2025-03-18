@@ -21,13 +21,23 @@ import { ProductZoom } from './Components/ProductZoom';
 import {IoCloseSharp} from "react-icons/io5"
 import { ProductDetailsComponent } from './Components/ProductDetails';
 
-import toast, { Toaster } from 'react-hot-toast';
+// import toast, { Toaster } from 'react-hot-toast';
+import { ToastContainer, toast } from 'react-toastify';
 import ForgotPassword from './Pages/ForgotPassword';
 import MyList from './Pages/MyList';
 import Checkout from './Pages/Checkout';
 import MyAccount from './Pages/MyAccount';
 import Orders from './Pages/Orders';
 import { TestApi } from './Pages/testAPI';
+
+const alertBox = (msg, type)=>{
+  if(type==="success"){
+    toast.success(msg)
+  }
+  if(type==="error"){
+    toast.error(msg)
+  }
+}
 
 const MyContext = createContext();
 
@@ -36,7 +46,8 @@ function App() {
   const [openProductDetailsModal, setOpenProductDetailsModal] = useState(false);
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState('lg');
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
+  // const apiUrl = import.meta.env.VITE_API_URL;
 
 
   // const handleClickOpenProductDetailsModal = () => {
@@ -60,7 +71,8 @@ function App() {
     setOpenProductDetailsModal,
     openAlertBox,
     isLogin,
-    setIsLogin
+    setIsLogin,
+    alertBox
   }
 
   return (
@@ -99,8 +111,8 @@ function App() {
           </MyContext.Provider>
         </BrowserRouter>
       </div>
-      
-      <Toaster/>
+      <ToastContainer theme="colored"/>
+      {/* <Toaster position="top-right"/> */}
 
       <Dialog
         fullWidth={fullWidth}

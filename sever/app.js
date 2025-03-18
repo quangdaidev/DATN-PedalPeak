@@ -14,7 +14,6 @@ const cors = require("cors");
 require("dotenv/config");
 // import {} from "dotenv/config";
 
-
 app.use(cors());
 app.options("*", cors());
 
@@ -39,7 +38,6 @@ const productRoutes = require("./routes/products");
 
 app.use("/api/categories", categoryRoutes);
 app.use(`/api/products`, productRoutes);
-
 
 // Khởi động server
 app.listen(process.env.PORT, () => {

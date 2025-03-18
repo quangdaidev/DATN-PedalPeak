@@ -20,8 +20,8 @@ cloudinary.config({
 export async function registerUserController(request, response) {
     try {
         let user;
-        const { name, email, password } = request.body
-        if (!name || !email || !password) {
+        const { name, email, password,confirmPassword } = request.body
+        if (!name || !email || !password ||!confirmPassword) {
             return response.status(400).json({
                 message: "vui lòng nhập đầy đủ thông tin",
                 error: true,
@@ -32,6 +32,14 @@ export async function registerUserController(request, response) {
         if (user) {
             return response.json({
                 message: "Email này đã được đăng ký",
+                error: true,
+                success: false
+            })
+        }
+
+        if (password !== confirmPassword) {
+            return response.status(400).json({
+                message: "Xác nhận mật khẩu không khớp",
                 error: true,
                 success: false
             })
@@ -54,7 +62,7 @@ export async function registerUserController(request, response) {
         // Send verification email
         const content = await sendEmailFun({
             to: email,
-            subject: "Xác minh email từ trang web kinh doanh xe đạp PedalPeak",
+            subject: "Xác minh email từ trang web PedalPeak",
             text: "",
             html: VerificationEmail(name, verifyCode)
         });
@@ -67,7 +75,7 @@ const token = jwt.sign(
 return response.status(200).json({
     success: true,
     error: false,
-    message: "Đăng ký thành công! Vui lòng xác minh email của bạn.",
+    message: "Đăng ký thành công! Kiểm tra email để xác minh tài khoản.",
     token: token, // Optional: include this if needed for verification
 });
 
@@ -105,7 +113,7 @@ export async function verifyEmailController(request, response) {
             return response.status(200).json({
                 success: true,
                 error: false,
-                message: "Email xác nhận thành công! Bạn có thể đăng nhập bằng tài khoản này."
+                message: "Email xác nhận thành công! Mời bạn đăng nhập."
             });
         }else if (!isCodeValid) {
             return response.status(400).json({error:true, success: false, message: "Mã OTP không chính xác!"})

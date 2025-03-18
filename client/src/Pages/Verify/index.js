@@ -1,6 +1,11 @@
-import React, { useState } from "react"; 
+import React, { useContext, useEffect, useState } from "react"; 
 import OtpBox from "../../Components/OtpBox";
+import { postData } from "../../utils/api";
+import { useNavigate } from "react-router-dom";
+import MyAccount from "../MyAccount";
+import { MyContext } from "../../App";
 
+const userEmail= localStorage.getItem("userEmail");
 
 const Verify = () => {
     const [otp, setOtp] = useState("");
@@ -8,9 +13,22 @@ const Verify = () => {
         setOtp(value);
     };
 
+    const history = useNavigate();
+    const context = useContext(MyContext);
+
     const verityOTP=(e)=>{
         e.preventDefault();
-        alert(otp)
+        postData("/api/user/verifyEmail",{
+            email:localStorage.getItem("userEmail"),
+            otp:otp
+        }).then((res) => {
+            if(res?.error===false){
+                context.openAlertBox("success", res?.message);
+                history("/login")
+            }else{
+                context.openAlertBox("error", res?.message)
+            }
+        })
     }
 
 return (
@@ -23,7 +41,7 @@ return (
                 <h3 className="text-center text-[18px] text-black mt-4 mb-2">
                 Verify OTP
                 </h3>
-                <p className="text-center mb-4">OTP gửi đến <span className="text-primary-600 font-bold">anlv157@gmail.com</span></p>
+                <p className="text-center mb-4">OTP gửi đến <span className="text-primary-600 font-bold">{userEmail}</span></p>
                
                 <form onSubmit={verityOTP}>
                     <OtpBox length={6} onChange={handleOtpChange} />
