@@ -3,23 +3,31 @@ import axios from "axios";
 // const apiUrl = process.env.REACT_APP_BASE_URL;
 // const apiUrl = "http://localhost:4000";
 
-export const fetchDataFromApi = async (url) => {
-    try {
-        // const {data} = await axios.get(process.env.REACT_APP_BASE_URL + url)
-        const {data} = await axios.get("http://localhost:4000" + url)
-        return data;
-    } catch (error) {
-        console.log(error);
-        return error;
-    }
-}
-
 export const postData = async (url, formData) => {
     try {
         const res = await axios.post("http://localhost:4000" + url,formData)
         console.log("gggg",res.data)
         return res.data
     }catch (error) {
+        console.error("Lỗi khi gửi yêu cầu:", error);
+        if (error.response) {
+          // Lỗi trả về từ server
+          console.error("Lỗi từ server:", error.response.data);
+        //   alert("Lỗi: " + error.response.data.message);
+        return error.response.data;
+        } else {
+          // Lỗi khác (không phải do server)
+          console.error("Lỗi không phải từ server:", error.message);
+        }
+    }
+}
+
+export const fetchDataFromApi = async (url) => {
+    try {
+        // const {data} = await axios.get(process.env.REACT_APP_BASE_URL + url)
+        const res = await axios.get("http://localhost:4000" + url)
+        return res.data;
+    } catch (error) {
         console.error("Lỗi khi gửi yêu cầu:", error);
         if (error.response) {
           // Lỗi trả về từ server

@@ -26,22 +26,27 @@ import Button from '@mui/material/Button';
 import ProductsSlider from '../../Components/ProductsSlider';
 import AdsBannerSlider from '../../Components/AdsBannerSlider';
 
-import {fetchDataFromApi} from "../../utils/api";
+// import {fetchDataFromApi} from "../../utils/api";
 
 const Home =()=>{
 
-    const [catData, setCatData] = useState([]);;
+    // const [catData, setCatData] = useState([]);;
 
-    useEffect(()=>{
-        fetchDataFromApi("/api/categories").then((res)=>{
-            setCatData(res);
-        })
+    // useEffect(()=>{
+    //     fetchDataFromApi("/api/categories").then((res)=>{
+    //         setCatData(res);
+    //     })
 
-        const filterKey="67c5c8c5d0e2d348c2f5b13f";
-        fetchDataFromApi(`/api/products/?category=${filterKey}`).then((item)=>{
+    //     const filterKey="67c5c8c5d0e2d348c2f5b13f";
+    //     fetchDataFromApi(`/api/products/?category=${filterKey}`).then((item)=>{
             
-        })
-    },[])
+    //     })
+    // },[])
+   
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []); // cuộn trang lên trên
+  
 
     const [value, setValue] = React.useState(0);
 

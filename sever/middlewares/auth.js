@@ -5,7 +5,7 @@ const auth = async (request, response, next) => {
   try {
 
     // console.log("teken:-------:::", request?.headers)
-    const token = request.cookies.accessToken || request?.headers?.authorization?.split(" ")[1] || request?.headers?.accessToken;
+    const token = request.query.token || request.cookies.accessToken || request?.headers?.authorization?.split(" ")[1] || request?.headers?.accessToken;
 
     if (!token) {
       return response.status(401).json({

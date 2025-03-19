@@ -40,7 +40,6 @@ const Register=()=>{
 
     const handleSubmit= (e) =>{
 
-
         e.preventDefault();
 
         setIsLoading(true)
@@ -61,8 +60,6 @@ const Register=()=>{
             )
             setIsLoading(false);
             return false
-        } else {
-            localStorage.setItem("userEmail",formFields.email)
         }
 
         if(formFields.password===""){

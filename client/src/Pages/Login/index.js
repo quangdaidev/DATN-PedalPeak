@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
 import { FaFacebook } from "react-icons/fa";
@@ -6,10 +6,17 @@ import Button from "@mui/material/Button";
 import {IoMdEye} from "react-icons/io";
 import {IoMdEyeOff} from "react-icons/io";
 import { MyContext } from "../../App";
+import { postData } from "../../utils/api";
+import { CircularProgress } from "@mui/material";
 
 const Login=()=>{
 
+    const [isLoading, setIsLoading] = useState(false);
     const [isShowPassword, setIsShowPassword] = useState(false);
+    const [formFields, setFormFields] = useState({
+        email:"",
+        password:""
+    })
 
     // const [formFields, setFormFields] = useState({
     //     email:'',
@@ -27,6 +34,73 @@ const Login=()=>{
         context.openAlertBox("success","OTP gửi thành công!");
         history("/verify");
     }
+
+    const onChangeInput = (e) => {
+        const {name, value} = e.target;
+        setFormFields(()=>{
+            return {
+                ...formFields,
+                [name]: value
+            }
+        })
+    }
+
+      const handleSubmit= (e) =>{
+    
+            e.preventDefault();
+    
+            setIsLoading(true)
+    
+            if(formFields.email===""){
+                context.openAlertBox(
+                    "error",
+                    "Bạn chưa nhập email"
+                )
+                setIsLoading(false);
+                return false
+            }
+    
+            if(formFields.password===""){
+                context.openAlertBox(
+                    "error",
+                    "Bạn chưa nhập mật khẩu"
+                )
+                setIsLoading(false);
+                return false
+            }
+    
+            postData("/api/user/login",formFields).then((res)=>{
+                console.log(res)
+             
+                if (res?.error !== true) {
+                    setIsLoading(true)
+                    context.openAlertBox("success", res?.message);
+
+                    setFormFields({
+                        email:"",
+                        password:""
+                    })
+
+                    localStorage.setItem("accessToken",res?.data?.accesstoken);
+                    localStorage.setItem("refreshToken",res?.data?.refreshtoken); 
+                    
+                    context.setIsLogin(true);
+
+                    console.log("isLogin", context.isLogin)
+                    
+                    history("/")
+                  
+                } else{
+                    context.openAlertBox("error", res?.message);
+                    setIsLoading(false);
+                }
+            })   
+        }
+
+        useEffect(() => {
+            console.log("isLogin đã thay đổi:", context.isLogin);
+          }, [context.isLogin]); // 
+        
 
     return (
         <div>
@@ -63,12 +137,15 @@ const Login=()=>{
                 <div className="mt-4 text-sm text-gray-600 text-center">
                     <p>hoặc</p>
                 </div>
-                <form  action="#" method="POST" className="space-y-4">
+                <form  action="#" method="POST" className="space-y-4" onSubmit={handleSubmit}>
                     {/* <!-- Your form elements go here --> */}
                     <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                     <input id="email"
                         name="email"
+                        value={formFields.email}
+                        disabled={isLoading===true ? true : false}
+                        onChange={onChangeInput}
                         type="email"
                         required
                         autoComplete="email" className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
@@ -78,6 +155,9 @@ const Login=()=>{
                         <input 
                             id="password"
                             name="password"
+                            value={formFields.password}
+                            disabled={isLoading===true ? true : false}
+                            onChange={onChangeInput}
                             type={isShowPassword===false ? 'password' : 'text'}
                             required
                             autoComplete="current-password" className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"                              
@@ -93,11 +173,20 @@ const Login=()=>{
                     <p className="mt-10 link cursor-pointer text-[14px] font-[600]" onClick={forgotPassword}>Quên mật khẩu?</p>
                     <div>
                     {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
-                    <button type="submit" className="w-full bg-gray-700 text-white p-2 rounded-md hover:bg-gray-800  focus:bg-gray focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300">Đăng nhập</button>
+                        {
+                            isLoading === true ?
+                            <button type="submit" disabled={true} className="w-full bg-gray-700 text-white p-2 rounded-md hover:bg-gray-800  focus:bg-gray focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300  CircularProgress">
+                                <CircularProgress color="inherit"/>      
+                            </button>
+                            :
+                            <button type="submit" disabled={false} className="w-full bg-gray-700 text-white p-2 rounded-md hover:bg-gray-800  focus:bg-gray focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors duration-300">
+                                Đăng nhập  
+                            </button>
+                        }
                     </div>
                 </form>
                 <div className="mt-4 text-sm text-gray-600 text-center">
-                    <p>Bạn chưa có tài khoản? <Link to="Register" className="text-black hover:underline">Đăng ký tại đây</Link>
+                    <p>Bạn chưa có tài khoản? <Link to="Register" className="text-black link">Đăng ký tại đây</Link>
                     </p>
                 </div>
                 </div>

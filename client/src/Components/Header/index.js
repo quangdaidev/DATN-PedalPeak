@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaRegUser } from "react-icons/fa6";
 
 import { MdCloseFullscreen } from "react-icons/md";
@@ -23,16 +23,21 @@ import Logout from '@mui/icons-material/Logout';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import { fetchDataFromApi } from '../../utils/api';
 
 // import Tooltip from '@mui/material/Tooltip';
 // import IconButton from '@mui/material/IconButton';
 
 
 const Header =()=>{
-    const context = useContext(MyContext);
+    const [open, setOpen] = useState(false);
+    const history = useNavigate();
 
     const [acAnchorEl, setAcAnchorEl] = useState(null);
     const openAc = Boolean(acAnchorEl);
+
+    // const context = useContext(MyContext);
+
     const handleClickAc = (event) => {
         setAcAnchorEl(event.currentTarget);
     };
@@ -54,8 +59,22 @@ const Header =()=>{
         }
     };
 
-    const [open, setOpen] = useState(false);
+    const context = useContext(MyContext);
+    console.log("ghghgh",context?.userData?.name)
+    
+    const logout=()=>{
+        setAcAnchorEl(null);
 
+        fetchDataFromApi(`/api/user/logout?token=${localStorage.getItem('accessToken')}`,{withCredentials: true}).then((res)=>{
+            console.log("logout",res);
+            if(res?.error === false){
+                context.setIsLogin(false);
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken"); 
+                history("/")
+            }
+        })
+    }
 
     return (
         <> 
@@ -154,7 +173,7 @@ const Header =()=>{
                                                     <FaRegUser className="ct-icon" />
                                                 </Badge> 
                                                 <span className=" mx-2" onClick={handleClickAc}>
-                                                    Xin chào user
+                                                    Xin chào, {context?.userData?.name}
                                                 </span>   
                                                 <ul>
                                                 <Menu
@@ -212,7 +231,7 @@ const Header =()=>{
                                             
                                                     <Divider />
                                                     <Link to="/logout" className="w-full block">
-                                                        <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
+                                                        <MenuItem onClick={logout} className="flex gap-2 !py-2">
                                                             <Logout color="action" fontSize="small" /> <span className="text-[16px]">Đăng xuất</span>
                                                         </MenuItem>
                                                     </Link>

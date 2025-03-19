@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import './globals.css';
@@ -29,6 +29,7 @@ import Checkout from './Pages/Checkout';
 import MyAccount from './Pages/MyAccount';
 import Orders from './Pages/Orders';
 import { TestApi } from './Pages/testAPI';
+import { fetchDataFromApi } from './utils/api';
 
 const alertBox = (msg, type)=>{
   if(type==="success"){
@@ -47,6 +48,7 @@ function App() {
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState('lg');
   const [isLogin, setIsLogin] = useState(false);
+  const [userData, setUserData] = useState(null);
   // const apiUrl = import.meta.env.VITE_API_URL;
 
 
@@ -57,6 +59,21 @@ function App() {
   const handleCloseProductDetailsModal = () => {
     setOpenProductDetailsModal(false);
   };
+
+  useEffect(()=>{
+    const token = localStorage.getItem('accessToken')
+
+    if(token!==undefined && token!==null && token !==""){
+      setIsLogin(true);
+
+      fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
+        console.log(res);
+        setUserData(res.data);
+      })
+    }else{
+      setIsLogin(false);
+    }
+  },[isLogin])
 
   const openAlertBox=(status, msg)=>{
     if(status==="success"){
@@ -72,7 +89,9 @@ function App() {
     openAlertBox,
     isLogin,
     setIsLogin,
-    alertBox
+    alertBox,
+    setUserData,
+    userData
   }
 
   return (
