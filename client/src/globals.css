@@ -16,8 +16,12 @@
   --main-800: #100157;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   @apply hidden ; 
+} */
+
+::-webkit-scrollbar {
+  @apply  w-[3px] !important ; 
 }
 
 /* ct = custom */
