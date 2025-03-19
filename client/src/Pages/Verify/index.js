@@ -2,12 +2,24 @@ import React, { useContext, useEffect, useState } from "react";
 import OtpBox from "../../Components/OtpBox";
 import { postData } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
-import MyAccount from "../MyAccount";
+// import MyAccount from "../MyAccount";
 import { MyContext } from "../../App";
 
-const userEmail= localStorage.getItem("userEmail");
+// const userEmail= localStorage.getItem("userEmail");
 
+    
 const Verify = () => {
+
+    const [userEmail, setUserEmail] = useState("");
+
+    useEffect(() => {
+        // Đọc lại giá trị từ localStorage mỗi khi component này được render
+        const getUserEmail = localStorage.getItem('userEmail');
+        setUserEmail(getUserEmail)
+        // console.log('userEmail:', getUserEmail);  // Kiểm tra xem giá trị đã được cập nhật chưa
+    }, []);  // Chạy khi component mới được render
+
+    
     const [otp, setOtp] = useState("");
     const handleOtpChange = (value) => { 
         setOtp(value);

@@ -12,13 +12,16 @@ import { useNavigate } from "react-router-dom";
 const Register=()=>{
 
     const [isLoading, setIsLoading] = useState(false);
-     const [isShowPassword, setIsShowPassword] = useState(false);
+    const [isShowPassword, setIsShowPassword] = useState(false);
     const [formFields, setFormFields] = useState({
         name:"",
         email:"",
         password:"",
         confirmPassword:""
     })
+
+    // const  [valideValue,setValideValue] = useState(false) //valideValue trả về true or false
+
 
     const context = useContext(MyContext);
     const history = useNavigate();
@@ -33,9 +36,10 @@ const Register=()=>{
         })
     }
 
-    const valideValue = Object.values(formFields).every(el => el) //valideValue trả về true or false
+    // const valideValue = Object.values(formFields).every(el => el) //valideValue trả về true or false
 
-    const handleSubmit=(e) =>{
+    const handleSubmit= (e) =>{
+
 
         e.preventDefault();
 
@@ -57,6 +61,8 @@ const Register=()=>{
             )
             setIsLoading(false);
             return false
+        } else {
+            localStorage.setItem("userEmail",formFields.email)
         }
 
         if(formFields.password===""){
@@ -88,16 +94,18 @@ const Register=()=>{
 
         postData("/api/user/register",formFields).then((res)=>{
             console.log(res)
+         
             if (res?.error !== true) {
                 setIsLoading(true)
-                context.openAlertBox("success", res?.message)
-                localStorage.setItem("userEmail",formFields.email)
+                localStorage.setItem("userEmail",formFields.email);
+                context.openAlertBox("success", res?.message);
                 setFormFields({
                     name:"",
                     email:"",
                     password:"",
                     confirmPassword:""
                 })
+                
                 
                 history("/verify")
               
@@ -106,6 +114,7 @@ const Register=()=>{
                 setIsLoading(false);
             }
         })
+
     }
 
     return (
@@ -241,23 +250,37 @@ const Register=()=>{
                                     {/* {errors.confirmPassword && touched.confirmPassword ? <div className='text-red-500'>{errors.confirmPassword}</div> : null} */}
                                 </div>
 
-                                <div className="flex items-center">
+                                {/* <div className="flex items-center">
                                     <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
                                     <label htmlFor="remember-me" className="ml-3 block text-sm text-gray-800">
                                     Tôi đồng ý <Link to="#" className="text-blue-600 font-semibold hover:underline ml-1">Điều khoản và Chính sách bảo mật</Link>
                                     </label>
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="!mt-12">
-                                <button type="submit" disabled={!valideValue} className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none">
+                                    {
+                                        isLoading === true ?
+                                        <button type="submit" disabled={true} className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none">
+                                            <div className="flex gap-3 items-center justify-center CircularProgress">                                           
+                                                <CircularProgress color="inherit"/>                                          
+                                            </div>
+                                        </button>
+                                        :
+                                        <button type="submit" disabled={false} className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none">
+                                            <div className="flex gap-3 items-center justify-center CircularProgress">                                            
+                                                <span className=" text-xl">Đăng ký </span>                                            
+                                            </div>
+                                        </button>
+                                    }
+                                {/* <button type="submit" disabled={valideValue} className="w-full py-3 px-4 tracking-wider text-sm rounded-md text-white bg-gray-700 hover:bg-gray-800 focus:outline-none">
                                     <div className="flex gap-3 items-center justify-center CircularProgress">
                                     {
                                         isLoading === true ?  <CircularProgress color="inherit"/> : <span className=" text-xl">Đăng ký </span> 
 
                                     }
                                     </div>
-                                </button>
+                                </button> */}
                             </div>
                         </form>
                         <p className="text-gray-800 text-sm mt-6 text-center">Bạn đã có tài khoản? <Link to="/Login" className="text-blue-600 font-semibold hover:underline ml-1">Đăng nhập tại đây</Link></p>
