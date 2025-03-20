@@ -415,13 +415,13 @@ export async function forgotPasswordController(request, response) {
          
             await sendEmailFun({
                 to: email,
-                subject: "Xác nhận email từ PedalPeak",
+                subject: "Xác nhận mã OPT từ PedalPeak",
                 text: "",
                 html: VerificationEmail(user.name, verifyCode)
             })
 
             return response.json({
-                message: "Mật khẩu mới đã được gửi tới email của bạn",
+                message: "Mã OTP gửi thành công",
                 error: false,
                 success: true
             })
@@ -473,8 +473,10 @@ export async function verifyForgotPasswordOtp(request, response) {
         }
         user.otp = "";
         user.otpExpires ="";
+
         await user.save();
-        return response.status(400).json({
+
+        return response.status(200).json({
             message: "Xác nhận mã OTP thành công!",
             error: false,
             success: true

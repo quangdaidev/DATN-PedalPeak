@@ -27,12 +27,31 @@ const Login=()=>{
     const history = useNavigate();
 
     const forgotPassword =()=>{
-        // if(formFields.email!==""){
-        //     context.openAlertBox("tttttt");
-        //     history("/verify");
-        // }
-        context.openAlertBox("success","OTP gửi thành công!");
-        history("/verify");
+
+        if(formFields.email===""){
+            context.openAlertBox("error","Bạn chưa nhập email");
+            return false;
+        }else{
+            setIsLoading(true);
+            context.openAlertBox("success",`Mã OTP đang được gửi tới ${formFields.email}`);
+            localStorage.setItem("userEmail",formFields.email);
+            localStorage.setItem("actionType",'forgot-password');
+
+            postData("/api/user/forgot-password",{
+                email:formFields.email,
+            }).then((res) => {
+                if(res?.error===false){
+                    context.openAlertBox("success", res?.message);
+                    // localStorage.removeItem("userEmail");
+                    history("/verify")
+                }else{
+                    context.openAlertBox("error", res?.message);
+                }
+            })
+        }
+
+      
+        // history("/verify");
     }
 
     const onChangeInput = (e) => {
@@ -45,57 +64,57 @@ const Login=()=>{
         })
     }
 
-      const handleSubmit= (e) =>{
-    
-            e.preventDefault();
-    
-            setIsLoading(true)
-    
-            if(formFields.email===""){
-                context.openAlertBox(
-                    "error",
-                    "Bạn chưa nhập email"
-                )
-                setIsLoading(false);
-                return false
-            }
-    
-            if(formFields.password===""){
-                context.openAlertBox(
-                    "error",
-                    "Bạn chưa nhập mật khẩu"
-                )
-                setIsLoading(false);
-                return false
-            }
-    
-            postData("/api/user/login",formFields).then((res)=>{
-                console.log(res)
-             
-                if (res?.error !== true) {
-                    setIsLoading(true)
-                    context.openAlertBox("success", res?.message);
+    const handleSubmit= (e) =>{
 
-                    setFormFields({
-                        email:"",
-                        password:""
-                    })
+        e.preventDefault();
 
-                    localStorage.setItem("accessToken",res?.data?.accesstoken);
-                    localStorage.setItem("refreshToken",res?.data?.refreshtoken); 
-                    
-                    context.setIsLogin(true);
+        setIsLoading(true)
 
-                    console.log("isLogin", context.isLogin)
-                    
-                    history("/")
-                  
-                } else{
-                    context.openAlertBox("error", res?.message);
-                    setIsLoading(false);
-                }
-            })   
+        if(formFields.email===""){
+            context.openAlertBox(
+                "error",
+                "Bạn chưa nhập email"
+            )
+            setIsLoading(false);
+            return false
         }
+
+        if(formFields.password===""){
+            context.openAlertBox(
+                "error",
+                "Bạn chưa nhập mật khẩu"
+            )
+            setIsLoading(false);
+            return false
+        }
+
+        postData("/api/user/login",formFields).then((res)=>{
+            console.log(res)
+            
+            if (res?.error !== true) {
+                setIsLoading(true)
+                context.openAlertBox("success", res?.message);
+
+                setFormFields({
+                    email:"",
+                    password:""
+                })
+
+                localStorage.setItem("accessToken",res?.data?.accesstoken);
+                localStorage.setItem("refreshToken",res?.data?.refreshtoken); 
+                
+                context.setIsLogin(true);
+
+                console.log("isLogin", context.isLogin)
+                
+                history("/")
+                
+            } else{
+                context.openAlertBox("error", res?.message);
+                setIsLoading(false);
+            }
+        })   
+    }
 
         useEffect(() => {
             console.log("isLogin đã thay đổi:", context.isLogin);
@@ -147,7 +166,6 @@ const Login=()=>{
                         disabled={isLoading===true ? true : false}
                         onChange={onChangeInput}
                         type="email"
-                        required
                         autoComplete="email" className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"/>
                     </div>
                     <div className=" relative">
@@ -159,7 +177,6 @@ const Login=()=>{
                             disabled={isLoading===true ? true : false}
                             onChange={onChangeInput}
                             type={isShowPassword===false ? 'password' : 'text'}
-                            required
                             autoComplete="current-password" className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"                              
                         />
                         <Button className="!absolute top-[28px] right-[8px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-black"
@@ -170,7 +187,12 @@ const Login=()=>{
                         }                          
                         </Button>
                     </div>
-                    <p className="mt-10 link cursor-pointer text-[14px] font-[600]" onClick={forgotPassword}>Quên mật khẩu?</p>
+                        {
+                            isLoading === true ?
+                            <button type="button"  disabled={true} onClick={forgotPassword}><p className="mt-10 link cursor-pointer text-[14px] font-[600]">Quên mật khẩu?</p></button>
+                            :
+                            <button type="button"  disabled={false} onClick={forgotPassword}><p className="mt-10 link cursor-pointer text-[14px] font-[600]">Quên mật khẩu?</p></button>
+                        }
                     <div>
                     {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
                         {
