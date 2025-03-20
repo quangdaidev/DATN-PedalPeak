@@ -30,6 +30,7 @@ import MyAccount from './Pages/MyAccount';
 import Orders from './Pages/Orders';
 import { TestApi } from './Pages/testAPI';
 import { fetchDataFromApi } from './utils/api';
+import { useNavigate } from 'react-router-dom';
 
 const alertBox = (msg, type)=>{
   if(type==="success"){
@@ -61,13 +62,19 @@ function App() {
   };
 
   useEffect(()=>{
+
     const token = localStorage.getItem('accessToken')
 
     if(token!==undefined && token!==null && token !==""){
       setIsLogin(true);
 
       fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
-        console.log(res);
+
+        if(res.expired?.name==="TokenExpiredError"){
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken"); 
+        }
+        // console.log("app.js",res);
         setUserData(res.data);
       })
     }else{

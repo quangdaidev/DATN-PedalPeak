@@ -23,16 +23,25 @@ if (!decode) {
   });
 }
 
+
+
 request.userId = decode.id;
 
 next();
 
 
   } catch (error) {
+    // if (error.name === 'TokenExpiredError') {
+    //   console.log('Token đã hết hạn (bị lỗi khi xác minh).');
+    //   localStorage.removeItem("accessToken");
+    //   localStorage.removeItem("refreshToken"); 
+    // }
+
     return response.status(500).json({
       message: "Bạn đã kết thúc phiên đăng nhập", // error.message || error,
       error: true,
-      success: false
+      success: false,
+      expired: error
     });
   }
 };

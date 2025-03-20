@@ -60,7 +60,7 @@ const Header =()=>{
     };
 
     const context = useContext(MyContext);
-    console.log("ghghgh",context?.userData?.name)
+    // console.log("ghghgh",context?.userData?.name)
     
     const logout=()=>{
         setAcAnchorEl(null);
@@ -161,8 +161,8 @@ const Header =()=>{
                                                 </span>     
                                                 <ul className=" nav hidden group-hover:block">
                                                     <div className="submenu absolute top-[100%] left-[0%] min-w-[150px] bg-white shadow-lg">
-                                                        <li className="block"><Link to="/register"><Button className="!text-gray-500 button-lv1 w-full !text-left !justify-start !rounded-none ">Đăng ký</Button></Link></li>
                                                         <li className="block"><Link to="/login"><Button className="!text-gray-500 button-lv1 w-full !text-left !justify-start !rounded-none ">Đăng nhập</Button></Link></li>
+                                                        <li className="block"><Link to="/register"><Button className="!text-gray-500 button-lv1 w-full !text-left !justify-start !rounded-none ">Đăng ký</Button></Link></li>
                                                     </div>
                                                 </ul>
                                             </div>
@@ -230,7 +230,7 @@ const Header =()=>{
                                                     </Link>
                                             
                                                     <Divider />
-                                                    <Link to="/logout" className="w-full block">
+                                                    <Link to="/" className="w-full block">
                                                         <MenuItem onClick={logout} className="flex gap-2 !py-2">
                                                             <Logout color="action" fontSize="small" /> <span className="text-[16px]">Đăng xuất</span>
                                                         </MenuItem>
