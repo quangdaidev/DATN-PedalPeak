@@ -375,7 +375,16 @@ export async function updateUserDetails(request, response) {
             message: "Cập nhật tài khoản thành công",
             error: false,
             success: true,
-            user: updateUser
+            data: {
+                name: updateUser?.name,
+                _id: updateUser?._id,
+                mobile: updateUser?.mobile,
+                email: updateUser?.email,
+                verify_email: email !== userExist.email ? false : true,
+                password: hashPassword,
+                otp:verifyCode!=="" ? verifyCode : null,
+                otpExpires:verifyCode!=="" ? Date.now() + 600000 : ''
+            }
         })
     } catch (error) {
         return response.status(500).json({

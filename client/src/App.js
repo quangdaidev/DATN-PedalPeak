@@ -63,7 +63,7 @@ function App() {
 
   useEffect(()=>{
 
-    const token = localStorage.getItem('accessToken')
+    const token = localStorage.getItem('accessToken');
 
     if(token!==undefined && token!==null && token !==""){
       setIsLogin(true);
@@ -73,8 +73,12 @@ function App() {
         if(res.expired?.name==="TokenExpiredError"){
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken"); 
+
+          openAlertBox("error", "Bạn đã kết thúc phiên, xin đăng nhập lại");
+
+          setIsLogin(false);
         }
-        // console.log("app.js",res);
+        console.log("app.js",res);
         setUserData(res.data);
       })
     }else{

@@ -41,10 +41,46 @@ export const fetchDataFromApi = async (url) => {
     }
 }
 
-export const editData = async (url, updatedData) => {
-    const {res} = await axios.put(`http://localhost:4000${url}`,updatedData)
+export const uploadImage = async (url, updatedData) => {
+
+  try{
+    const params = localStorage.getItem('accessToken');
+    const res = await axios.put(`http://localhost:4000${url}`,updatedData,params);
+    return res.data;
+  } catch (error) {
+    console.error("Lỗi khi gửi yêu cầu:", error);
+    if (error.response) {
+      // Lỗi trả về từ server
+      console.error("Lỗi từ server:", error.response.data);
+    //   alert("Lỗi: " + error.response.data.message);
+    return error.response.data;
+    } else {
+      // Lỗi khác (không phải do server)
+      console.error("Lỗi không phải từ server:", error.message);
+    }
+  }
    
-    return res
+}
+
+export const editData = async (url, updatedData) => {
+
+  try{
+    const params = localStorage.getItem('accessToken');
+    const res = await axios.put(`http://localhost:4000${url}`,updatedData,params);
+    return res.data;
+  } catch (error) {
+    console.error("Lỗi khi gửi yêu cầu:", error);
+    if (error.response) {
+      // Lỗi trả về từ server
+      console.error("Lỗi từ server:", error.response.data);
+    //   alert("Lỗi: " + error.response.data.message);
+    return error.response.data;
+    } else {
+      // Lỗi khác (không phải do server)
+      console.error("Lỗi không phải từ server:", error.message);
+    }
+  }
+ 
 }
 
 export const deleteData = async (url) => {
