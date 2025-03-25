@@ -7,7 +7,7 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { IoMdEye } from "react-icons/io";
 import { IoMdEyeOff } from "react-icons/io";
 import Button from '@mui/material/Button';
-import { Link } from "react-router-dom";
+import { Link,  useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -17,11 +17,22 @@ import googleIcon from '../../assets/images/googleIcon.png';
 import { IoMdHome } from "react-icons/io";
 
 
+
 const SignUp = () => {
 
     const [inputIndex, setInputIndex] = useState(null);
     const [isShowPassword, setisShowPassword] = useState(false);
     const [isShowConfirmPassword, setisShowConfirmPassword] = useState(false);
+
+    const [formFields, setFormFields] = useState({
+            name:"",
+            email:"",
+            password:"",
+            confirmPassword:"",
+            role:"ADMIN",
+        })
+
+    const history = useNavigate();
 
     const context = useContext(MyContext);
 

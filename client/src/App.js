@@ -31,6 +31,7 @@ import Orders from './Pages/Orders';
 import { TestApi } from './Pages/testAPI';
 import { fetchDataFromApi } from './utils/api';
 import { useNavigate } from 'react-router-dom';
+import Address from './Pages/MyAccount/address';
 
 const alertBox = (msg, type)=>{
   if(type==="success"){
@@ -50,6 +51,7 @@ function App() {
   const [maxWidth, setMaxWidth] = useState('lg');
   const [isLogin, setIsLogin] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [address, setAddress] = useState([]);
   // const apiUrl = import.meta.env.VITE_API_URL;
 
 
@@ -102,7 +104,9 @@ function App() {
     setIsLogin,
     alertBox,
     setUserData,
-    userData
+    userData,
+    address,
+    setAddress
   }
 
   return (
@@ -127,6 +131,7 @@ function App() {
               <Route path="/checkout" exact={true} element={<Checkout/>} />
               <Route path="/my-account" exact={true} element={<MyAccount/>} />
               <Route path="/my-orders" exact={true} element={<Orders/>} />
+              <Route path="/address" exact={true} element={<Address/>} />
             </Routes>
             <Footer />
               {/* {children} */}

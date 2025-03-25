@@ -63,7 +63,6 @@ export const uploadImage = async (url, updatedData) => {
 }
 
 export const editData = async (url, updatedData) => {
-
   try{
     const params = localStorage.getItem('accessToken');
     const res = await axios.put(`http://localhost:4000${url}`,updatedData,params);
@@ -84,8 +83,23 @@ export const editData = async (url, updatedData) => {
 }
 
 export const deleteData = async (url) => {
-    const {res} = await axios.delete(`http://localhost:4000${url}`)
-    return res
+  try {
+    const params = localStorage.getItem('accessToken');
+    const res = await axios.delete(`http://localhost:4000${url}`,params)
+    return res.data
+
+  } catch (error) {
+    console.error("Lỗi khi gửi yêu cầu:", error);
+    if (error.response) {
+      // Lỗi trả về từ server
+      console.error("Lỗi từ server:", error.response.data);
+    //   alert("Lỗi: " + error.response.data.message);
+    return error.response.data;
+    } else {
+      // Lỗi khác (không phải do server)
+      console.error("Lỗi không phải từ server:", error.message);
+    }
+  }
 }
 
 

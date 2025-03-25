@@ -242,3 +242,16 @@ input[type=number]::-webkit-outer-spin-button {
 .CircularProgress .MuiCircularProgress-root{
   @apply w-[30px] h-[30px] !important
 }
+
+.react-international-phone-input-container .react-international-phone-country-selector-button{
+  @apply w-[50px] 
+}
+
+.react-international-phone-input{
+  @apply w-full 
+}
+.react-international-phone-input-container{
+  @apply h-[40px] !important
+}
+
+.MuiDialog-paper{@apply w-[700px]  max-w-[700px] !important}

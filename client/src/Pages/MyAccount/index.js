@@ -6,17 +6,34 @@ import { MyContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 import { editData } from '../../utils/api';
 import { CircularProgress } from "@mui/material";
+import {Collapse} from 'react-collapse';
+import {IoMdEye} from "react-icons/io";
+import {IoMdEyeOff} from "react-icons/io";
+
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 
 const MyAccount = () => {
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoading2, setIsLoading2] = useState(false);
     const [userId, setUserId] = useState("");
+    const [isChangePasswordFormShow, setIsChangePasswordFormShow] = useState(false);
+    const [isShowPassword, setIsShowPassword] = useState(false);
+    const [phone,setPhone] = useState('');
 
     const [formFields, setFormFields] = useState({
         name:"",   
         email:"",
         mobile:""
-    })
+    });
+
+    const [changePassword, setChangePassword] = useState({
+        email:"",
+        oldPassword:"",   
+        newPassword:"",
+        confirmPassword:""
+    });
 
     const context = useContext(MyContext);
     const history = useNavigate();
@@ -37,8 +54,17 @@ const MyAccount = () => {
                 email: context?.userData?.email,
                 mobile: context?.userData?.mobile
             })
-            console.log("gfhdfgfdgh",context?.userData)
+            // console.log("userData",context?.userData)
+
+            const ph = `"${context?.userData?.mobile}"`;
+            setPhone(ph);
+
+            setChangePassword({
+                email: context?.userData?.email,
+    
+            })
         } 
+
     },[context?.userData])
 
     const onChangeInput = (e) => {
@@ -46,6 +72,13 @@ const MyAccount = () => {
         setFormFields(()=>{
             return {
                 ...formFields,
+                [name]: value
+            }
+        })
+
+        setChangePassword(()=>{
+            return {
+                ...changePassword,
                 [name]: value
             }
         })
@@ -86,7 +119,7 @@ const MyAccount = () => {
 
         const token = localStorage.getItem('accessToken');
 
-            editData(`/api/user/${userId}?token=${token}`,formFields, {withCredentials: true}).then((res)=>{
+        editData(`/api/user/${userId}?token=${token}`,formFields, {withCredentials: true}).then((res)=>{
             console.log(res)
             
             if (res?.error !== true) {
@@ -116,8 +149,29 @@ const MyAccount = () => {
         })   
     }
 
+    const kkkChangePassword= (e) =>{
+    
+        e.preventDefault();
+
+        setIsLoading2(true);
+
+        editData('/api/user/reset-password',changePassword, {withCredentials: true}).then((res)=>{
+            // console.log(res)
+            
+            if (res?.error !== true) {
+                setIsLoading2(false)
+                context.openAlertBox("success", res?.message);
+                      
+            } else{
+                context.openAlertBox("error", res?.message);
+                setIsLoading2(false);
+            }
+
+        })   
+    }
+
   return (
-    <section className="py-10 w-full mt-28">
+    <section className="mt-40 mb-16 w-full ">
         <div className="container flex gap-5">
             <div className="col1 w-[20%]">
                 <AccountSidebar/>
@@ -125,14 +179,17 @@ const MyAccount = () => {
 
             <div className="col2 w-[50%]">
                 <div className="card bg-white p-5 shadow-md rounded-md">
-                    <h2 className="pb-3">Thông tin tài khoản</h2>
+                    <div className="flex items-center pb-3">
+                        <h2 className="pb-0">Thông tin tài khoản</h2>
+                        <Button className="!ml-auto" onClick={()=>setIsChangePasswordFormShow(!isChangePasswordFormShow)}>Đổi mật khẩu</Button>
+                    </div>
                     <hr/>
 
                     <form className="mt-5" onSubmit={handleSubmit}>
                         <div className="flex items-center gap-5">
                             <div className="w-[50%]">
                                 <TextField                                 
-                                    label="Họ tên" 
+                                    label="Họ Tên" 
                                     variant="outlined" 
                                     size="small"
                                     className="w-full"
@@ -158,20 +215,23 @@ const MyAccount = () => {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-5 mt-5">
+                        <div className="flex items-center gap-5 mt-5">                      
                             <div className="w-[50%]">
-                                <TextField                                 
-                                    label="Số điện thoại" 
-                                    variant="outlined" 
-                                    size="small"
-                                    className="w-full"
-                                    name="mobile"
-                                    value={formFields.mobile}
-                                    disabled={isLoading===true ? true : false}
-                                    onChange={onChangeInput}
+                                <PhoneInput
+                                    defaultCountry='vn'
+                                    value={phone}
+                                    disabled={isLoading === true ? true : false}
+                                    onChange={(phone) => {
+                                        setPhone(phone);
+                                        setFormFields({
+                                            mobile: phone
+                                        })
+                                    }}
                                 />
                             </div>
-                           
+                                                        
+                            <div className="w-[50%]">                               
+                            </div>                          
                         </div>
 
                         <br/>
@@ -190,7 +250,102 @@ const MyAccount = () => {
                         </div>
                     </form>
                 </div>
-               
+            
+                {
+                    <Collapse isOpened={isChangePasswordFormShow}>
+                        <div className="card bg-white p-5 mt-5 shadow-md rounded-md">
+                            <div className="flex items-center pb-3">
+                                <h2 className="pb-0">Đổi mật khẩu</h2>
+                            </div>
+                            <hr/>
+
+                            <form className="mt-5" onSubmit={kkkChangePassword}>
+                                <div className="flex items-center gap-5">
+                                    <div className="w-[50%] relative flex items-center">
+                                        <TextField  
+                                            type={isShowPassword===false ? 'password' : 'text'}                             
+                                            label="Mật khẩu cũ" 
+                                            size="small"
+                                            className="w-full"
+                                            name="oldPassword"
+                                            value={changePassword.oldPassword}
+                                            disabled={isLoading2===true ? true : false}
+                                            onChange={onChangeInput}
+                                        />
+                                        <Button className="!absolute top-[3px] right-[5px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-[#bbb]"
+                                            onClick={()=>setIsShowPassword(!isShowPassword)}
+                                            >
+                                            {
+                                                isShowPassword===true ?  <IoMdEye className="text-[20px] opacity-75"/> :  <IoMdEyeOff className="text-[20px] opacity-75"/>
+                                            }                          
+                                        </Button>
+                                    </div>
+                                    <div className="w-[50%]">                               
+                                    </div> 
+                                </div>
+
+                                <div className="flex items-center gap-5 mt-5">
+                                    <div className="w-[50%] relative flex items-center">
+                                        <TextField   
+                                            type={isShowPassword===false ? 'password' : 'text'}                            
+                                            label="Mật khẩu mới" 
+                                            variant="outlined" 
+                                            size="small"
+                                            className="w-full"
+                                            name="newPassword"
+                                            value={changePassword.newPassword}
+                                            disabled={isLoading2===true ? true : false}
+                                            onChange={onChangeInput}
+                                        />
+                                         <Button className="!absolute top-[3px] right-[5px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-[#bbb]"
+                                            onClick={()=>setIsShowPassword(!isShowPassword)}
+                                            >
+                                            {
+                                                isShowPassword===true ?  <IoMdEye className="text-[20px] opacity-75"/> :  <IoMdEyeOff className="text-[20px] opacity-75"/>
+                                            }                          
+                                        </Button>
+                                    </div>
+                                    <div className="w-[50%] relative flex items-center">
+                                        <TextField    
+                                            type={isShowPassword===false ? 'password' : 'text'}                                   
+                                            label="Nhập lại mật khẩu mới" 
+                                            variant="outlined" 
+                                            size="small"
+                                            className="w-full"
+                                            name="confirmPassword"
+                                            value={changePassword.confirmPassword}
+                                            disabled={isLoading2===true ? true : false}
+                                            onChange={onChangeInput}
+                                        />
+                                        <Button className="!absolute top-[3px] right-[5px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-[#bbb]"
+                                            onClick={()=>setIsShowPassword(!isShowPassword)}
+                                            >
+                                            {
+                                                isShowPassword===true ?  <IoMdEye className="text-[20px] opacity-75"/> :  <IoMdEyeOff className="text-[20px] opacity-75"/>
+                                            }                          
+                                        </Button>
+                                    </div>
+                                                              
+                                </div>
+                                <br/>
+
+                                <div className="flex item-center gap-4">
+                                    {
+                                        isLoading2 === true ?
+                                        <Button type="submit" disabled={true} className="btn-org w-[100px] CircularProgress">
+                                            <CircularProgress color="inherit"/>   
+                                        </Button>    
+                                        :
+                                        <Button type="submit" disabled={false} className="btn-org w-[140px] CircularProgress">Xác nhận</Button>
+                                    }
+                                
+                                    <Button className="btn-org btn-border w-[80px]">Hủy</Button>
+                                </div>
+                            </form>
+                        </div>
+                    </Collapse>
+                }
+                              
             </div>
         </div>
     </section>

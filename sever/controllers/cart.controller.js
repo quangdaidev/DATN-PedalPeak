@@ -48,6 +48,7 @@ export const addToCartItemController = async (request, response) => {
       error: false,
       success: true,
     });
+    
   } catch (error) {
     return response.status(500).json({
       message: error.massage || error,

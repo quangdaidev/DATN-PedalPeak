@@ -10,6 +10,7 @@ import { Button } from '@mui/material';
 import { MyContext } from '../../App';
 import { CircularProgress } from "@mui/material";
 import { editData, uploadImage } from '../../utils/api';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 const AccountSidebar = () => {
 
@@ -126,7 +127,15 @@ const AccountSidebar = () => {
                             <AccountCircleIcon color="action" className=" text-[17px]"/>Thông tin tài khoản
                         </Button>
                     </NavLink>
-                </li>                      
+                </li>       
+
+                <li className="w-full">
+                    <NavLink to="/address" exact={true} activeClassName="isActive">
+                        <Button className="w-full !text-left !py-3 !px-5 !justify-start !capitalize !text-black !rounded-none flex items-center gap-2">
+                            <AddLocationAltIcon color="action" className=" text-[17px]"/>Địa chỉ
+                        </Button>
+                    </NavLink>
+                </li>                   
 
                 <li className="w-full">
                     <NavLink to="/my-orders" exact={true} activeClassName="isActive">

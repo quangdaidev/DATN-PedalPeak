@@ -20,7 +20,7 @@ cloudinary.config({
 export async function registerUserController(request, response) {
     try {
         let user;
-        const { name, email, password,confirmPassword } = request.body
+        const { name, email, password, confirmPassword } = request.body
         if (!name || !email || !password ||!confirmPassword) {
             return response.status(400).json({
                 message: "vui lòng nhập đầy đủ thông tin",
@@ -29,6 +29,7 @@ export async function registerUserController(request, response) {
             })
         }
         user = await UserModel.findOne({ email: email })
+
         if (user) {
             return response.json({
                 message: "Email này đã được đăng ký",
@@ -48,6 +49,7 @@ export async function registerUserController(request, response) {
         const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
 
         const salt = await bcryptjs.genSalt(10);
+        
         const hashPassword = await bcryptjs.hash(password, salt);
 
         user = new UserModel({
@@ -147,7 +149,7 @@ export async function loginUserController(request, response) {
 
         if (user.verify_email!==true) {
             response.status(400).json({
-                message: "Vui lòng xác thực email của bạn",
+                message: "Email chưa được xác thực",
                 error: true,
                 success: false
             });
@@ -502,9 +504,11 @@ export async function verifyForgotPasswordOtp(request, response) {
 // reset password
 export async function resetpassword(request, response) {
     try {
-        const {email, newPassword, confirmPassword} = request.body;
+        const {email, oldPassword, newPassword, confirmPassword} = request.body;
         if (!email || !newPassword || !confirmPassword) {
             return response.status(400).json({
+                error:true,
+                success:false,
                 message: "Vui lòng điền đầy đủ thông tin"
             })
         }
@@ -518,9 +522,20 @@ export async function resetpassword(request, response) {
                 success: false
             })
         }
+
+        const checkPassword = await bcryptjs.compare(oldPassword, user.password);
+
+        if(!checkPassword){
+            return response.status(400).json({
+                message: "Mật khẩu cũ không đúng",
+                error: true,
+                success: false
+            })
+        }
+
         if (newPassword !== confirmPassword) {
             return response.status(400).json({
-                message: "Mật khẩu mới và Xác nhận mật khẩu mới không khớp!",
+                message: "Xác nhận mật khẩu mới không khớp!",
                 error: true,
                 success: false
             })
@@ -607,7 +622,7 @@ export async function userDetails(request, response) {
     try {
         const userId = request.userId;
 
-        const user = await UserModel.findById(userId).select('-password -refresh_token');
+        const user = await UserModel.findById(userId).select('-password -refresh_token').populate('address_details');
        
         return response.json({
             message: "Thông tin chi tiết tài khoản",
