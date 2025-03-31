@@ -37,32 +37,37 @@ const ProductUpload = () => {
 
     const [categoryVal, setcategoryVal] = useState('');
     const [ratingsValue,setRatingValue] = useState(1);
+    const [isFeaturedValue, setIsFeaturedValue] = useState(false);
 
     const handleChangeCategory = (event) => {
         setcategoryVal(event.target.value);
+    };
+
+    const handleChangeIsFeaturedValue = (event) => {
+        setIsFeaturedValue(event.target.value);
     };
 
     return (
         <>
             <div className="right-content w-100">
                 <div className="card shadow border-0 w-100 flex-row p-4">
-                    <h5 className="mb-0">Product Upload</h5>
+                    <h5 className="mb-0">Tạo sản phẩm</h5>
                     <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
                         <StyledBreadcrumb
                             component="a"
                             href="#"
-                            label="Dashboard"
+                            label="Tổng quan"
                             icon={<HomeIcon fontSize="small" />}
                         />
 
                         <StyledBreadcrumb
                             component="a"
-                            label="Products"
+                            label="Sản phẩm"
                             href="#"
                             deleteIcon={<ExpandMoreIcon />}
                         />
                         <StyledBreadcrumb
-                            label="Product Upload"
+                            label="Tạo mới"
                             deleteIcon={<ExpandMoreIcon />}
                         />
                     </Breadcrumbs>
@@ -72,15 +77,15 @@ const ProductUpload = () => {
                     <div className='row'>
                         <div className='col-sm-9'>
                             <div className='card p-4'>
-                                <h5 className='mb-4'>Basic Information</h5>
+                                <h5 className='mb-4'>Thông tin sản phẩm</h5>
 
                                 <div className='form-group'>
-                                    <h6>TITLE</h6>
+                                    <h6>TÊN SẢN PHẨM</h6>
                                     <input type='text' />
                                 </div>
 
                                 <div className='form-group'>
-                                    <h6>DESCRIPTION</h6>
+                                    <h6>MÔ TẢ</h6>
                                     <textarea rows={5} cols={10} />
                                 </div>
 
@@ -89,7 +94,7 @@ const ProductUpload = () => {
                                 <div className='row'>
                                     <div className='col'>
                                         <div className='form-group'>
-                                            <h6>CATEGORY</h6>
+                                            <h6>DANH MỤC</h6>
                                             <Select
                                                 value={categoryVal}
                                                 onChange={handleChangeCategory}
@@ -110,7 +115,7 @@ const ProductUpload = () => {
 
                                     <div className='col'>
                                         <div className='form-group'>
-                                            <h6>BRAND</h6>
+                                            <h6>THƯƠNG HIỆU</h6>
                                             <Select
                                                 value={categoryVal}
                                                 onChange={handleChangeCategory}
@@ -133,14 +138,14 @@ const ProductUpload = () => {
                                 <div className='row'>
                                     <div className='col'>
                                         <div className='form-group'>
-                                            <h6>REGULAR PRICE</h6>
+                                            <h6>GIÁ GỐC</h6>
                                             <input type='text' />
                                         </div>
                                     </div>
 
                                     <div className='col'>
                                         <div className='form-group'>
-                                            <h6>DISCOUNT PRICE </h6>
+                                            <h6>GIÁ KHUYẾN MÃI </h6>
                                             <input type='text' />
                                         </div>
                                     </div>
@@ -151,7 +156,36 @@ const ProductUpload = () => {
                                 <div className='row'>
                                     <div className='col'>
                                         <div className='form-group'>
-                                            <h6>RATINGS</h6>
+                                            <h6>SẢN PHẨM NỔI BẬT </h6>
+                                            <Select
+                                                value={isFeaturedValue}
+                                                onChange={handleChangeIsFeaturedValue}
+                                                displayEmpty
+                                                inputProps={{ 'aria-label': 'Without label' }}
+                                                className='w-100'
+                                            >
+                                                <MenuItem value="">
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                <MenuItem value={true}>True</MenuItem>
+                                                <MenuItem value={false}>False</MenuItem>
+                                            </Select>
+                                        </div>                                     
+
+                                    </div>
+
+                                    <div className='col'>
+                                        <div className='form-group'>
+                                            <h6>SẢN PHẨM TỒN KHO </h6>
+                                            <input type='text' />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className='row'>
+                                    <div className='col'>
+                                        <div className='form-group'>
+                                            <h6>XẾP HẠNG</h6>
                                             <Rating
                                                 name="simple-controlled"
                                                 value={ratingsValue}
@@ -161,25 +195,29 @@ const ProductUpload = () => {
                                             />
                                         </div>
                                     </div>
+                                </div>
 
+                                <div className="row">
                                     <div className='col'>
                                         <div className='form-group'>
-                                            <h6>PRODUCT STOCK </h6>
+                                            <h6>ẢNH SẢN PHẨM </h6>
                                             <input type='text' />
                                         </div>
                                     </div>
                                 </div>
 
-
                                 <br/>
 
-                                <Button className="btn-blue btn-lg btn-big"><FaCloudUploadAlt/> &nbsp; PUBLISH AND VIEW</Button>
+                                <Button className="btn-blue btn-lg btn-big"><FaCloudUploadAlt/> &nbsp; TẠO MỚI</Button>
 
                             </div>
                         </div>
 
+
                       
                     </div>
+
+                    
                 </form>
 
             </div>

@@ -9,7 +9,7 @@ import { NavLink } from "react-router";
 import { Button } from '@mui/material';
 import { MyContext } from '../../App';
 import { CircularProgress } from "@mui/material";
-import { editData, uploadImage } from '../../utils/api';
+import {  uploadImage } from '../../utils/api';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 const AccountSidebar = () => {
@@ -27,8 +27,8 @@ const AccountSidebar = () => {
         } 
     },[context?.userData])
 
-    let img_arr = [];
-    let uniqueArray = [];
+    // let img_arr = [];
+    // let uniqueArray = [];
     let selectedImages = [];
 
     const formdata = new FormData();

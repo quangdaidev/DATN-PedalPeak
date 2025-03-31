@@ -13,6 +13,9 @@ import ProductDetails from "./pages/ProductDetails";
 import ProductUpload from "./pages/ProductUpload";
 import CategoryAdd from "./pages/CategoryAdd";
 import Categories from "./pages/Categories";
+import { fetchDataFromApi } from "./utils/api";
+import { ToastContainer, toast } from 'react-toastify';
+import ProductEdit from "./pages/ProductEdit";
 
 const MyContext = createContext();
 
@@ -25,6 +28,19 @@ function App() {
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
   );
+
+  const [alertBox, setAlertBox] = useState({
+    msg:'',
+    error:false,
+    open:false
+  })
+
+  // Lắng nghe sự kiện storage khi có thay đổi localStorage
+  window.addEventListener("storage", (event) => {
+    if (event.origin === "http://localhost:3000") {
+      console.log("Received data from localStorage:", event.newValue);
+    }
+  });
 
   useEffect(() => {
     if (theme === "dark") {
@@ -53,6 +69,43 @@ function App() {
   const openNav = () => {
     setIsOpenNav(true);
   };
+  
+  const openAlertBox=(status, msg)=>{
+    if(status==="success"){
+      toast.success(msg)
+    }
+    if(status==="error"){
+      toast.error(msg)
+    }
+  }
+
+  const [userData, setUserData] = useState(null);
+
+  useEffect(()=>{
+      
+    const token = localStorage.getItem('accessToken');
+  
+    if(token!==undefined && token!==null && token !==""){
+      setIsLogin(true);
+
+      fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
+
+        if(res.expired?.name==="TokenExpiredError"){
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken"); 
+
+          openAlertBox("error", "Bạn đã kết thúc phiên, xin đăng nhập lại");
+
+          setIsLogin(false);
+        }
+        console.log("app.js",res);
+
+        setUserData(res.data);
+      })
+    }else{
+      setIsLogin(false);
+    }
+  },[isLogin])
 
   const values = {
     isToggleSidebar,
@@ -66,7 +119,12 @@ function App() {
     windowWidth,
     openNav,
     isOpenNav,
-    setIsOpenNav
+    setIsOpenNav,
+    alertBox,
+    setAlertBox,
+    openAlertBox,
+    userData,
+    setUserData
   };
 
   return (
@@ -94,19 +152,21 @@ function App() {
             }`}
           >
             <Routes>
-              <Route path="/" exact={true} element={<Dashboard />} />
+              <Route path="/" exact={true} element={<Login />} />
               <Route path="/dashboard" exact={true} element={<Dashboard />} />
               <Route path="/login" exact={true} element={<Login />} />
               <Route path="/signUp" exact={true} element={<SignUp />} />
               <Route path="/products" exact={true} element={<Products />} />
-              <Route path="/product/details" exact={true} element={<ProductDetails />}/>
+              <Route path="/product/details/:id" exact={true} element={<ProductDetails />}/>
               <Route path="/product/upload" exact={true} element={<ProductUpload />} />
+              <Route path="/product/:id" exact={true} element={<ProductEdit />} />
               <Route path="/category/add" exact={true} element={<CategoryAdd />} />
               <Route path="/category" exact={true} element={<Categories />} />
             </Routes>
           </div>
         </div>
       </MyContext.Provider>
+      <ToastContainer theme="colored"/>
     </BrowserRouter>
   );
 }

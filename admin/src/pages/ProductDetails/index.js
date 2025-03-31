@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { emphasize, styled } from "@mui/material/styles";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
@@ -13,11 +13,18 @@ import Rating from "@mui/material/Rating";
 import { FaReply } from "react-icons/fa";
 import { MdFilterVintage } from "react-icons/md";
 import { IoIosColorPalette } from "react-icons/io";
+import { FaWeightScale } from "react-icons/fa6";
+import { MdTipsAndUpdates } from "react-icons/md";
+import { MdWarehouse } from "react-icons/md";
+
 // import { MdPhotoSizeSelectActual } from "react-icons/md";
 // import { IoIosPricetags } from "react-icons/io";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdRateReview } from "react-icons/md";
 import { BsPatchCheckFill } from "react-icons/bs";
+import { fetchDataFromApi } from "../../utils/api";
+
+import { useParams } from 'react-router-dom';
 
 //breadcrumb code
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -40,9 +47,13 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   };
 });
 
+
 const ProductDetails = () => {
   const productSliderBig = useRef();
   const productSliderSml = useRef();
+
+  const { id } = useParams();
+  const [proData, setProData] = useState([]);
 
   var productSliderOptions = {
     dots: false,
@@ -57,7 +68,7 @@ const ProductDetails = () => {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 4,
+    slidesToShow: 3,
     slidesToScroll: 1,
     arrows: false,
   };
@@ -67,25 +78,44 @@ const ProductDetails = () => {
     productSliderSml.current.slickGoTo(index);
   };
 
+ 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0, 0); //cuộn trang đến vị trí góc trên bên trái của trang
+
+    fetchDataFromApi(`/api/product/${id}`).then((res)=>{
+      setProData(res.data);
+      // console.log("props:::",proData)
+  
+      console.log(res.data)
+    })
+  }, [id]);
+
+  const dateCre = new Date(proData.dateCreated);
+
+  // Định dạng theo kiểu ngày/tháng/năm
+  const formattedDateCre = dateCre.toLocaleDateString('vi-VN');
+
+  const dateUp = new Date(proData.updatedAt);
+
+  // Định dạng theo kiểu ngày/tháng/năm
+  const formattedDateUp = dateUp.toLocaleDateString('vi-VN');
+  
 
   return (
     <>
       <div className="right-content w-100">
         <div className="card shadow border-0 w-100 flex-row p-4 res-col">
-          <h5 className="mb-0">Product View</h5>
+          <h5 className="mb-0">Chi tiết sản phẩm</h5>
           <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
             <StyledBreadcrumb
               component="a"
               href="#"
-              label="Dashboard"
+              label="Tổng quan"
               icon={<HomeIcon fontSize="small" />}
             />
 
-            <StyledBreadcrumb label="Products" component="a" href="#" />
-            <StyledBreadcrumb label="Product View" />
+            <StyledBreadcrumb label="Sản phẩm" component="a" href="#" />
+            <StyledBreadcrumb label="Chi tiết" />
           </Breadcrumbs>
         </div>
 
@@ -93,13 +123,27 @@ const ProductDetails = () => {
           <div className="row">
             <div className="col-md-5">
               <div className="sliderWrapper pt-3 pb-3 pl-4 pr-4">
-                <h6 className="mb-4">Product Gallery</h6>
+                <h6 className="mb-4">Danh mục ảnh</h6>
                 <Slider
                   {...productSliderOptions}
                   ref={productSliderBig}
                   className="sliderBig mb-2"
                 >
-                  <div className="item">
+             
+                {
+                  proData?.images?.length !== 0 &&  proData?.images?.map((item, index) => {
+                      return (
+                        <div className="item">
+                          <img
+                            src={item} alt=""
+                            className="w-100"
+                          />
+                        </div>
+                      )
+                  })
+                }
+                 
+                  {/* <div className="item">
                     <img
                       src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
@@ -140,26 +184,28 @@ const ProductDetails = () => {
                       src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
-                  </div>
-                  <div className="item">
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
+                  </div> */}
                 </Slider>
                 <Slider
                   {...productSliderSmlOptions}
                   ref={productSliderSml}
                   className="sliderSml"
                 >
-                  <div className="item" onClick={() => goToSlide(1)}>
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item" onClick={() => goToSlide(2)}>
+                  {
+                    proData?.images?.length !== 0 &&  proData?.images?.map((item, index) => {
+                      console.log("index::",index+1)
+                        return (
+                          <div className="item" onClick={() => goToSlide(index)}>
+                            <img
+                              src={item} alt=""
+                              className="w-100"
+                            />
+                          </div>
+                        )
+                    })
+                  }
+                 
+                  {/* <div className="item" onClick={() => goToSlide(2)}>
                     <img
                       src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
@@ -200,47 +246,47 @@ const ProductDetails = () => {
                       src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
                       className="w-100"
                     />
-                  </div>
+                  </div> */}
                 </Slider>
               </div>
             </div>
 
             <div className="col-md-7">
               <div className=" pt-3 pb-3 pl-4 pr-4">
-                <h6 className="mb-4">Product Details</h6>
+                <h6 className="mb-4">Chi tiết sản phẩm</h6>
 
                 <h4>
-                  Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C
+                 {proData?.name}
                 </h4>
 
                 <div className="productInfo mt-4">
-                  {/* <div className="row mb-2">
+                  <div className="row mb-2">
                     <div className="col-sm-3 d-flex align-items-center">
                       <span className="icon">
                         <MdBrandingWatermark />
                       </span>
-                      <span className="name">Brand</span>
+                      <span className="name">Thương hiệu</span>
                     </div>
 
                     <div className="col-sm-9">
-                      <span>Ecstasy</span>
+                      <span> {proData?.brand}</span>
                     </div>
-                  </div> */}
+                  </div>
 
                   <div className="row">
                     <div className="col-sm-3 d-flex align-items-center">
                       <span className="icon">
                         <BiSolidCategoryAlt />
                       </span>
-                      <span className="name">Category</span>
+                      <span className="name">Danh mục</span>
                     </div>
 
                     <div className="col-sm-9">
-                      <span>Xe đạp đường phố</span>
+                      <span> {proData?.catName}</span>
                     </div>
                   </div>
 
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-sm-3 d-flex align-items-center">
                       <span className="icon">
                         <MdFilterVintage />
@@ -274,58 +320,60 @@ const ProductDetails = () => {
                         </div>
                       </span>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="row">
                     <div className="col-sm-3 d-flex align-items-center">
                       <span className="icon">
                         <IoIosColorPalette />
                       </span>
-                      <span className="name">Color</span>
+                      <span className="name">Màu</span>
                     </div>
 
                     <div className="col-sm-9">
                       <span>
                         <div className="row">
                           <ul className="list list-inline tags sml">
-                            <li className="list-inline-item">
-                              <span>Đỏ</span>
-                            </li>
-                            <li className="list-inline-item">
-                              <span>Xanh</span>
-                            </li>
-                            <li className="list-inline-item">
-                              <span>Trắng</span>
-                            </li>
+
+                           {
+                              proData?.color?.length !== 0 &&  proData?.color?.map((item, index) => {
+                                  return (
+                                    <li className="list-inline-item"  key={index}>
+                                      <span> {item}</span>
+                                    </li>
+                                  )
+                              })
+                            }
+
                           </ul>
                         </div>
                       </span>
                     </div>
                   </div>
-
+              
                   <div className="row">
                     <div className="col-sm-3 d-flex align-items-center">
                       <span className="icon">
-                        <BiSolidCategoryAlt />
+                        <FaWeightScale />
                       </span>
-                      <span className="name">Color</span>
+                      <span className="name">Khối lượng</span>
                     </div>
 
                     <div className="col-sm-9">
-                      <span>Trắng</span>
+                      <span>{proData?.catName==="Xe đạp trẻ em" ? "5 Kg" : "10 Kg"}</span>
                     </div>
                   </div>
 
                   <div className="row">
                     <div className="col-sm-3 d-flex align-items-center">
                       <span className="icon">
-                        <FaShoppingCart />
+                        <MdWarehouse />
                       </span>
-                      <span className="name">Size</span>
+                      <span className="name">Tồn kho</span>
                     </div>
 
                     <div className="col-sm-9">
-                      <span>(16) Inch</span>
+                      <span>{proData?.countInStock}</span>
                     </div>
                   </div>
 
@@ -334,11 +382,11 @@ const ProductDetails = () => {
                       <span className="icon">
                         <MdRateReview />
                       </span>
-                      <span className="name">Review</span>
+                      <span className="name">Bình luận</span>
                     </div>
 
                     <div className="col-sm-9">
-                      <span>(03) Review</span>
+                      <span>(03) Bình luận</span>
                     </div>
                   </div>
 
@@ -347,21 +395,42 @@ const ProductDetails = () => {
                       <span className="icon">
                         <BsPatchCheckFill />
                       </span>
-                      <span className="name">Published</span>
+                      <span className="name">Ngày tạo</span>
                     </div>
 
                     <div className="col-sm-9">
-                      <span>02 Feb 2024</span>
+                      <span>{formattedDateCre}</span>
                     </div>
                   </div>
+
+                  {
+                    proData?.updatedAt!==""
+                    ?
+                    <>
+                      <div className="row">
+                        <div className="col-sm-3 d-flex align-items-center">
+                          <span className="icon">
+                          <MdTipsAndUpdates />
+                          </span>
+                          <span className="name">Ngày cập nhật</span>
+                        </div>
+
+                        <div className="col-sm-9">
+                          <span>{formattedDateUp}</span>
+                        </div>
+                      </div>
+                    </>
+                    : ""
+                  }
+
                 </div>
               </div>
             </div>
           </div>
 
           <div className="p-4">
-            <h6 className="mt-4 mb-3">Product Description</h6>
-            <p>Xe đạp khung sườn nhập khẩu...</p>
+            <h6 className="mt-4 mb-3">Mô tả sản phẩm</h6>
+            <p>{proData?.description}</p>
 
             <br />
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo.png";
 import Button from "@mui/material/Button";
@@ -7,9 +7,9 @@ import { MdOutlineMenu } from "react-icons/md";
 import SearchBox from "../SearchBox";
 import { MdOutlineLightMode } from "react-icons/md";
 
-import { MdDarkMode } from "react-icons/md";
-import { IoCartOutline } from "react-icons/io5";
-import { MdOutlineMailOutline } from "react-icons/md";
+// import { MdDarkMode } from "react-icons/md";
+// import { IoCartOutline } from "react-icons/io5";
+// import { MdOutlineMailOutline } from "react-icons/md";
 import { FaRegBell } from "react-icons/fa6";
 import { IoMenu } from "react-icons/io5";
 
@@ -30,6 +30,16 @@ const Header = () => {
   const openNotifications = Boolean(isOpennotificationDrop);
 
   const context = useContext(MyContext);
+
+  const [previews, setPreviews] = useState([]);
+
+  useEffect(()=>{
+    const userAvatar = [];
+    if(context?.userData?.avatar!=="" && context?.userData?.avatar!==undefined){
+        userAvatar.push(context?.userData?.avatar);
+        setPreviews(userAvatar);
+    } 
+},[context?.userData])
 
   const handleOpenMyAccDrop = (event) => {
     setAnchorEl(event.currentTarget);
@@ -62,7 +72,7 @@ const Header = () => {
             {/* Logo Wraooer */}
             <div className="col-sm-2 part1">
               <Link to={"/"} className="d-flex align-items-center logo">
-                <img src={logo} />
+                <img src={logo} alt=""/>
                 <span className="ml-2">PedalPeak</span>
               </Link>
             </div>
@@ -152,7 +162,7 @@ const Header = () => {
                         <div>
                           <div className="userImg">
                             <span className="rounded-circle">
-                              <img src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
+                              <img alt="" src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
                             </span>
                           </div>
                         </div>
@@ -175,7 +185,7 @@ const Header = () => {
                         <div>
                           <div className="userImg">
                             <span className="rounded-circle">
-                              <img src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
+                              <img alt="" src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
                             </span>
                           </div>
                         </div>
@@ -198,7 +208,7 @@ const Header = () => {
                         <div>
                           <div className="userImg">
                             <span className="rounded-circle">
-                              <img src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
+                              <img alt="" src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
                             </span>
                           </div>
                         </div>
@@ -221,7 +231,7 @@ const Header = () => {
                         <div>
                           <div className="userImg">
                             <span className="rounded-circle">
-                              <img src="https://mironcoder-hotash.netlify.app/images/avatar/01.webp" />
+                              <img alt="" src="https://mironcoder-hotash.netlify.app/images/avatar/01.webp" />
                             </span>
                           </div>
                         </div>
@@ -244,7 +254,7 @@ const Header = () => {
                         <div>
                           <div className="userImg">
                             <span className="rounded-circle">
-                              <img src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
+                              <img alt="" src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
                             </span>
                           </div>
                         </div>
@@ -281,15 +291,38 @@ const Header = () => {
                     className="myAcc d-flex align-items-center"
                     onClick={handleOpenMyAccDrop}
                   >
-                    <div className="userImg">
+                    {/* <div className="userImg">
                       <span className="rounded-circle">
-                        <img src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
+                        <img alt="" src="https://images2.thanhnien.vn/thumb_w/640/528068263637045248/2023/6/20/anh-2-16872439278051198533264.jpg" />
                       </span>
-                    </div>
+                    </div> */}
+
+                    {
+                      previews?.length !== 0 ? previews?.map((img, index) => {
+                          return (
+                            <div className="userImg">
+                              <span className="rounded-circle">
+                                <img 
+                                  alt="" 
+                                  src={img}
+                                  key={index} 
+                                />
+                              </span>
+                            </div>
+
+                          )
+                      }):
+                      <div className="userImg">
+                        <span className="rounded-circle">
+                          <img alt="" src="https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/477713Dpz/anh-mo-ta.png"
+                          />
+                        </span>
+                      </div>
+                    }
 
                     <div className="userInfo res-hide">
-                      <h4>Nguyen Le</h4>
-                      <p className="mb-0">@nguyen_zenda</p>
+                      <h4> {context?.userData?.name}</h4>
+                      <p className="mb-0"> {context?.userData?.email}</p>
                     </div>
                   </Button>
 

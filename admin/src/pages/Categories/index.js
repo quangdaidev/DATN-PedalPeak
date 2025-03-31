@@ -7,14 +7,11 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import CircularProgress from '@mui/material/CircularProgress';
-import { FaEye } from "react-icons/fa";
+// import { FaEye } from "react-icons/fa";
 import { FaPencilAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Pagination from "@mui/material/Pagination";
 
-
-
-import { Link } from "react-router-dom";
 
 import { emphasize, styled } from "@mui/material/styles";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
@@ -23,7 +20,7 @@ import Chip from "@mui/material/Chip";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import Checkbox from "@mui/material/Checkbox";
-import { deleteData, editData, fetchDataFromApi } from "../../utils/api";
+import { deleteData, deleteImages, editData, fetchDataFromApi, postData } from "../../utils/api";
 
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -31,6 +28,15 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
+
+import {IoMdEye} from "react-icons/io";
+import {IoMdEyeOff} from "react-icons/io";
+
+import { IoCloseSharp } from "react-icons/io5";
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
+import { FaRegImages } from "react-icons/fa";
+
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -66,7 +72,13 @@ const Categories = () => {
 
   const [editId, setEditId] = useState(null);
 
+  const [imgFiles, setImgFiles] = useState();
+  const [previews, setPreviews] = useState([]);
+  const formdata = new FormData();
+
   const [page,setPage] = useState(1);
+
+  const [isShow, setIsShow] = useState(true);
 
   const [isLoading, setIsLoading] = useState(false);
   const [formFields, setFormFields] = useState({
@@ -96,15 +108,54 @@ const Categories = () => {
     ))
   }
 
-  const addImgUrl = (e)=>{
-    const arr =[];
-    arr.push(e.target.value);
-    setFormFields(()=>(
-        {
-            ...formFields, //sao chép tất cả các giá trị hiện tại trong đối tượng formFields
-            [e.target.name]:arr //cập nhật một trường dữ liệu trong đối tượng formFields
-        }
-    ))
+  const removeImg = async (image, index) => {
+    var imageArr = [];
+    imageArr = previews;
+    await deleteImages(`/api/category/deleteImage?img=${image}`).then((res) => {
+      imageArr.splice (index, 1);
+      console.log("delete res::::",res)
+      
+      console.log("remove::::::", imageArr)
+      setPreviews ([]);
+
+      setTimeout(()=>{
+
+        setPreviews(imageArr);
+        setFormFields(()=>{
+          return{
+            ...formFields,
+            images: previews
+          }
+        })
+      },100)
+        
+    })
+
+  }
+
+  const onChangeFile = async(e, apiEndPoint) => {
+    try {
+      const imgArr = [];
+      const files = e.target.files;
+      setImgFiles(e.target.files);
+
+      for (var i = 0; i < files.length; i++) { 
+        const file = files[i];
+        imgArr.push(file);
+        formdata.append(`images`, file);
+      }
+    
+    // setFiles(imgArr);
+
+    await postData(apiEndPoint, formdata).then((res) => {
+      console.log("res::::",res)
+      formFields.images = res.images
+      setPreviews(res.images);
+      console.log("formFields",formFields)
+    });
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const editCategory=(id)=>{
@@ -255,16 +306,16 @@ const Categories = () => {
                       <td>{item.name} </td>
                       <td>
                         <div className="actions d-flex align-items-center">
-                          <Link to="/product/details">
-                            <Link to="/product/details">
-                              <Button className="secondary" color="secondary">
-                                <FaEye />
-                              </Button>
-                            </Link>
-                          </Link>
                           <Button className="success" color="success" onClick={()=>editCategory(item._id)}>
                             <FaPencilAlt />
                           </Button>
+                          <Button className="secondary" color="secondary"
+                            onClick={()=>setIsShow(!isShow)}
+                            >
+                            {
+                                isShow===true ?  <IoMdEye/> :  <IoMdEyeOff/>
+                            }                          
+                          </Button>  
                           <Button className="error" color="error" onClick={()=>deleteCat(item._id)}>
                             <MdDelete />
                           </Button>
@@ -329,20 +380,42 @@ const Categories = () => {
               fullWidth
               onChange={changeInput}
             />
-
-            <TextField
-              autoFocus
-              required
-              margin="dense"
-              id="images"
-              name="images"
-              label="Hình ảnh"
-              type="text"
-              fullWidth
-              value={formFields.images}
-              onChange={addImgUrl}
-            />
           </DialogContent>
+
+          <div className='card p-4 mt-0'>
+              <div className="imagesUploadSec">
+                  <h5 class="mb-4">ẢNH SẢN PHẨM</h5>
+
+                  <div className='imgUploadBox d-flex align-items-center'>
+
+                      {
+                        formFields?.images?.length !== 0 &&  formFields?.images?.map((item, index) => {
+                          return (
+                            <div className='uploadBox' key={index}>
+                              <span className="remove" onClick={() => removeImg(item, index)}><IoCloseSharp /></span>
+                              <div className='box'>
+                                  <LazyLoadImage
+                                    alt={"image"}
+                                    effect="blur"
+                                    className="w-100"
+                                    src={item} />
+                              </div>
+                            </div>
+                          )
+                        })
+                      }
+
+                      <div className='uploadBox'>
+                          <input type="file" name="images" onChange={(e) => onChangeFile(e, '/api/category/uploadImages')}/>
+                          <div className='info'>
+                              <FaRegImages />
+                              <h5>chọn ảnh</h5>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
         </form>
         <DialogActions>
           <Button onClick={handleClose} variant="outlined">Hủy</Button>

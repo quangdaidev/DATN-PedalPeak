@@ -56,7 +56,7 @@ const productSchema = mongoose.Schema({
     },
     countInStock: {
         type: Number,
-        required: true,
+        default: 0,
     },
     rating: {
         type: Number,
@@ -68,26 +68,19 @@ const productSchema = mongoose.Schema({
     },
     discount: {
         type: Number,
-        required: true,
+        default: "",
     },
-    productRam: [
-        {
-            type: String,
-            default: null,
-        }
-    ],
     color: [
         {
             type: String,
             default: null,
         }
     ],
-    productWeight: [
-        {
-            type: String,
-            default: null,
-        }
-    ],
+    productWeight:{
+        type: String,
+        default: null,
+    }
+    ,
     dateCreated: {
         type: Date,
         default: Date.now,
@@ -101,3 +94,6 @@ const productSchema = mongoose.Schema({
 
 const ProductModel = mongoose.model("Product", productSchema);
 export default ProductModel
+
+//productRam 51-27:18
+//productWeight 52 -3:52

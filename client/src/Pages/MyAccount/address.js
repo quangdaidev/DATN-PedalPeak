@@ -73,10 +73,6 @@ const Address = () => {
         // setSelectedValue(value);
     };
 
-    const handleClickOpen = () => {
-        setIsOpenModel(true);
-    };
-
     const handleChangeStatus = (event) => {
         setStatus(event.target.value);
         setFormFields((prevState) => ({

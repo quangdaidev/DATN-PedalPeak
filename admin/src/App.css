@@ -319,6 +319,7 @@ body.dark .table-striped tbody tr:nth-of-type(odd){background: rgba(0,0,0,0.2) !
 .table tbody .actions button.secondary{background: rgba(203,60,231,0.2) !important;}
 .table tbody .actions button.success{background: rgba(26,159,83,0.2) !important;}
 .table tbody .actions button.error{background: rgba(241,17,51,0.2) !important;}
+.table tbody .actions button.primary{background: rgba(64, 85, 243, 0.2) !important;}
 
 body.dark .table tbody .actions button.secondary{background-color: #de2fff !important;}
 body.dark .table tbody .actions button.secondary svg{color: #fff !important;}
@@ -336,6 +337,7 @@ table.v-align td{vertical-align: middle !important;}
 .table td .old,.table td .new{display: block; width: 100%;}
 
 table td .imgWrapper{width:20%; flex: 0 0 20%;}
+table td .imgWrapper2{ flex: 0 0 20%;}
 table td .imgWrapper .card{border-radius: 10px !important; overflow: hidden !important;}
 table td .info{width: 65%; flex: 0 0 65%;}
 
@@ -405,7 +407,7 @@ z-index: 99; pointer-events: none;}
 .loginSection .loginBox .wrapper .link{font-size: 14px;}
 
 .loginSection .loginBox .wrapper .or span.line{ display: block; width: 35%; height: 1px; background: rgba(0,0,0,0.2);}
-.loginSection .loginBox .wrapper .or span.txt{display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; width:40px; height: 40px; border: 1px solid rgba(0,0,0,0.2); border-radius: 50%;}
+.loginSection .loginBox .wrapper .or span.txt{display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; width:50px; height: 50px; border: 1px solid rgba(0,0,0,0.2); border-radius: 50%;}
 
 body.dark .loginSection .loginBox .wrapper .or span.line{background: rgba(255,255,255,0.3) !important;}
 
@@ -559,4 +561,8 @@ body.dark .imgUploadBox .uploadBox{border: 1px dashed  rgba(255,255,255,0.2);}
   .dot{display: block; width: 10px; height: 10px; border-radius: 100%}
 
   .editModal .css-1t1j96h-MuiPaper-root-MuiDialog-paper{width:600px !important}
+
+  .CircularProgress .MuiCircularProgress-root{
+    width:30px; height:30px !important
+  }
 

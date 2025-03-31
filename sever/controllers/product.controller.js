@@ -3,6 +3,7 @@ import ProductModel from '../models/product.model.js';
 import { v2 as cloudinary } from 'cloudinary';
 import { error } from "console";
 import fs from 'fs';
+import ProductColorModel from '../models/productColor.model.js';
 
 cloudinary.config({
     cloud_name: process.env.cloudinary_Config_Cloud_Name,
@@ -47,6 +48,34 @@ export async function uploadImages(request, response) {
     }
 }
 
+// delete images
+export async function removeImageFromCloudinary(request, response) {
+    const imgUrl = request.query.img;
+
+    const urlArr = imgUrl.split("/");
+    const image = urlArr[urlArr.length - 1];
+
+    const imageName = image.split(".")[0];
+
+    if (imageName) {
+        const res = await cloudinary.uploader.destroy(
+            imageName,
+            (error, result) => {
+                // console.log(error, res)
+            }
+        );
+
+        if (res) {
+           imagesArr = imagesArr.filter(image => image !== imgUrl);
+    
+            return response.status(200).json({
+                images: imagesArr,
+            });
+        }
+    }
+}
+
+
 // create product 
 export async function createProduct(request, response) {
     try {
@@ -66,7 +95,6 @@ export async function createProduct(request, response) {
             rating: request.body.rating,
             isFeatured: request.body.isFeatured,
             discount: request.body.discount,
-            productRam: request.body.productRam,
             color: request.body.color,
             productWeight: request.body.productWeight,
 
@@ -135,7 +163,7 @@ export async function getAllProducts(request, response) {
         return response.status(200).json({
             error: false, 
             success: true,
-            products: products,
+            data: products,
             totalPages: totalPages,
             page: page,
         })
@@ -697,6 +725,52 @@ export async function deleteProduct(request, response) {
     });
 }
 
+//delete multiple products
+export async function deleteMultipleProduct(request, response) {
+    const { ids } = request.body;
+
+    if (!ids || !Array.isArray(ids)) {
+        return response.status(400).json({ error: true, success: false, message: 'Invalid input' });
+    }
+
+    for (let i=0; i<ids?.length; i++){
+        const product = await ProductModel.findById(ids[i]);
+        const images = product.images;
+        let img = "";
+
+        for (img of images) {
+            const imgUrl = img;
+            const urlArr = imgUrl.split("/");
+            const image = urlArr[urlArr.length - 1];
+
+            const imageName = image.split(".")[0];
+
+            if(imageName) {
+                cloudinary.uploader.destroy(imageName, (error, result) => {
+
+                })
+            }
+        }
+
+    }
+
+    try {
+        await ProductModel.deleteMany({ _id: { $in: ids } });
+
+        return response.status(200).json({
+        message: "Xóa sản phẩm thành công", 
+        error: false,
+        success: true
+        })
+    } catch (error) {
+        return response.status(500).json({ 
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
 
 // get single product
 export async function getProduct(request, response) {
@@ -714,7 +788,7 @@ export async function getProduct(request, response) {
         return response.status(200).json({
             error: false,
             success: true,
-            product: product
+            data: product
         })
     } catch (error) {
         return response.status(500).json({
@@ -725,40 +799,15 @@ export async function getProduct(request, response) {
     }
 }
 
-
-// delete images
-export async function removeImageFromCloudinary(request, response) {
-    const imgUrl = request.query.img;
-
-    const urlArr = imgUrl.split("/");
-    const image = urlArr[urlArr.length - 1];
-
-    const imageName = image.split(".")[0];
-
-    if (imageName) {
-        const res = await cloudinary.uploader.destroy(
-            imageName,
-            (error, result) => {
-                // console.log(error, res)
-            }
-        );
-
-        if (res) {
-            response.status(200).send(res);
-        }
-    }
-}
-
-
 // update product
 export async function updateProduct(request, response) {
     try {
-        const product = await ProductModel.FindByIdAndUpdate(
-            req.params.id,
+        const product = await ProductModel.findByIdAndUpdate(
+            request.params.id,
             {
                 name: request.body.name,
                 description: request.body.description,
-                images: imagesArr,
+                images: imagesArr.length > 0 ? imagesArr[0] : request.body.images,
                 brand: request.body.brand,
                 price: request.body.price,
                 oldPrice: request.body.oldPrice,
@@ -772,7 +821,6 @@ export async function updateProduct(request, response) {
                 rating: request.body.rating,
                 isFeatured: request.body.isFeatured,
                 discount: request.body.discount,
-                productRam: request.body.productRam,
                 color: request.body.color,
                 productWeight: request.body.productWeight,
             },
@@ -802,3 +850,172 @@ export async function updateProduct(request, response) {
         })
     }
 }
+
+export async function createProductColor (request, response) { 
+    try {
+        let productColor = new ProductColorModel({ 
+            name: request.body.name
+        })
+
+        productColor = await productColor.save();
+
+        if (!productColor) {
+            response.status(500).json({
+                error: true,
+                success: false,
+                message: "Product Color Not created"
+            });
+        }
+  
+        return response.status(200).json({
+            message: "Tạo thành công",
+            error: false,
+            success: true,
+            data: productColor
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false 
+        })
+    }
+}
+
+export async function deleteProductColor (request, response) {
+    const productColor = await ProductColorModel.findById(request.params.id);
+
+    if (!productColor) {
+        return response.status(404).json({
+            message: "Item Not found",
+            error: true,
+            success: false
+        })
+    }
+
+    const deletedProductColor = await ProductColorModel.findByIdAndDelete(request.params.id);
+
+    if (!deletedProductColor) {
+        response.status (404).json({
+            message: "Item not deleted!",
+            success: false,
+            error: true
+        });
+    }
+
+    return response.status(200).json({
+        success: true,
+        error: false,
+        message: "Xóa thành công",
+    });
+}    
+
+//delete multiple productColor 
+export async function deleteMultipleProductColor (request, response) {
+    const { ids } = request.body;
+    if (!ids || !Array.isArray(ids)) {
+
+        return res.status (400).json({ 
+            error: true, 
+            success: false, 
+            message: 'Invalid input' 
+        });
+    }
+
+    try {
+        await ProductColorModel.deleteMany({ _id: { $in: ids } });
+        return response.status (200).json({
+            message: "Xóa thành công",
+            error: false,
+            success: true
+        })
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+export async function updateProductColor(request, response) {
+
+    try {
+        const productColor = await ProductColorModel.findByIdAndUpdate( 
+            request.params.id,
+            {
+               name: request.body.name,
+            },{ new: true }
+        );
+
+        if (!productColor) {
+            return response.status(404).json({
+                message: "the product weight can not be updated!", 
+                status: false,
+            });
+        }
+
+        return response.status (200).json({
+            message: "Cập nhật thành công",
+            error: false,
+            success: true
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+export async function getProductColor(request, response) {
+    try {
+        const productColor = await ProductColorModel.find();
+
+        if(!productColor){
+        return response.status(500).json({
+            error: true,
+            success: false
+        })
+    }
+
+    return response.status(200).json({
+        error: false,
+        success: true, 
+        data:productColor
+    })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+export async function getProductColorById(request, response) {
+    try {
+        const productColor = await ProductColorModel.findById(request.params.id);
+        if(!productColor){
+            return response.status(500).json({
+                error: true,
+                success: false
+            })
+        }
+        return response.status(200).json({
+            error: false,
+            success: true,
+            data:productColor
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+    
+    

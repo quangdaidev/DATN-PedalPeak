@@ -15,13 +15,13 @@ import {
 
 const categoryRouter = Router();
 
-categoryRouter.post("/uploadImages",auth,upload.array("images"),uploadImages);
+categoryRouter.post("/uploadImages",upload.array("images"),uploadImages);
 categoryRouter.post("/create", createCategory);
 categoryRouter.get("/", getCategories);
 categoryRouter.get("/get/count", auth, getCategoriesCount);
 categoryRouter.get("/get/count/subCat", auth, getSubCategoriesCount);
 categoryRouter.get("/:id",getCategory);
-categoryRouter.delete("/deleteImage", auth, removeImageFromCloudinary);
+categoryRouter.delete("/deleteImage", removeImageFromCloudinary);
 categoryRouter.delete("/:id", deleteCategory);
 categoryRouter.put("/:id", updatedCategory);
 

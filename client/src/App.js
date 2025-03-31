@@ -64,7 +64,7 @@ function App() {
   };
 
   useEffect(()=>{
-
+    
     const token = localStorage.getItem('accessToken');
 
     if(token!==undefined && token!==null && token !==""){
@@ -81,6 +81,7 @@ function App() {
           setIsLogin(false);
         }
         console.log("app.js",res);
+
         setUserData(res.data);
       })
     }else{

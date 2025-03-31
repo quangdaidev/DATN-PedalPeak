@@ -201,6 +201,83 @@ export async function loginUserController(request, response) {
     }
 }
 
+export async function loginAdminController(request, response) {
+    try {
+        const { email, password } = request.body;
+
+        const user = await UserModel.findOne({ email: email });
+
+        if (user.status!=="Hoạt động") {
+            response.status(400).json({
+                message: "Liên hệ admin để kích hoạt lại tài khoản",
+                error: true,
+                success: false
+            });
+        }
+
+        if (user.verify_email!==true) {
+            response.status(400).json({
+                message: "Email chưa được xác thực",
+                error: true,
+                success: false
+            });
+        }
+
+        if (user.role!=="ADMIN") {
+            response.status(400).json({
+                message: "Tài khoản không có quyền truy cập",
+                error: true,
+                success: false
+            });
+        }
+
+        const checkPassword = await bcryptjs.compare(password, user.password);
+
+        if (!checkPassword) {
+            return response.status(400).json({
+                message: "Mật khẩu không đúng!",
+                error: true,
+                success: false
+            });
+        }
+        const accesstoken = await generatedAccessToken(user._id);
+     
+        const refreshtoken = await generatedRefreshToken(user._id);
+      
+
+        // const updateUser = await UserModel.findByIdAndUpdate(user?._id, {
+        //     last_login_date: new Date()
+        // });
+        
+        const cookiesOption = {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None"
+        };
+    
+        
+        response.cookie('accessToken', accesstoken, cookiesOption);
+        response.cookie('refreshToken', refreshtoken, cookiesOption);
+   
+        return response.json({
+            message: "Đăng nhập thành công!",
+            error: false,
+            success: true,
+            data: {
+                accesstoken,
+                refreshtoken
+            }
+        });
+    
+    } catch (error) {
+        return response.status(500).json({
+            message : error.message || error,
+            error : true,
+            success : false
+        })
+    }
+}
+
 export async function logoutController(request, response) {
     try {
         const userid = request.userId //middleware
@@ -616,7 +693,6 @@ export async function refreshToken(request, response) {
     }
 }
 
-
 // login user details
 export async function userDetails(request, response) {
     try {
@@ -638,7 +714,6 @@ export async function userDetails(request, response) {
         })
     }
 }
-
 
 // export async function verifyEmailController(request, response) {
 //     try {

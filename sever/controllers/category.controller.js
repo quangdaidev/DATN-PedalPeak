@@ -77,7 +77,7 @@ export async function createCategory(request, response) {
 
     imagesArr = [];
 
-    return response.status(500).json({
+    return response.status(200).json({
       message: "Tạo danh mục thành công!",
       error: false,
       success: true,
@@ -218,7 +218,17 @@ export async function removeImageFromCloudinary(request, response) {
     );
 
     if (res) {
-      response.status(200).send(res);
+
+      imagesArr = imagesArr.filter(image => image !== imgUrl);
+    
+      return response.status(200).json({
+          images: imagesArr,
+      });
+      // return response.status(200).json({
+      //   error: false,
+      //   success: true,
+      //   message: "Xóa ảnh thành công"
+      // });
     }
   }
 }

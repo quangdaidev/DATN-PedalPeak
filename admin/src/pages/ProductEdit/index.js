@@ -11,7 +11,7 @@ import { MyContext } from "../../App";
 import Rating from '@mui/material/Rating';
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Button from '@mui/material/Button';
-// import axios from 'axios';
+
 import { IoCloseSharp } from "react-icons/io5";
 // import OutlinedInput from '@mui/material/OutlinedInput';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -20,8 +20,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { FaRegImages } from "react-icons/fa";
-import { deleteImages, fetchDataFromApi, postData } from '../../utils/api';
-// import { useNavigate } from 'react-router-dom';
+import { deleteImages, editData, fetchDataFromApi, postData } from '../../utils/api';
+import { useParams } from 'react-router-dom';
+
 
 //breadcrumb code
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -56,17 +57,21 @@ const MenuProps = {
 };
 
 
-const ProductUpload = () => {
+const ProductEdit = () => {
+
+    const { id } = useParams();
 
     const context = useContext(MyContext);
 
     const [categoryVal, setcategoryVal] = useState('');
-    // const [subCatVal, setSubCatVal] = useState('');
+
     const [ratingsValue, setRatingValue] = useState(1);
     const [productColor, setProductColor] = useState([]);
     const [isFeaturedValue, setIsFeaturedValue] = useState('');
 
     const [catData, setCatData] = useState([]);
+
+
 
     // const history = useNavigate(MyContext);
 
@@ -105,6 +110,41 @@ const ProductUpload = () => {
         })
     },[]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0); //cuộn trang đến vị trí góc trên bên trái của trang
+
+        fetchDataFromApi(`/api/product/${id}`).then((res)=>{
+            // setProData(res.data);
+            // console.log("props:::",proData)
+            setFormFields({
+                name:res.data.name,
+                description:res.data.description,
+                images:res.data.images,
+                brand:res.data.brand,
+                price:res.data.price,
+                oldPrice:res.data.oldPrice,
+                catName:res.data.catName,
+                catId:res.data.catId,
+                subCatId:res.data.subCatId,
+                subCat:res.data.subCat,
+                thirdsubCat:res.data.thirdsubCat,
+                countInStock:res.data.countInStock,
+                rating:res.data.rating,
+                isFeatured:res.data.isFeatured,
+                discount:res.data.discount,
+                color:res.data.color,
+                productWeight:res.data.productWeight,
+            });
+        
+            setProductColor(res.data.color)
+            // // setcategoryVal(res.data.catName)
+            setRatingValue(res.data.rating)
+            console.log(res.data)
+        })
+        console.log("gff",formFields)
+   
+    }, [formFields,id]);
+
     const handleChangeCategory = (event) => {
         setcategoryVal(event.target.value);
         formFields.catId=event.target.value
@@ -114,10 +154,6 @@ const ProductUpload = () => {
     const selectCatByName=(name)=>{
         formFields.catName=name
     }
-
-    // const handleChangeSubCategory = (event) => {
-    //     setSubCatVal(event.target.value);
-    // };
 
     const formdata = new FormData();
 
@@ -140,11 +176,6 @@ const ProductUpload = () => {
         }
     },[imgFiles])
 
-    // useEffect(()=>{
-    //     console.log("effect::::",formFields.images)
-    //     setFormFields(formFields);
-       
-    // },[formFields])
 
     const handleChangeProductColor = (event) => {
         const {
@@ -209,6 +240,7 @@ const ProductUpload = () => {
             setPreviews ([]);
 
             setTimeout(()=>{
+
                 setPreviews(imageArr);
                 setFormFields(()=>{
                     return{
@@ -223,9 +255,12 @@ const ProductUpload = () => {
     }
         
 
-    const addProduct = async (e) => {
+    const editProduct = async (e) => {
         e.preventDefault();
         // console.log("add",formFields)
+       
+
+        console.log("proDataa:::;;",formFields)
 
         if(formFields.name===""){
             context.openAlertBox(
@@ -240,15 +275,6 @@ const ProductUpload = () => {
             context.openAlertBox(
                 "error",
                 "Bạn chưa nhập mô tả sản phẩm"
-            )
-            setIsLoading(false);
-            return false;
-        }
-
-        if(categoryVal==null ||categoryVal==="" ){
-            context.openAlertBox(
-                "error",
-                "Bạn chưa nhập danh mục sản phẩm"
             )
             setIsLoading(false);
             return false;
@@ -278,15 +304,6 @@ const ProductUpload = () => {
             context.openAlertBox(
                 "error",
                 "Bạn chưa nhập thương hiệu sản phẩm"
-            )
-            setIsLoading(false);
-            return false;
-        }
-
-        if(isFeaturedValue==null ||isFeaturedValue===""){
-            context.openAlertBox(
-                "error",
-                "Bạn chưa chọn sản phẩm nổi bật"
             )
             setIsLoading(false);
             return false;
@@ -332,29 +349,11 @@ const ProductUpload = () => {
 
         setIsLoading(true);
 
+       
         setTimeout(()=>{
-            postData('/api/product/create',formFields).then((res)=>{   
-                console.log("post::::",res)
+            editData(`/api/product/updateProduct/${id}`,formFields).then((res)=>{
                 context.openAlertBox("success", res?.message);
-            // history("/product")
-
-            setIsLoading(false);
-
-            setImgFiles(true);
-
-            setFormFields({
-                name:'',
-                description:'',
-                images:[],
-                brand:'',
-                price:'',
-                oldPrice:'',
-                category:'',
-                countInStock:'',
-                rating:'',
-                isFeatured: null,
-            })
-            
+                setIsLoading(false);
             })
         },3000)
     }
@@ -363,7 +362,7 @@ const ProductUpload = () => {
         <>
             <div className="right-content w-100">
                 <div className="card shadow border-0 w-100 flex-row p-4 res-col">
-                    <h5 className="mb-0">Tạo mới sản phẩm</h5>
+                    <h5 className="mb-0">Cập nhật sản phẩm</h5>
                     <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
                         <StyledBreadcrumb
                             component="a"
@@ -379,12 +378,12 @@ const ProductUpload = () => {
                             deleteIcon={<ExpandMoreIcon />}
                         />
                         <StyledBreadcrumb
-                            label="Tạo mới"
+                            label="Cập nhật"
                             deleteIcon={<ExpandMoreIcon />}
                         />
                     </Breadcrumbs>
                 </div>
-                <form className='form'  onSubmit={addProduct}>
+                <form className='form'  onSubmit={editProduct}>
                     <div className='row'>
                         <div className='col-md-12'>
                             <div className='card p-4 mt-0'>
@@ -413,7 +412,7 @@ const ProductUpload = () => {
                                                 className='w-100'
                                             >
                                                 <MenuItem value="">
-                                                    <em value={null}>Chọn</em>
+                                                    <em value={null}>{formFields.catName}</em>
                                                 </MenuItem>
                                                 {
                                                     catData?.length!==0 && catData?.map((cat,index)=>{
@@ -491,7 +490,7 @@ const ProductUpload = () => {
                                                 className='w-100'
                                             >
                                                 <MenuItem value="">
-                                                    <em value={null}>Chọn</em>
+                                                    <em value={null}>{formFields.isFeatured ? "Có" : "Không"}</em>
                                                 </MenuItem>
                                                 <MenuItem value={true}>Có</MenuItem>
                                                 <MenuItem value={false}>Không</MenuItem>
@@ -578,7 +577,7 @@ const ProductUpload = () => {
                             <div className='imgUploadBox d-flex align-items-center'>
 
                                 {
-                                    previews?.length !== 0 && previews?.map((item, index) => {
+                                   formFields?.images?.length !== 0 &&  formFields?.images?.map((item, index) => {
                                         return (
                                             <div className='uploadBox' key={index}>
                                                 <span className="remove" onClick={() => removeImg(item, index)}><IoCloseSharp /></span>
@@ -609,7 +608,7 @@ const ProductUpload = () => {
                                 {
                                     isLoading===true 
                                     ? <CircularProgress color="inherit" className="ml-2 loader"/>
-                                    : 'TẠO MỚI'
+                                    : 'CẬP NHẬT'
                                 } 
                             </Button>
                         </div>
@@ -621,4 +620,4 @@ const ProductUpload = () => {
     )
 }
 
-export default ProductUpload;
+export default ProductEdit;
