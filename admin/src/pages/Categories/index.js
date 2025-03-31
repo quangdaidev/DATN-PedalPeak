@@ -4,6 +4,8 @@ import React, {  useEffect, useState } from "react";
 
 import Button from "@mui/material/Button";
 
+import HomeIcon from "@mui/icons-material/Home";
+
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import CircularProgress from '@mui/material/CircularProgress';
@@ -213,8 +215,10 @@ const Categories = () => {
           <h5 className="mb-0">Danh sách danh mục</h5>
           <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
             <StyledBreadcrumb
+             label="Tổng quan "
               component="a"
               href="#"
+              icon={<HomeIcon fontSize="small" />}
             />
 
             <StyledBreadcrumb

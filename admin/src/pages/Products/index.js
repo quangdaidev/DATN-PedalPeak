@@ -102,39 +102,19 @@ const Products = () => {
             <StyledBreadcrumb
               component="a"
               href="#"
-              label="Dashboard"
+              label="Tổng quan"
               icon={<HomeIcon fontSize="small" />}
             />
 
             <StyledBreadcrumb
-              label="Products"
+              label="Sản phẩm"
               deleteIcon={<ExpandMoreIcon />}
             />
           </Breadcrumbs>
         </div>
 
-        <div className="row dashboardBoxWrapperRow dashboardBoxWrapperRowV2">
-          <div className="col-md-12">
-            <div className="dashboardBoxWrapper d-flex">
-              <DashboardBox
-                color={["#1da256", "#48d483"]}
-                icon={<FaUserCircle />}
-                grow={true}
-              />
-              <DashboardBox
-                color={["#c012e2", "#eb64fe"]}
-                icon={<IoMdCart />}
-              />
-              <DashboardBox
-                color={["#2c78e5", "#60aff5"]}
-                icon={<MdShoppingBag />}
-              />
-            </div>
-          </div>
-        </div>
-
         <div className="card shadow border-0 p-3 mt-4">
-          <h3 className="hd">Best Selling Products</h3>
+          <h3 className="hd">Danh sách sản phẩm</h3>
 
           <div className="row cardFilters mt-3">
             <div className="col-md-3">
