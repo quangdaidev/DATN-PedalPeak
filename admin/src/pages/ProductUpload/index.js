@@ -535,6 +535,9 @@ const ProductUpload = () => {
                                                 <MenuItem value="Đen" >Đen</MenuItem>
                                                 <MenuItem value="Trắng" >Trắng</MenuItem>
                                                 <MenuItem value="Xám" >Xám</MenuItem>
+                                                <MenuItem value="Đen Đỏ" >Đen Đỏ</MenuItem>
+                                                <MenuItem value="Đen Xanh Dương" >Đen Xanh Dương</MenuItem>
+                                                <MenuItem value="Đen Xanh Lá" >Đen Xanh Lá</MenuItem>
                                             </Select>
                                         </div>
                                     </div>

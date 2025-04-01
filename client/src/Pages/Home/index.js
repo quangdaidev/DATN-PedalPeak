@@ -26,31 +26,44 @@ import Button from '@mui/material/Button';
 import ProductsSlider from '../../Components/ProductsSlider';
 import AdsBannerSlider from '../../Components/AdsBannerSlider';
 
-// import {fetchDataFromApi} from "../../utils/api";
+import {fetchDataFromApi} from "../../utils/api";
 
 const Home =()=>{
 
-    // const [catData, setCatData] = useState([]);;
+    const [catData, setCatData] = useState([]);
+    const [productsData, setProductsData] = useState([]);
 
-    // useEffect(()=>{
-    //     fetchDataFromApi("/api/categories").then((res)=>{
-    //         setCatData(res);
-    //     })
+    useEffect(()=>{
+        fetchDataFromApi("/api/category").then((res)=>{
+            setCatData(res?.data);
+        })
 
-    //     const filterKey="67c5c8c5d0e2d348c2f5b13f";
-    //     fetchDataFromApi(`/api/products/?category=${filterKey}`).then((item)=>{
+        fetchDataFromApi("/api/product/getAllProducts").then((res)=>{
+            console.log("po::",res.data)
+            setProductsData(res?.data);
+        })
+
+        
+        
+        // const filterKey="67c5c8c5d0e2d348c2f5b13f";
+        // fetchDataFromApi(`/api/products/?category=${filterKey}`).then((item)=>{
             
-    //     })
-    // },[])
+            // })
+    },[])
+      
+    console.log("pi::",productsData)
+    const productsDataHot = (productsData.filter(product => product.rating === 5));
+    console.log("ppppppppppp", productsDataHot);
    
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []); // cuộn trang lên trên
   
 
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
+        
         setValue(newValue);
       };
 
@@ -97,11 +110,9 @@ const Home =()=>{
             </div>
             {/* End slider */}
 
-            {/*
-                catData?.length!==0 &&  <HomeCatSlider catData={catData}/>
-            */}
+            
+            { catData?.length!==0 &&  <HomeCatSlider catData={catData}/>}
 
-          
 
             <section className="bg-white pt-4">
                 <div className="container">
@@ -119,14 +130,14 @@ const Home =()=>{
                         </div>
                         <div className=" rightSec pr-10">
                             <h2 className="text-[20px] font-[600]">Sản phẩm phổ biến</h2>
-                            <p className="text-[14px] font-[400]">Đừng bỏ lỡ các ưu đãi hiện tại cho đến cuối tháng 3.</p>
+                            <p className="text-[14px] font-[400]">Đừng bỏ lỡ các ưu đãi hiện tại dành cho tháng 4.</p>
                         </div>
                     </div>
                     <CustomTabPanel value={value} index={0}>
-                        <ProductsSlider items={5}/>
+                        <ProductsSlider items={5} productsDataHot={productsDataHot}/>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
-                        Sản phẩm dành cho bạn
+                        Sản phẩm ưu đãi
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         Sản phẩm đề xuất

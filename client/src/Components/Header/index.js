@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Rating from '@mui/material/Rating';
 import { GoTriangleDown } from "react-icons/go";
 
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SearchBox from './SearchBox';
 
 import Badge from '@mui/material/Badge';
@@ -76,6 +76,16 @@ const Header =()=>{
         })
     }
 
+    const [catData, setCatData] = useState([]);
+
+    useEffect(()=>{
+        fetchDataFromApi("/api/category").then((res)=>{
+            if(res?.error===false){
+                setCatData(res?.data)
+            }
+        })
+    },[]);
+
     return (
         <> 
             <div className="bg-white fixed top-0 left-0 z-50 w-full">
@@ -95,7 +105,20 @@ const Header =()=>{
 
                                     <div className="submenu absolute top-[100%] left-[0%] min-w-[200px] bg-white shadow-lg">
                                         <ul className=" hidden group-hover:block font">
-                                            <li className="block ">
+
+                                            {
+                                                catData?.length !== 0 && catData?.map((cat,index)=>{
+                                                    return(
+                                                        <li className="block ">
+                                                            <Link className="" to="/productListing">
+                                                                <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none button-lv1">{cat.name}</Button>
+                                                            </Link>
+                                                        </li>
+                                                    )
+                                                })
+                                            }
+
+                                            {/* <li className="block ">
                                                 <Link className="" to="/">
                                                     <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none button-lv1">San pham 1</Button>
                                                 </Link>
@@ -129,7 +152,7 @@ const Header =()=>{
                                                 <Link to="/">
                                                     <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none button-lv1">San pham 1</Button>
                                                 </Link>
-                                            </li>
+                                            </li> */}
                                         </ul>
                                     </div>
                                 </li>

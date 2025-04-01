@@ -75,7 +75,6 @@ export async function removeImageFromCloudinary(request, response) {
     }
 }
 
-
 // create product 
 export async function createProduct(request, response) {
     try {
@@ -176,7 +175,6 @@ export async function getAllProducts(request, response) {
         })
     }
 }
-
 
 // get all products by category id
 export async function getAllProductsByCatId(request, response) {
@@ -807,7 +805,7 @@ export async function updateProduct(request, response) {
             {
                 name: request.body.name,
                 description: request.body.description,
-                images: imagesArr.length > 0 ? imagesArr[0] : request.body.images,
+                images: imagesArr,
                 brand: request.body.brand,
                 price: request.body.price,
                 oldPrice: request.body.oldPrice,
@@ -839,7 +837,8 @@ export async function updateProduct(request, response) {
         return response.status(200).json({
             message:"Cập nhật sản phẩm thành công!",
             error: false,
-            success: true 
+            success: true ,
+            data: product
         })
 
     } catch (error) {

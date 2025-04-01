@@ -76,7 +76,7 @@ function App() {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken"); 
 
-          openAlertBox("error", "Bạn đã kết thúc phiên, xin đăng nhập lại");
+          // openAlertBox("error", "Bạn đã kết thúc phiên, xin đăng nhập lại");
 
           setIsLogin(false);
         }

@@ -143,7 +143,7 @@ const ProductEdit = () => {
         })
         console.log("gff",formFields)
    
-    }, [formFields,id]);
+    }, []);
 
     const handleChangeCategory = (event) => {
         setcategoryVal(event.target.value);
@@ -220,13 +220,19 @@ const ProductEdit = () => {
     }
 
     const onChangeInput= (e) => {
-        const {name, value} = e.target;
-        setFormFields(()=>{
-            return{
-                ...formFields,
-                [name]:value
+        // const {name, value} = e.target;
+        // setFormFields(()=>{
+        //     return{
+        //         ...formFields,
+        //         [name]:value
+        //     }
+        // })
+        setFormFields(()=>(
+            {
+                ...formFields, //sao chép tất cả các giá trị hiện tại trong đối tượng formFields
+                [e.target.name]:e.target.value //cập nhật một trường dữ liệu trong đối tượng formFields
             }
-        })
+        ))
     }
 
     const removeImg = async (image, index) => {
@@ -352,6 +358,7 @@ const ProductEdit = () => {
        
         setTimeout(()=>{
             editData(`/api/product/updateProduct/${id}`,formFields).then((res)=>{
+                console.log("res:::",res)
                 context.openAlertBox("success", res?.message);
                 setIsLoading(false);
             })
@@ -492,8 +499,10 @@ const ProductEdit = () => {
                                                 <MenuItem value="">
                                                     <em value={null}>{formFields.isFeatured ? "Có" : "Không"}</em>
                                                 </MenuItem>
-                                                <MenuItem value={true}>Có</MenuItem>
-                                                <MenuItem value={false}>Không</MenuItem>
+                                                {
+                                                    formFields.isFeatured ?  <MenuItem value={false}>Không</MenuItem> :  <MenuItem value={true}>Có</MenuItem>
+                                                }                                          
+                                               
                                             </Select>
                                         </div>
                                     </div>
@@ -534,6 +543,10 @@ const ProductEdit = () => {
                                                 <MenuItem value="Đen" >Đen</MenuItem>
                                                 <MenuItem value="Trắng" >Trắng</MenuItem>
                                                 <MenuItem value="Xám" >Xám</MenuItem>
+                                                <MenuItem value="Đen Xanh">Đen Xanh</MenuItem>
+                                                <MenuItem value="Đen Đỏ" >Đen Đỏ</MenuItem>
+                                                <MenuItem value="Trắng Tím" >Trắng Tím</MenuItem>
+                                                <MenuItem value="Xanh Đen" >Xanh Đen</MenuItem>
                                             </Select>
                                         </div>
                                     </div>
