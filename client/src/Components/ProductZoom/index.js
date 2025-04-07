@@ -7,7 +7,7 @@ import 'swiper/css/navigation';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
 
-export const ProductZoom = () => {
+export const ProductZoom = (props) => {
     const [slideIndex, setSlideIndex] = useState(0);
     const zoomSliderBig = useRef();
     const zoomSliderSml = useRef();
@@ -31,14 +31,21 @@ export const ProductZoom = () => {
                     // clickable: true,
                     // }}
                     modules={[Navigation]}
-                    className="zoomProductSliderThumbs h-[500px]"
+                    className={`zoomProductSliderThumbs h-[500px] overflow-hidden ${props?.images?.length > 5 && 'space'}`}
                 >
-                    <SwiperSlide>
-                        <div className={`item rounded-md overflow-hidden cursor-pointer group shadow-[0_4px_6px_rgba(0,0,0,0.1)] ${slideIndex===0 ? 'opacity-1' : 'opacity-30'}`} onClick={()=>goto(0)}>
-                            <img alt="" src="https://api.xedap.vn/products/Max%20bike/hunter-24-white.jpg" className="w-full transition-all group-hover:scale-105"/>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide>
+                {
+                    props?.images?.map((item,index)=>{
+                        return (
+                            <SwiperSlide key={index}>
+                                <div className={`item rounded-md overflow-hidden cursor-pointer group shadow-[0_4px_6px_rgba(0,0,0,0.1)] ${slideIndex===index ? 'opacity-100' : 'opacity-30'}`} onClick={()=>goto(index)}>
+                                    <img alt="" src={item}/>
+                                </div>
+                            </SwiperSlide>
+                        )
+                    })
+                }
+                    
+                    {/* <SwiperSlide>
                         <div className={`item rounded-md overflow-hidden cursor-pointer group shadow-[0_4px_6px_rgba(0,0,0,0.1)] ${slideIndex===1 ? 'opacity-1' : 'opacity-30'}`} onClick={()=>goto(1)}>
                             <img alt="" src="https://api.xedap.vn/products/Max%20bike/hunter-24-green-3.jpg" className="w-full transition-all group-hover:scale-105"/>
                         </div>
@@ -62,7 +69,7 @@ export const ProductZoom = () => {
                         <div className={`item rounded-md overflow-hidden cursor-pointer group shadow-[0_4px_6px_rgba(0,0,0,0.1)] ${slideIndex===5 ? 'opacity-1' : 'opacity-30'}`} onClick={()=>goto(5)}>
                             <img alt="" src="https://api.xedap.vn/products/Max%20bike/hunter-24-green-1.jpg" className="w-full transition-all group-hover:scale-105"/>
                         </div>
-                    </SwiperSlide>
+                    </SwiperSlide> */}
                     <SwiperSlide></SwiperSlide>
                 </Swiper>
             </div>
@@ -78,14 +85,21 @@ export const ProductZoom = () => {
                     // }}
                     className=""
                 >
-                    <SwiperSlide>
-                        <InnerImageZoom 
-                        zoomType="hover" 
-                        zoomScale={1} 
-                        src=
-                            "https://api.xedap.vn/products/Max%20bike/hunter-24-white.jpg"                     
-                        />
-                    </SwiperSlide>
+                {
+                    props?.images?.map((item, index) => {
+                        return (
+                            <SwiperSlide key={index}>
+                                <InnerImageZoom 
+                                zoomType="hover" 
+                                zoomScale={1} 
+                                src={item}
+                                />
+                            </SwiperSlide>
+                        )
+
+                    })
+                }
+                    
                     <SwiperSlide>
                         <InnerImageZoom 
                         zoomType="hover" 

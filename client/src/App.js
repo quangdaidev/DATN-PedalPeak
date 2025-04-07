@@ -29,7 +29,7 @@ import Checkout from './Pages/Checkout';
 import MyAccount from './Pages/MyAccount';
 import Orders from './Pages/Orders';
 import { TestApi } from './Pages/testAPI';
-import { fetchDataFromApi } from './utils/api';
+import { fetchDataFromApi, postData } from './utils/api';
 import { useNavigate } from 'react-router-dom';
 import Address from './Pages/MyAccount/address';
 
@@ -45,8 +45,13 @@ const alertBox = (msg, type)=>{
 const MyContext = createContext();
 
 function App() {
+
+  const token = localStorage.getItem('accessToken');
   
-  const [openProductDetailsModal, setOpenProductDetailsModal] = useState(false);
+  const [openProductDetailsModal, setOpenProductDetailsModal] = useState({
+    open: false,
+    item:{}
+  });
   const [fullWidth, setFullWidth] = useState(true);
   const [maxWidth, setMaxWidth] = useState('lg');
   const [isLogin, setIsLogin] = useState(false);
@@ -54,13 +59,32 @@ function App() {
   const [address, setAddress] = useState([]);
   // const apiUrl = import.meta.env.VITE_API_URL;
 
+  const [catData, setCatData] = useState([]);
+  const [productsData, setProductsData] = useState([]);
+
+  const [productColorsData, setProductColorsData] = useState([]);
+
+  const [cartData, setCartData] = useState([]);
+  const [myListData, setMyListData] = useState([]);
+
 
   // const handleClickOpenProductDetailsModal = () => {
   //   setOpenProductDetailsModal(true);
   // };
 
+  const handleOpenProductDetailsModal = (status, item) => {
+    setOpenProductDetailsModal({
+      open: status,
+      item: item
+    });
+  };
+
+
   const handleCloseProductDetailsModal = () => {
-    setOpenProductDetailsModal(false);
+    setOpenProductDetailsModal({
+      open: false,
+      item: {}
+    });
   };
 
   useEffect(()=>{
@@ -84,6 +108,10 @@ function App() {
 
         setUserData(res.data);
       })
+
+      getCartItems();
+      getMyListData();
+
     }else{
       setIsLogin(false);
     }
@@ -98,8 +126,78 @@ function App() {
     }
   }
 
+  useEffect(()=>{
+    fetchDataFromApi("/api/category").then((res)=>{
+      setCatData(res?.data);
+    });
+    fetchDataFromApi("/api/product/getAllProducts").then((res)=>{
+      // console.log("po::",res.data)
+      setProductsData(res?.data);
+  })
+  },[])
+
+  const addToCart=(product, userId, quantity)=>{
+
+    if(userId === undefined){
+      openAlertBox("error", "Bạn cần đăng nhập");
+      return false;
+    }
+
+    const data={
+      productTitle: product?.name !== undefined ? product?.name : product?.productTitle, 
+      image: product?.images !== undefined ? product?.images[0] : product?.image,
+      rating: product?.rating, 
+      price:product?.price !==0 ? product?.price : product?.oldPrice,
+      color: product?.color,
+      quantity: quantity,
+      subTotal:parseInt(product?.price !==0 ? product?.price* quantity : product?.oldPrice* quantity),
+      productId: product?._id,
+      countInStock: product?.countInStock,
+      userId:userId,
+    };
+
+    
+
+    postData(`/api/cart/add?token=${token}`, data).then((res)=>{
+      if(res?.error===false){
+       
+        openAlertBox("success", res?.message)
+
+        getCartItems();
+
+      }else{
+        openAlertBox("error", res?.message)
+      }
+    })
+    // console.log("addToCart:::",data,userId)
+  }
+  
+  // console.log("set:::",productColorsData)
+
+  const getCartItems=()=>{
+    fetchDataFromApi(`/api/cart/get?token=${token}`).then((res)=>{
+      if(res?.error===false){
+     
+        setCartData(res?.data)
+        console.log("yyyyy",res?.data)
+        setProductColorsData(res?.data.map(item => ({ _id: item._id, color: item.color })));
+        
+      }
+    })
+  }
+
+  const getMyListData=()=>{
+    fetchDataFromApi(`/api/myList?token=${token}`).then((res)=>{
+      if(res?.error===false){
+        setMyListData(res?.data)
+        console.log("eeeee",res?.data)
+      }
+    })
+  }    
+
   const values = {
     setOpenProductDetailsModal,
+    handleOpenProductDetailsModal,
     openAlertBox,
     isLogin,
     setIsLogin,
@@ -107,7 +205,18 @@ function App() {
     setUserData,
     userData,
     address,
-    setAddress
+    setAddress,
+    setCatData,
+    catData,
+    setProductsData,
+    productsData,
+    addToCart,
+    cartData,
+    setCartData,
+    productColorsData,
+    myListData,
+    setMyListData,
+    getMyListData
   }
 
   return (
@@ -153,7 +262,7 @@ function App() {
       <Dialog
         fullWidth={fullWidth}
         maxWidth={maxWidth}
-        open={openProductDetailsModal}
+        open={openProductDetailsModal.open}
         onClose={handleCloseProductDetailsModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
@@ -164,14 +273,23 @@ function App() {
           <div className="flex items-center w-full productDetailsModalContainer relative"> 
             <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000]
             !absolute top-[15px] right-[15px] !bg-slate-200" onClick={handleCloseProductDetailsModal}
-            ><IoCloseSharp className="text-[20px]"/></Button>
-            <div className="col1 w-[40%] px-3">
-              <ProductZoom/>
-            </div>
+            >
+              <IoCloseSharp className="text-[20px]"/>
+            </Button>
 
-            <div className="col2 w-[60%] py-8 px-16 pr-16 productContent">
-              <ProductDetailsComponent/>
-            </div>
+            {
+              openProductDetailsModal?.item?.length!==0 && 
+              <>
+                <div className="col1 w-[40%] px-3">
+                  <ProductZoom images={openProductDetailsModal?.item?.images}/>
+                </div>
+
+                <div className="col2 w-[60%] py-8 px-16 pr-16 productContent">
+                  <ProductDetailsComponent item={openProductDetailsModal?.item}/>
+                </div>
+              </>
+            }
+           
           </div>
         </DialogContent>
       </Dialog>

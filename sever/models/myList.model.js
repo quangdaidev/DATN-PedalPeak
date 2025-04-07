@@ -29,13 +29,26 @@ const myListSchema = new mongoose.Schema({
         type: Number, 
         required: true
     },
+    color: [
+        {
+            type: String,
+        }
+    ],
+    quantity: {
+        type: Number,
+        default:1
+    },
     brand: {
         type: String, 
         required: true
     },
+    countInStock: {
+        type: Number,
+        required: true
+    },
     discount: {
         type: Number, 
-        required: true
+        default: ""
     },
 } , {
     timestamps: true

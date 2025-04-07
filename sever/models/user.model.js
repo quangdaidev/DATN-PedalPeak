@@ -49,12 +49,6 @@ const userSchema = mongoose.Schema({
         enum: ['ADMIN', 'USER'],
         default: "USER"
     },
-    shopping_cart: [
-        {
-            type: mongoose.Schema.ObjectId,
-            ref: 'cartProduct'
-        }
-    ],
     orderHistory: [
         {
             type: mongoose.Schema.ObjectId,

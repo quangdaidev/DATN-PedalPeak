@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import HomeBanner from '../../Components/HomeBanner';
 
@@ -27,32 +27,57 @@ import ProductsSlider from '../../Components/ProductsSlider';
 import AdsBannerSlider from '../../Components/AdsBannerSlider';
 
 import {fetchDataFromApi} from "../../utils/api";
+import { MyContext } from "../../App";
 
 const Home =()=>{
 
+    const context = useContext(MyContext);
+
     const [catData, setCatData] = useState([]);
-    const [productsData, setProductsData] = useState([]);
+    
+    const [catOneProductsData, setCatOneProductsData] = useState([]);
+
 
     useEffect(()=>{
         fetchDataFromApi("/api/category").then((res)=>{
             setCatData(res?.data);
         })
-
-        fetchDataFromApi("/api/product/getAllProducts").then((res)=>{
-            console.log("po::",res.data)
-            setProductsData(res?.data);
-        })
-
-        
         
         // const filterKey="67c5c8c5d0e2d348c2f5b13f";
         // fetchDataFromApi(`/api/products/?category=${filterKey}`).then((item)=>{
             
             // })
     },[])
+
+    const getProductsByCategory = (category) => {
+        return context?.productsData.filter((product) => product.catName === category);
+      };
+
+    const filterByCatId = (id) => {
+        fetchDataFromApi(`/api/product/getAllProductsByCatId/${id}`).then((res)=>{
+            if(res?.error === false) {
+                setCatOneProductsData(res?.data);
+            }
+        })
+    }
+
+    // useEffect(()=>{
+    //     fetchDataFromApi(`/api/product/getAllProductsByCatId/${context?.catData[0]?._id}`).then((res)=>{
+    //         if(res?.error === false) {
+    //             setCatOneProductsData(res?.data);
+    //         }
+    //     })
+    // },[context?.catData])
+
+    console.log("lll",catData)
       
-    console.log("pi::",productsData)
-    const productsDataHot = (productsData.filter(product => product.rating === 5));
+    console.log("pi::",context?.productsData)
+    const productsDataHot = context?.productsData.filter(product => product.rating === 5).slice(0, 8);
+    const productsDataSale = context?.productsData.filter(product => product.price !== 0).slice(0, 8);
+    const productsDataInStock  = [...context?.productsData].sort((a, b) => b.countInStock - a.countInStock).slice(0, 8);
+    const productsDataNew = context?.productsData.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0, 8);
+    
+    console.log("hhhhh",productsDataInStock)
     console.log("ppppppppppp", productsDataHot);
    
     useEffect(() => {
@@ -65,30 +90,31 @@ const Home =()=>{
     const handleChange = (event, newValue) => {
         
         setValue(newValue);
-      };
+    };
 
-      function CustomTabPanel(props) {
-        const { children, value, index, ...other } = props;
+
+    function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+    
+    return (
+        <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+        >
+        {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+        </div>
+    );
+    }
       
-        return (
-          <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-          >
-            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-          </div>
-        );
-      }
-      
-      function a11yProps(index) {
-        return {
-          id: `simple-tab-${index}`,
-          'aria-controls': `simple-tabpanel-${index}`,
-        };
-      }
+    function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+    }
       
 
     return ( 
@@ -124,23 +150,41 @@ const Home =()=>{
                                         <Tab className="!text-[16px]" label="Sản phẩm bán chạy" {...a11yProps(0)} />
                                         <Tab className="!text-[16px]" label="Sản phẩm khuyến mãi" {...a11yProps(1)} />
                                         <Tab className="!text-[16px]" label="Sản phẩm đề xuất" {...a11yProps(2)} />
+                                        {/* {
+                                            context?.catData?.length !==0 && context?.catData?.map((cat, index) => {
+                                                return (                                                     
+                                                    <Tab className="!text-[16px]" label={cat?.name} onClick={()=>filterByCatId(cat?._id)} {...a11yProps(index+1)} />
+                                                )
+                                            })
+                                        } */}
                                     </Tabs>
                                 </Box>
                             </Box>
                         </div>
                         <div className=" rightSec pr-10">
                             <h2 className="text-[20px] font-[600]">Sản phẩm phổ biến</h2>
-                            <p className="text-[14px] font-[400]">Đừng bỏ lỡ các ưu đãi hiện tại dành cho tháng 4.</p>
+                            <p className="text-[14px] font-[400]">Đừng bỏ lỡ các ưu đãi hiện tại dành cho tháng 4</p>
                         </div>
                     </div>
                     <CustomTabPanel value={value} index={0}>
-                        <ProductsSlider items={5} productsDataHot={productsDataHot}/>
+                        {
+                            productsDataHot?.length !== 0 && <ProductsSlider items={5} data={productsDataHot}/>
+                        }
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
-                        Sản phẩm ưu đãi
+                        
+                        {
+                            productsDataSale?.length !== 0 && <ProductsSlider items={5} data={productsDataSale}/>
+                        }
+                        
                     </CustomTabPanel>
+                   
                     <CustomTabPanel value={value} index={2}>
-                        Sản phẩm đề xuất
+
+                        {
+                            productsDataInStock?.length !== 0 && <ProductsSlider items={5} data={productsDataInStock}/>
+                        }
+
                     </CustomTabPanel>       
                 </div>
             </section>
@@ -186,192 +230,69 @@ const Home =()=>{
                         modules={[Pagination, Mousewheel, Keyboard]}
                         className="mySwiper !px-6"
                     >
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
+                        {
+                            productsDataNew?.length!==0 && productsDataNew?.map((item, index) => {
+                                return (
+                                    <SwiperSlide key={index}>
+                                        <ProductItem item={item}/>
+                                    </SwiperSlide> 
+                                )
+                            })
+                        }
                     </Swiper>
             
                 </div>
             </section>
             {/* End products */}
 
-            <section className="bg-white pt-4 mb-20">
-                <div className="container">
-                    <div className="flex items-center justify-between pl-3">
-                        <div className="leftSec py-8 w-[60%]">
-                            <div className="ct-sub-headline-label !text-slate-700">Xe đạp đường phố</div>
-                        </div>
-                        <div className=" rightSec pr-6">
-                            <Button variant="contained" className="!bg-slate-700" disableElevation>
-                                Xem thêm
-                            </Button>
-                        </div>
-                    </div>
-                    <Swiper
-                        slidesPerView={4}
-                        spaceBetween={30}
-                        pagination={{
-                        clickable: true,
-                        }}
-                        mousewheel={true}
-                        keyboard={true}
-                        modules={[Pagination, Mousewheel, Keyboard]}
-                        className="mySwiper !px-6"
-                    >
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
+            {
+                context?.catData?.length !==0 && context?.catData?.map((cat, index) => {
+                    const filteredProducts = getProductsByCategory(cat.name);
+                    return (                                                     
+                        <section className="bg-white pt-4 mb-20">
+                            <div className="container">
+                                <div className="flex items-center justify-between pl-3">
+                                    <div className="leftSec py-8 w-[60%]">
+                                        <div className="ct-sub-headline-label !text-slate-700">{cat.name}</div>
+                                    </div>
+                                    <div className=" rightSec pr-6">
+                                        <Button variant="contained" className="!bg-slate-700" disableElevation>
+                                            Xem thêm
+                                        </Button>
+                                    </div>
+                                </div>
+                                <Swiper
+                                    slidesPerView={4}
+                                    spaceBetween={30}
+                                    pagination={{
+                                    clickable: true,
+                                    }}
+                                    mousewheel={true}
+                                    keyboard={true}
+                                    modules={[Pagination, Mousewheel, Keyboard]}
+                                    className="mySwiper !px-6"
+                                >
+                                    {
+                                        filteredProducts?.length!==0 && filteredProducts?.map((item, index) => {
+                                            return (
+                                                <SwiperSlide key={index}>
+                                                    <ProductItem item={item}/>
+                                                </SwiperSlide> 
+                                            )
+                                        })
+                                    }
 
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
+                                </Swiper>
+                        
+                            </div>
+                        </section>
+                    )
+                })
+            }
 
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
 
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-                    </Swiper>
-            
-                </div>
-            </section>
-            {/* End products */}
-
-            <section className="bg-white pt-4 mb-20">
-                <div className="container">
-                    <div className="flex items-center justify-between pl-3">
-                        <div className="leftSec py-8 w-[60%]">
-                            <div className="ct-sub-headline-label !text-slate-700">Xe đạp nữ</div>
-                        </div>
-                        <div className=" rightSec pr-6">
-                            <Button variant="contained" className="!bg-slate-700" disableElevation>
-                                Xem thêm
-                            </Button>
-                        </div>
-                    </div>
-                    <Swiper
-                        slidesPerView={4}
-                        spaceBetween={30}
-                        pagination={{
-                        clickable: true,
-                        }}
-                        mousewheel={true}
-                        keyboard={true}
-                        modules={[Pagination, Mousewheel, Keyboard]}
-                        className="mySwiper !px-6"
-                    >
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-                    </Swiper>
-            
-                </div>
-            </section>
-            {/* End products */}
-
-            {/* End products */}
-
-            <section className="bg-white pt-4 mb-20">
-                <div className="container">
-                    <div className="flex items-center justify-between pl-3">
-                        <div className="leftSec py-8 w-[60%]">
-                            <div className="ct-sub-headline-label !text-slate-700">Xe đạp trẻ em</div>
-                        </div>
-                        <div className=" rightSec pr-6">
-                            <Button variant="contained" className="!bg-slate-700" disableElevation>
-                                Xem thêm
-                            </Button>
-                        </div>
-                    </div>
-                    <Swiper
-                        slidesPerView={4}
-                        spaceBetween={30}
-                        pagination={{
-                        clickable: true,
-                        }}
-                        mousewheel={true}
-                        keyboard={true}
-                        modules={[Pagination, Mousewheel, Keyboard]}
-                        className="mySwiper !px-6"
-                    >
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-
-                        <SwiperSlide>
-                            <ProductItem/>
-                        </SwiperSlide>
-                    </Swiper>
-            
-                </div>
-            </section>
-            {/* End products */}
+        
+          
 {/*            
            <section className="bg-white pt-10 mb-20 pb-1">
                 <div className="ct-sub-headline">

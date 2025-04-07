@@ -190,7 +190,7 @@ h1,h2,h3,h4,h5,h6{@apply font-semibold}
 .itemViewActions button.active svg{@apply text-[#ff5252] opacity-[1] !important }
 .Mui-selected.MuiPaginationItem-page{@apply bg-[#ff5252] text-white !important}
 
-.zoomProductSliderThumbs .swiper-wrapper{@apply pt-[38px] !important}
+.zoomProductSliderThumbs .space .swiper-wrapper{@apply pt-[38px] !important}
 
 .zoomProductSliderThumbs .swiper-button-next{@apply hover:bg-[#ff5252] hover:text-white bottom-0 w-[100%] left-0 h-[30px] rounded-none shadow-none !important;}
 .zoomProductSliderThumbs .swiper-button-next:after{@apply rotate-90 !important;}
@@ -255,3 +255,15 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .MuiDialog-paper{@apply w-[700px]  max-w-[700px] !important}
+
+.productDetailsModal .MuiDialog-paper{
+  @apply w-[1200px] max-w-[1200px] !important
+}
+
+.css-19kzrtu{
+  @apply pb-0 !important
+}
+
+.MuiButtonBase-root.MuiMenuItem-root.MuiMenuItem-gutters.selected{
+  @apply !text-main-700
+}

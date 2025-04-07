@@ -23,15 +23,28 @@ import Logout from '@mui/icons-material/Logout';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-import { fetchDataFromApi } from '../../utils/api';
+import { deleteData, editData, fetchDataFromApi } from '../../utils/api';
+import { QtyBox } from '../QtyBox';
+
+import { FaMinus, FaPlus } from "react-icons/fa6"
 
 // import Tooltip from '@mui/material/Tooltip';
 // import IconButton from '@mui/material/IconButton';
 
 
 const Header =()=>{
+
+    const VND = new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+    });
+
+    const [quantity, setQuantity] = useState(1);
+
     const [open, setOpen] = useState(false);
     const history = useNavigate();
+
+    const [cartItem, setCartItem] = useState([]);
 
     const [acAnchorEl, setAcAnchorEl] = useState(null);
     const openAc = Boolean(acAnchorEl);
@@ -46,22 +59,61 @@ const Header =()=>{
     };
 
     const [colorAnchorEl, setColorAnchorEl] = useState(null);
-    const openColor = Boolean(colorAnchorEl);
-    const [selectedColor, setSelectedColor] = useState("Đen");
-    const handleClickColor = (event) => {
+    const openColorSe = Boolean(colorAnchorEl);
+    const [openColor, setOpenColor] = useState(false);
+    const [selectedColor, setSelectedColor] = useState({});
+
+
+    const handleClickColor = (event, itemId) => {
         setColorAnchorEl(event.currentTarget);
+        setOpenColor(itemId); // Mở menu cho item hiện tại
     };
 
-    const handleCloseColor = (value) => {
-        setColorAnchorEl(null);
-        if(value!==null){
-            setSelectedColor(value)      
+    // const handleCloseColor = (value) => {
+    //     setColorAnchorEl(null);
+    //     if(value!==null){
+    //         setSelectedColor(value)      
+    //     }
+    // };
+    
+    const handleCloseColor = (color, itemId) => {
+        // console.log("sColor:::;",color)
+        setSelectedColor((prev) => ({
+          ...prev,
+          [itemId]: color, // Lưu màu sắc đã chọn cho item này
+        }));
+        // console.log("selectColor:::;",selectedColor)
+        
+        const obj = {
+            _id: itemId,
+            color: color
         }
+
+        editData(`/api/cart/update-color?token=${localStorage.getItem('accessToken')}`,obj).then((res)=>{
+            // context.openAlertBox("success", res?.message);
+            fetchDataFromApi(`/api/cart/get?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+                if(res?.error===false){
+                context.setCartData(res?.data)
+                }
+            })
+            // console.log("addColor:::",res)
+        })
+
+        setOpenColor(false); // Đóng menu
     };
+
+
+    const handleClick = (event, itemId) => {
+        setColorAnchorEl(event.currentTarget);
+        setOpenColor(itemId); // Mở menu cho item hiện tại
+      };
+
 
     const context = useContext(MyContext);
     // console.log("ghghgh",context?.userData?.name)
-    
+
+    // console.log("ddddd",context?.productColorsData)
+
     const logout=()=>{
         setAcAnchorEl(null);
 
@@ -71,6 +123,9 @@ const Header =()=>{
                 context.setIsLogin(false);
                 localStorage.removeItem("accessToken");
                 localStorage.removeItem("refreshToken"); 
+                context.setUserData(null);
+                context?.setCartData([]);
+                context?.setMyListData([]);
                 history("/")
             }
         })
@@ -84,7 +139,88 @@ const Header =()=>{
                 setCatData(res?.data)
             }
         })
-    },[]);
+       
+    },[selectedColor]);
+
+    // useEffect(()=>{
+    //     const item = context?.cartData?.filter((cartItem) =>
+    //         cartItem.productId.includes(props?.item._id)
+    //     )
+
+    //     if (item?.length !== 0) {
+    //         setCartItem(item)
+    //     }
+    // })
+
+    const addQty=(id,price)=>{
+        setQuantity(quantity + 1);
+
+        const obj = {
+            _id: id,
+            qty: quantity+1,
+            subTotal: price*quantity+1
+        }
+
+        editData(`/api/cart/update-qty?token=${localStorage.getItem('accessToken')}`, obj).then((res)=>{
+            // context.openAlertBox("success", res?.message);
+            fetchDataFromApi(`/api/cart/get?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+                if(res?.error===false){
+                context.setCartData(res?.data)
+                }
+            })
+            console.log("addQty:::",res)
+        })
+    }
+
+    const minusQty=(id,price)=>{
+        if (quantity !== 1 && quantity>0){
+            setQuantity(quantity - 1)
+
+            const obj = {
+                _id: id,
+                qty: quantity-1,
+                subTotal: price*quantity-1 
+            }
+    
+            editData(`/api/cart/update-qty?token=${localStorage.getItem('accessToken')}`, obj).then((res)=>{
+                // context.openAlertBox("success", res?.message);
+                fetchDataFromApi(`/api/cart/get?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+                    if(res?.error===false){
+                    context.setCartData(res?.data)
+                    }
+                })
+            })
+        }else{
+            setQuantity(1)
+
+            const obj = {
+                _id: id,
+                qty: quantity,
+                subTotal: price*quantity
+            }
+    
+            editData(`/api/cart/update-qty?token=${localStorage.getItem('accessToken')}`, obj).then((res)=>{
+                fetchDataFromApi(`/api/cart/get?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+                    if(res?.error===false){
+                    context.setCartData(res?.data)
+                    }
+                })
+            })
+        }
+    }
+
+    const deleteCartItem=(id)=>{
+        deleteData(`/api/cart/delete-cart-item/${id}?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+            fetchDataFromApi(`/api/cart/get?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+                if(res?.error===false){
+                context.setCartData(res?.data)
+                }
+            })
+            context.openAlertBox("success", res?.message);
+        })
+    }
+
+    console.log("cartData:::", context.cartData)
 
     return (
         <> 
@@ -248,10 +384,12 @@ const Header =()=>{
                                                     </Link>
                                                     <Link to="/my-list" className="w-full block">
                                                         <MenuItem onClick={handleCloseAc} className="flex gap-2 !py-2">
+                                                        <Badge badgeContent={context?.myListData?.length !==0 ? context?.myListData?.length : '0'} color="primary" anchorOrigin={{vertical: 'top',  horizontal:'left'}}>
                                                             <FavoriteBorderIcon color="action" fontSize="small" /> <span className="text-[16px]">Yêu thích</span>
+                                                        </Badge> 
                                                         </MenuItem>
                                                     </Link>
-                                            
+                                                    
                                                     <Divider />
                                                     <Link to="/" className="w-full block">
                                                         <MenuItem onClick={logout} className="flex gap-2 !py-2">
@@ -288,7 +426,7 @@ const Header =()=>{
                                     <button type="button" onClick={() => { console.log("Button clicked, opening dialog...");setOpen(true)}} className="flex items-center justify-center">
                                     {/* <IconButton color="primary"> */}
                                         {/* <Tooltip title="GIỎ HÀNG" placement="bottom-start"> */}
-                                            <Badge badgeContent={4} color="primary">
+                                            <Badge badgeContent={context?.cartData?.length !==0 ? context?.cartData?.length : '0'} color="primary">
                                                 {/* <MailIcon color="action" /> */}
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="ct-icon">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
@@ -327,198 +465,209 @@ const Header =()=>{
                                             transition
                                             className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
                                             >
-                                                <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                                                    <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-                                                        <div className="flex items-start justify-between">
-                                                            <DialogTitle className="text-lg font-medium text-gray-900">GIỎ HÀNG</DialogTitle>
-                                                            <div className="ml-3 flex h-7 items-center">
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => setOpen(false)}
-                                                                    className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
-                                                                    >
-                                                                    <span className="absolute -inset-0.5" />
-                                                                    <span className="sr-only">Đóng bảng điều khiển</span>
-                                                                    <MdCloseFullscreen aria-hidden="true" className="size-6" />
-                                                                </button>
+
+                                                {
+                                                    context?.cartData?.length !==0 
+                                                    ?
+                                                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                                                        <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+                                                            <div className="flex items-start justify-between">
+                                                                <DialogTitle className="text-lg font-medium text-gray-900">GIỎ HÀNG</DialogTitle>
+                                                                <div className="ml-3 flex h-7 items-center">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setOpen(false)}
+                                                                        className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+                                                                        >
+                                                                        <span className="absolute -inset-0.5" />
+                                                                        <span className="sr-only">Đóng bảng điều khiển</span>
+                                                                        <MdCloseFullscreen aria-hidden="true" className="size-6" />
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                        </div>
 
-                                                        <div className="mt-8">
-                                                            <div className="flow-root">
-                                                                <ul className="-my-6 divide-y divide-gray-200">                                                                      
-                                                                        <li className="flex py-6">
-                                                                            <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                                                <div  style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[96px] bg-contain bg-no-repeat" ></div>
-                                                                            </div>
+                                                            <div className="mt-8">
+                                                                <div className="flow-root">
+                                                                    <ul className="-my-6 divide-y divide-gray-200">        
+                                                                        {
+                                                                            context?.cartData?.length !==0 && context?.cartData?.map((item, index) => {
+                                                                                return (   
+                                                                                    <li key={index} className=" py-6">
+                                                                                        <div className="flex">
+                                                                                            <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                                                                                <Link to={`/product/${item?._id}`}>
+                                                                                                    <div  style={{backgroundImage: `url(${item.image})`}} className="h-[96px] bg-contain bg-no-repeat" ></div>
+                                                                                                </Link>
+                                                                                            </div>
 
-                                                                            <div className="ml-4 flex flex-1 flex-col">
-                                                                                <div>
-                                                                                    <div className="flex justify-between text-base font-medium text-gray-700">
-                                                                                        <h3>
-                                                                                            Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C
-                                                                                        </h3>
-                                                                                        <p className="ml-4">6.990.000đ</p>
-                                                                                    </div>
+                                                                                            <div className="ml-4 flex flex-1 flex-col">
+                                                                                                <div>
+                                                                                                    <div className="flex justify-between text-base font-medium text-gray-700">
+                                                                                                        <Link to={`/product/${item?._id}`}>
+                                                                                                            <h3 className="overflow-hidden line-clamp-3  h-20">
+                                                                                                                {item.productTitle}    
+                                                                                                                {/* {item.productTitle.substr(0, 60) + '...'}     */}
+                                                                                                            </h3>
+                                                                                                        </Link>
+                                                                                                                                                            
+                                                                                                        <p className="ml-4">{item.price !== 0 ? VND.format(item.price) : VND.format(item.oldPrice)}</p>
+                        
+                                                                                                    </div>
 
-                                                                                    <Rating name="size-small" defaultValue={4} size="small" readOnly/>
-                                                                                    
-                                                                                    {/* <p className="mt-1 text-sm text-gray-500">Đen</p> */}
-                                                                                </div>
-                                                                                <div className="mt-2 flex flex-1 items-end justify-between text-sm">
-                                                                                    {/* <span className="text-gray-500">Số lượng: </span><input type="number" min={1} defaultValue={item.quantity}  className='max-w-14 border p-2 rounded mt-4' 
-                                                                                    onChange={(e:any) => dispatch(updateQuantity({ item: item, quantity:Number(e.target.defaultValue)}))}
-                                                                        
-                                                                                    />  */}
-                                                                                <div className="flex items-center space-x-2">
-                                                                                    <div className="relative">
-                                                                                        <span className="flex items-center justify-center bg-slate-200 text-[11px] font-[600] py-1 px-2 rounded-md cursor-pointer">
-                                                                                        <button className="w-16" onClick={handleClickColor}>Màu: {selectedColor} </button> <GoTriangleDown/>
-                                                                                        </span>
-
-                                                                                        <Menu
-                                                                                            id="color-menu"
-                                                                                            anchorEl={colorAnchorEl}
-                                                                                            open={openColor}
-                                                                                            onClose={() => handleCloseColor(null)}
-                                                                                            MenuListProps={{
-                                                                                            'aria-labelledby': 'basic-button',
-                                                                                            }}
-                                                                                        >
-                                                                                            <MenuItem onClick={()=>handleCloseColor('Đen')}>Đen</MenuItem>
-                                                                                            <MenuItem onClick={()=>handleCloseColor('Trắng')}>Trắng</MenuItem>
-                                                                                            <MenuItem onClick={()=>handleCloseColor('Xám')}>Xám</MenuItem>
-                                                                                            <MenuItem onClick={()=>handleCloseColor('Vàng')}>Vàng</MenuItem>
-                                                                                        </Menu>
-                                                                                    </div>                                                        
-
-                                                                                    <button
-                                                                                        className="px-2 py-1 bg-gray-300 rounded"
-                                                                                    >
-                                                                                        -
-                                                                                    </button>
-                                                                                    <span>1</span>
-                                                                                    <button                                                                          
-                                                                                        className="px-2 py-1 bg-gray-300 rounded"
-                                                                                    >
-                                                                                        +
-                                                                                    </button>
-                                                                                </div>
+                                                                                                    <Rating name="size-small" value={item.rating} size="small" readOnly/>
+                                                                                                    
+                                                                                                    {/* <p className="mt-1 text-sm text-gray-500">Đen</p> */}
+                                                                                                </div>
+                                                                                            
+                                                                                            </div>                                                                                            
+                                                                                        </div>  
+                                                                                        <div className="mt-2 flex flex-1 items-end justify-between text-sm">
+                                                                                            {/* <span className="text-gray-500">Số lượng: </span><input type="number" min={1} defaultValue={item.quantity}  className='max-w-14 border p-2 rounded mt-4' 
+                                                                                            onChange={(e:any) => dispatch(updateQuantity({ item: item, quantity:Number(e.target.defaultValue)}))}
                                                                                 
-                                                                                    <div className="flex">
-                                                                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 ">
-                                                                                            Xóa
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>                                                            
-                                                                        </li>
-                                                                        <li className="flex py-6">
-                                                                            <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                                                <div  style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[96px] bg-contain bg-no-repeat" ></div>
-                                                                            </div>
+                                                                                            />  */}
+                                                                                            <div className="flex items-center space-x-4">
+                                                                                                <div className="relative">
+                                                                                                    <span className="flex items-center justify-center bg-slate-200 text-[11px] font-[600] py-1 px-2 rounded-md cursor-pointer">
+                                                                                                        <button className="w-40" onClick={(event) => handleClickColor(event, item._id)}>Màu: {selectedColor[item._id]} </button> <GoTriangleDown/>
+                                                                                                    </span>
 
-                                                                            <div className="ml-4 flex flex-1 flex-col">
-                                                                                <div>
-                                                                                    <div className="flex justify-between text-base font-medium text-gray-700">
-                                                                                        <h3>
-                                                                                            Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C
-                                                                                        </h3>
-                                                                                        <p className="ml-4">6.990.000đ</p>
-                                                                                    </div>
+                                                                                                    <Menu
+                                                                                                        id="color-menu"
+                                                                                                        anchorEl={colorAnchorEl}
+                                                                                                        open={openColor  === item._id}
+                                                                                                        onClose={() => handleCloseColor(null, item._id)}
+                                                                                                        MenuListProps={{
+                                                                                                        'aria-labelledby': 'basic-button',
+                                                                                                        }}
+                                                                                                    >
+                                                                                                        {console.log("ccccc",context?.productColorsData)}
+                                                                                                        {
+                                                                                                            item.color.map((color, index) => {
+                                                                                                                return (
+                                                                                                                    <MenuItem key={color} 
+                                                                                                                    className={`${color===selectedColor[item._id] && 'selected'}`}
+                                                                                                                    onClick={()=>handleCloseColor(color, item._id)}>{color}</MenuItem>
+                                                                                                                )   
+                                                                                                            })
+                                                                                                         
+                                                                                                        }
+             
+                                                                                                    </Menu>
+                                                                                                </div>     
 
-                                                                                    <Rating name="size-small" defaultValue={4} size="small" readOnly/>
-                                                                                    
-                                                                                    {/* <p className="mt-1 text-sm text-gray-500">Đen</p> */}
-                                                                                </div>
-                                                                                <div className="mt-2 flex flex-1 items-end justify-between text-sm">
-                                                                                    {/* <span className="text-gray-500">Số lượng: </span><input type="number" min={1} defaultValue={item.quantity}  className='max-w-14 border p-2 rounded mt-4' 
-                                                                                    onChange={(e:any) => dispatch(updateQuantity({ item: item, quantity:Number(e.target.defaultValue)}))}
+                                                                                                <div className=" flex w-[110px] items-center justify-between overflow-hidden rounded-full border border-[rgba(0,0,0,0.1)]">
+                                                                                                    <Button className="!min-w-[35px] !w-[35px] !h-[30px] !bg-[#f1f1f1] !rounded-none" 
+                                                                                                    onClick={()=>minusQty(item._id, item.price !== 0 ? item.price : item.oldPrice)}>
+                                                                                                        <FaMinus className="text-[rgba(0,0,0,0.7)]"/>
+                                                                                                    </Button>
+                                                                                                    <span>{item.quantity}</span>
+                                                                                                    <Button className="!min-w-[35px] !w-[35px] !h-[30px] !bg-main-400 !rounded-none"
+                                                                                                    onClick={()=>addQty(item._id, item.price !== 0 ? item.price : item.oldPrice)}>
+                                                                                                        <FaPlus className="text-white"/>
+                                                                                                    </Button> 
+                                                                                                </div>
+                                                            
+
+                                                                                                {/* <div className="qtyBoxWrapper w-[60px]">
+                                                                                                    <QtyBox/>
+                                                                                                </div> */}
+                                                                                            </div>
+                                                                                        
+                                                                                            <div className="flex">
+                                                                                                <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 " onClick={()=>deleteCartItem(item._id)}>
+                                                                                                    Xóa
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        </div>                                                       
+                                                                                    </li>
+                                                                                )                                                 
+                                                                            })  
+                                                                        }                                                            
                                                                         
-                                                                                    />  */}
-                                                                                <div className="flex items-center space-x-2">
-                                                                                    <div className="relative">
-                                                                                        <span className="flex items-center justify-center bg-slate-200 text-[11px] font-[600] py-1 px-2 rounded-md cursor-pointer">
-                                                                                        <button className="w-16" onClick={handleClickColor}>Màu: {selectedColor} </button> <GoTriangleDown/>
-                                                                                        </span>
-
-                                                                                        <Menu
-                                                                                            id="color-menu"
-                                                                                            anchorEl={colorAnchorEl}
-                                                                                            open={openColor}
-                                                                                            onClose={() => handleCloseColor(null)}
-                                                                                            MenuListProps={{
-                                                                                            'aria-labelledby': 'basic-button',
-                                                                                            }}
-                                                                                        >
-                                                                                            <MenuItem onClick={()=>handleCloseColor('Đen')}>Đen</MenuItem>
-                                                                                            <MenuItem onClick={()=>handleCloseColor('Trắng')}>Trắng</MenuItem>
-                                                                                            <MenuItem onClick={()=>handleCloseColor('Xám')}>Xám</MenuItem>
-                                                                                            <MenuItem onClick={()=>handleCloseColor('Vàng')}>Vàng</MenuItem>
-                                                                                        </Menu>
-                                                                                    </div>                                                        
-
-                                                                                    <button
-                                                                                        className="px-2 py-1 bg-gray-300 rounded"
-                                                                                    >
-                                                                                        -
-                                                                                    </button>
-                                                                                    <span>1</span>
-                                                                                    <button                                                                          
-                                                                                        className="px-2 py-1 bg-gray-300 rounded"
-                                                                                    >
-                                                                                        +
-                                                                                    </button>
-                                                                                </div>
-                                                                                
-                                                                                    <div className="flex">
-                                                                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 ">
-                                                                                            Xóa
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>                                                            
-                                                                        </li>
-                                                                    <div className="flex">
-                                                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                                                            Xóa tất cả
-                                                                        </button>
-                                                                    </div>
-                                                                </ul>                                                                                        
+                                                                        <div className="flex">
+                                                                            <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                                Xóa tất cả
+                                                                            </button>
+                                                                        </div>
+                                                                    </ul>                                                                                        
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                                                        <div className="flex justify-between text-base font-medium text-gray-900">
-                                                            <p>Tổng tiền</p>
-                                                            <p>13.980.000đ</p>
-                                                        </div>
-                                                        <p className="mt-0.5 text-sm text-gray-500">Vận chuyển và thuế được tính khi thanh toán.</p>
-                                                        <div>
-                                                            <div className="mt-6">
-                                                                <Link to="#"
-                                                                className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                                                                >
-                                                                    Thanh toán
-                                                                </Link>
-                                                            </div>
-                                                            <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                                                        <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+                                                            <div className="flex justify-between text-base font-medium text-gray-900">
+                                                                <p>Tổng tiền</p>
+                                                               
                                                                 <p>
-                                                                hoặc{' '}
-                                                                <button
-                                                                    type="button"
-                                                                    onClick={() => setOpen(false)}
-                                                                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                                                                >
-                                                                Tiếp tục mua hàng
-                                                                    <span aria-hidden="true"> &rarr;</span>
-                                                                </button>
+                                                                    {
+                                                                        (context.cartData?.length !==0 ?
+                                                                        VND.format(context.cartData?.map(item => parseInt(item.price)* item.quantity).reduce((total, value) => total + value)): 0)
+                                                                    }
                                                                 </p>
                                                             </div>
+                                                            <p className="mt-0.5 text-sm text-gray-500">Vận chuyển và thuế được tính khi thanh toán.</p>
+                                                            <div>
+                                                                <div className="mt-6">
+                                                                    <Link to="/checkout"
+                                                                    className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                                                                    >
+                                                                        Thanh toán
+                                                                    </Link>
+                                                                </div>
+                                                                <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                                                                    <p>
+                                                                    hoặc{' '}
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setOpen(false)}
+                                                                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                                    >
+                                                                    Tiếp tục mua hàng
+                                                                        <span aria-hidden="true"> &rarr;</span>
+                                                                    </button>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                    :
+                                                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                                                        <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+                                                            <div className="flex items-start justify-between">
+                                                                <DialogTitle className="text-lg font-medium text-gray-900">GIỎ HÀNG (0)</DialogTitle>
+                                                                <div className="ml-3 flex h-7 items-center">
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => setOpen(false)}
+                                                                        className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+                                                                        >
+                                                                        <span className="absolute -inset-0.5" />
+                                                                        <span className="sr-only">Đóng bảng điều khiển</span>
+                                                                        <MdCloseFullscreen aria-hidden="true" className="size-6" />
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="mt-8">
+                                                                <div className="flow-root">
+                                                                    <ul className="-my-6 divide-y divide-gray-200">                                                                                                                                                                                                 
+                                                                        <div className="flex">
+                                                                            <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                               {/* Giỏ hàng trống */}
+                                                                            </button>
+                                                                        </div>
+                                                                    </ul>  
+                                                                    <div className="flex items-center justify-center flex-col">
+                                                                        <img src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png" alt="" className="w-[280px] h-[300px]"/>
+                                                                        <Button  onClick={() => setOpen(false)} className="btn-org btn-sm">Tiếp tục mua hàng</Button>
+                                                                    </div>                                                                                      
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                               
                                             </DialogPanel>
                                         </div>
                                     </div>

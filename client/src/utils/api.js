@@ -6,7 +6,7 @@ import axios from "axios";
 export const postData = async (url, formData) => {
     try {
         const res = await axios.post("http://localhost:4000" + url,formData)
-        console.log("gggg",res.data)
+        // console.log("gggg",res.data)
         return res.data
     }catch (error) {
         console.error("Lỗi khi gửi yêu cầu:", error);

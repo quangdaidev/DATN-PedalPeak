@@ -11,7 +11,10 @@ export const addToMyListController = async (request, response) => {
             price, 
             oldPrice, 
             brand, 
-            discount
+            discount,
+            color,
+            quantity,
+            countInStock
         } = request.body; 
 
         const item = await MyListModel.findOne({
@@ -34,7 +37,10 @@ export const addToMyListController = async (request, response) => {
             oldPrice, 
             brand, 
             discount,
-            userId
+            userId,
+            color,
+            quantity,
+            countInStock
         })
 
         const save = await myList.save();

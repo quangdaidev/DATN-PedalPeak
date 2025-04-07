@@ -1,9 +1,8 @@
-import React from "react";
-
 
 // import { Link } from 'react-router-dom';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
+import React, {useEffect, useState} from "react";
 
 // Import Swiper styles
 import 'swiper/css';
@@ -17,6 +16,11 @@ import ProductItem from '../../Components/ProductItem';
 
 const ProductsSlider = (props) =>{
 
+        const [proHotData, setProHotData] = useState([]);
+    
+        useEffect(()=>{
+            setProHotData(props.data)
+        },[props.data])
 
     return (
         <div className="productsSlider">
@@ -28,36 +32,24 @@ const ProductsSlider = (props) =>{
                     modules={[FreeMode, Navigation]}
                     className="mySwiper"
                 >
-                    <SwiperSlide>
+
+                    {
+                        proHotData?.length!==0 && proHotData?.map((item, index) => {
+                            return (
+                                <SwiperSlide key={index}>
+                                    <ProductItem item={item}/>
+                                </SwiperSlide> 
+                            )
+                        })
+                    }
+
+                    {/* <SwiperSlide>
                         <ProductItem/>
                     </SwiperSlide>
                     <SwiperSlide>
                         <ProductItem/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ProductItem/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ProductItem/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ProductItem/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ProductItem/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ProductItem/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ProductItem/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ProductItem/>
-                    </SwiperSlide>
-                    <SwiperSlide>
-                        <ProductItem/>
-                    </SwiperSlide>
+                    </SwiperSlide> */}
+                    
                 </Swiper>
             </div>
         </div>

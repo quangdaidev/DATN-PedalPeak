@@ -529,13 +529,16 @@ const ProductUpload = () => {
                                                 className='w-100'
 
                                                 MenuProps={MenuProps}
-                                            >
-
+                                            >                                        
                                                 <MenuItem value="Xanh">Xanh</MenuItem>
                                                 <MenuItem value="Đen" >Đen</MenuItem>
                                                 <MenuItem value="Trắng" >Trắng</MenuItem>
                                                 <MenuItem value="Xám" >Xám</MenuItem>
+                                                <MenuItem value="Hồng" >Hồng</MenuItem>
+                                                <MenuItem value="Đen Xanh">Đen Xanh</MenuItem>
                                                 <MenuItem value="Đen Đỏ" >Đen Đỏ</MenuItem>
+                                                <MenuItem value="Trắng Tím" >Trắng Tím</MenuItem>
+                                                <MenuItem value="Xanh Đen" >Xanh Đen</MenuItem>
                                                 <MenuItem value="Đen Xanh Dương" >Đen Xanh Dương</MenuItem>
                                                 <MenuItem value="Đen Xanh Lá" >Đen Xanh Lá</MenuItem>
                                             </Select>

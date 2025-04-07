@@ -1,12 +1,13 @@
-import CartProductModel from "../models/cartproduct.model.js";
+import CartProductModel from "../models/cart.model.js";
 import UserModel from "../models/user.model.js";
 
 import { response } from "express";
 
 export const addToCartItemController = async (request, response) => {
   try {
-    const userId = request.userId;
-    const { productId } = request.body;
+    const userId = request.userId; //middleware
+    const { productTitle, image, rating, price, quantity, subTotal, productId,
+    countInStock, color} = request.body;
 
     if (!productId) {
       return response.status(402).json({
@@ -27,20 +28,28 @@ export const addToCartItemController = async (request, response) => {
       });
     }
     const cartItem = new CartProductModel({
-      quantity: 1,
-      userId: userId,
+      productTitle:productTitle,
+      image: image,
+      rating: rating,
+      price: price,
+      quantity: quantity,
+      color: color,
+      subTotal: subTotal,
       productId: productId,
+      countInStock: countInStock,
+      userId: userId
     });
+    
     const save = await cartItem.save();
 
-    const updateCartUser = await UserModel.updateOne(
-      { _id: userId },
-      {
-        $push: {
-          shopping_cart: productId,
-        },
-      }
-    );
+    // const updateCartUser = await UserModel.updateOne(
+    //   { _id: userId },
+    //   {
+    //     $push: {
+    //       shopping_cart: productId,
+    //     },
+    //   }
+    // );
 
     return response.status(200).json({
       data: save,
@@ -62,12 +71,17 @@ export const getCartItemController = async (request, response) => {
   try {
     const userId = request.userId;
 
-    const cartItem = await CartProductModel.find({
+    // const cartItems = await CartProductModel.find({
+    //   userId: userId,
+    // }).populate("productId");
+
+    const cartItems = await CartProductModel.find({
       userId: userId,
-    }).populate("productId");
+    });
+
 
     return response.json({
-      data: cartItem,
+      data: cartItems,
       error: false,
       success: true,
     });
@@ -83,25 +97,77 @@ export const getCartItemController = async (request, response) => {
 export const updateCartItemQtyController = async (request, response) => {
   try {
     const userId = request.userId;
-    const { _id, qty } = request.body;
+    const { _id, qty,subTotal } = request.body;
 
     if (!_id || !qty) {
       return response.status(400).json({
         message: "provide _id, qty",
       });
     }
-    const updateCartItem = await CartProductModel.updateOne(
-      // {
-      //   id: _id,
-      //   userId: userId,
-      // },
-      {
-        quantity: qty,
-      }
-    );
+    // const updateCartItem = await CartProductModel.updateOne(
+    //   {
+    //     id: _id,
+    //     userId: userId,
+    //   },
+    //   {
+    //     quantity: qty,
+    //   }
+    // );
+
+    const updateCartItem = await CartProductModel.findByIdAndUpdate(
+        _id,
+        {
+          quantity: qty,
+          subTotal: subTotal
+        },
+        { new: true }
+      );
 
     return response.json({
-      message: "Cập nhật giỏ hàng thành công",
+      message: "Cập nhật số lượng thành công",
+      success: true,
+      error: false,
+      data: updateCartItem,
+    });
+  } catch (error) {
+    return response.status(500).json({
+      message: error.massage || error,
+      error: true,
+      success: false,
+    });
+  }
+};
+
+export const updateCartItemColorController = async (request, response) => {
+  try {
+    const userId = request.userId;
+    const { _id, color} = request.body;
+
+    if (!_id || !color) {
+      return response.status(400).json({
+        message: "provide _id, color",
+      });
+    }
+    // const updateCartItem = await CartProductModel.updateOne(
+    //   {
+    //     id: _id,
+    //     userId: userId,
+    //   },
+    //   {
+    //     quantity: qty,
+    //   }
+    // );
+
+    const updateCartItem = await CartProductModel.findByIdAndUpdate(
+        _id,
+        {
+          color: color,
+        },
+        { new: true }
+      );
+
+    return response.json({
+      message: "Cập nhật màu thành công",
       success: true,
       error: false,
       data: updateCartItem,
@@ -118,18 +184,18 @@ export const updateCartItemQtyController = async (request, response) => {
 export const deleteCartItemQtyController = async (request, response) => {
   try {
     const userId = request.userId;
-    const { _id, productId } = request.body;
+    const { id } = request.params;
 
-    if (!_id) {
+    if (!id) {
       return response.status(400).json({
-        message: "provide _id",
+        message: "provide id",
         error: true,
         success: false,
       });
     }
 
     const deleteCartItem = await CartProductModel.deleteOne({
-      _id: _id,
+      _id: id,
       userId: userId,
     });
     if (!deleteCartItem) {
@@ -140,19 +206,19 @@ export const deleteCartItemQtyController = async (request, response) => {
       });
     }
 
-    const user = await UserModel.findOne({
-      _id: userId,
-    });
+    // const user = await UserModel.findOne({
+    //   _id: userId,
+    // });
 
-    const cartItems = user?.shopping_cart;
+    // const cartItems = user?.shopping_cart;
 
-    const updatedUserCart = [
-      ...cartItems.slice(0, cartItems.indexOf(productId)),
-      ...cartItems.slice(cartItems.indexOf(productId) + 1),
-    ];
+    // const updatedUserCart = [
+    //   ...cartItems.slice(0, cartItems.indexOf(productId)),
+    //   ...cartItems.slice(cartItems.indexOf(productId) + 1),
+    // ];
 
-    user.shopping_cart = updatedUserCart;
-    await user.save();
+    // user.shopping_cart = updatedUserCart;
+    // await user.save();
 
     return response.json({
       message: "Xóa sản phẩm thành công",
