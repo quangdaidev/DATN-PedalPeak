@@ -81,7 +81,14 @@ const Products = () => {
 
   const [isShow, setIsShow] = useState(true);
 
-  const [page,setPage] = useState(1);
+  const [page,setPage] = useState(4);
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);  // Cập nhật trang hiện tại khi người dùng chọn trang khác
+  };
+
 
   useEffect(() => {
     window.scrollTo(0, 0); //cuộn trang đến vị trí góc trên bên trái của trang
@@ -204,11 +211,18 @@ const Products = () => {
                           <td>{item.catName} </td>
                           <td>{item.brand} </td>
                           <td>
-                
-                            <div  style={{ width: "80px" }}>
-                              <del className="old"> {VND.format(item.oldPrice)} </del>
-                              <span className="new text-danger"> {VND.format(item.price)}</span>
-                            </div>
+                            {
+                              item.price !== 0 ?
+                              <div  style={{ width: "90px" }}>
+                                <del className="old"> {VND.format(item.oldPrice)} </del>
+                                <span className="new text-danger"> {VND.format(item.price)}</span>
+                              </div>
+                              :
+                              <div  style={{ width: "90px" }}>
+                                <span className="new text-danger"> {VND.format(item.oldPrice)}</span>
+                              </div>
+                            }
+                           
                           
                           </td>
                           <td>{item.countInStock} </td>
@@ -268,6 +282,8 @@ const Products = () => {
               </p>
               <Pagination
                 count={page}
+                page={currentPage} // Trang hiện tại
+                onChange={handlePageChange} // Hàm gọi khi thay đổi trang
                 color="primary"
                 className="pagination"
                 showFirstButton

@@ -220,7 +220,7 @@ const Header =()=>{
         })
     }
 
-    console.log("cartData:::", context.cartData)
+    // console.log("cartData:::", context.cartData)
 
     return (
         <> 
@@ -541,7 +541,7 @@ const Header =()=>{
                                                                                                         'aria-labelledby': 'basic-button',
                                                                                                         }}
                                                                                                     >
-                                                                                                        {console.log("ccccc",context?.productColorsData)}
+                                                                                                        {/* {console.log("ccccc",context?.productColorsData)} */}
                                                                                                         {
                                                                                                             item.color.map((color, index) => {
                                                                                                                 return (

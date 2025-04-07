@@ -29,9 +29,9 @@ const addressSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    selected: {
-        type: Boolean,
-        default: true
+    addressType: {
+        type: String,
+        enum: ["Nhà riêng", "Nơi làm việc"]
     },
     userId: {
         type: String,

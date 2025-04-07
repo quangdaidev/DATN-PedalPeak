@@ -104,7 +104,7 @@ function App() {
 
           setIsLogin(false);
         }
-        console.log("app.js",res);
+        console.log("userData",res);
 
         setUserData(res.data);
       })
@@ -179,7 +179,7 @@ function App() {
       if(res?.error===false){
      
         setCartData(res?.data)
-        console.log("yyyyy",res?.data)
+        // console.log("yyyyy",res?.data)
         setProductColorsData(res?.data.map(item => ({ _id: item._id, color: item.color })));
         
       }
@@ -190,7 +190,7 @@ function App() {
     fetchDataFromApi(`/api/myList?token=${token}`).then((res)=>{
       if(res?.error===false){
         setMyListData(res?.data)
-        console.log("eeeee",res?.data)
+        // console.log("myListData",res?.data)
       }
     })
   }    

@@ -166,7 +166,8 @@ const ProductUpload = () => {
     const onChangeFile = async(e, apiEndPoint) => {
         try {
             const imgArr = [];
-            const files = e.target.files;
+            let files= [];
+            files = e.target.files;
             setImgFiles(e.target.files);
 
             for (var i = 0; i < files.length; i++) { 
@@ -351,9 +352,11 @@ const ProductUpload = () => {
                 oldPrice:'',
                 category:'',
                 countInStock:'',
+                color:'',
                 rating:'',
                 isFeatured: null,
             })
+            setProductColor([]);
             
             })
         },3000)
@@ -538,9 +541,10 @@ const ProductUpload = () => {
                                                 <MenuItem value="Đen Xanh">Đen Xanh</MenuItem>
                                                 <MenuItem value="Đen Đỏ" >Đen Đỏ</MenuItem>
                                                 <MenuItem value="Trắng Tím" >Trắng Tím</MenuItem>
+                                                <MenuItem value="Trắng Đỏ" >Trắng Đỏ</MenuItem>
                                                 <MenuItem value="Xanh Đen" >Xanh Đen</MenuItem>
-                                                <MenuItem value="Đen Xanh Dương" >Đen Xanh Dương</MenuItem>
-                                                <MenuItem value="Đen Xanh Lá" >Đen Xanh Lá</MenuItem>
+                                                <MenuItem value="Gi Vàng" >Gi Vàng</MenuItem>
+                                                <MenuItem value="Cam" >Cam</MenuItem>
                                             </Select>
                                         </div>
                                     </div>

@@ -1,6 +1,10 @@
 import React, {useContext, useEffect, useState} from 'react'
 import AccountSidebar from '../../Components/AccountSidebar';
 import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 import { MyContext } from '../../App';
 
 import Dialog from '@mui/material/Dialog';
@@ -9,19 +13,25 @@ import TextField from '@mui/material/TextField';
 
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
-import { Button, CircularProgress, MenuItem, Select } from '@mui/material';
-import { deleteData, fetchDataFromApi, postData } from '../../utils/api';
+import { Alert, Button, CircularProgress, Select } from '@mui/material';
+import { deleteData, editData, fetchDataFromApi, postData } from '../../utils/api';
+import AddressBox from './addressBox';
 
-import { FaRegTrashAlt } from 'react-icons/fa';
+
 
 const label = { inputProps: {'aria-label': 'Checkbox demo'}};
 
 const Address = () => {
 
     const [phone,setPhone] = useState('');
-    const [status, setStatus] = useState(false);
+ 
     const [isOpenModel, setIsOpenModel] = useState(false);
     const [address, setAddress] = useState([]);
+    const [addressType, setAddressType] = useState("");
+    const [mode,setMode] = useState("Thêm");
+
+    const [addressId, setAddressId] = useState("");
+
     const [isLoading, setIsLoading] = useState(false);
 
     const context = useContext(MyContext);
@@ -47,9 +57,9 @@ const Address = () => {
         district:"",
         city:"",
         mobile: phone,
-        status:"",
-        userId:context?.userData?._id ,
-        selected: false
+        status:true,
+        addressType:"",
+        userId:context?.userData?._id 
     });
 
     const onChangeInput = (e) => {
@@ -62,24 +72,11 @@ const Address = () => {
         })
     }
 
-    const [selectedValue, setSelectedValue] = useState('');
-
-    const handleChange = (event) => {
-        setSelectedValue(event.target.value);
-    }
-
     const handleClose = () => {
         setIsOpenModel(false);
         // setSelectedValue(value);
     };
 
-    const handleChangeStatus = (event) => {
-        setStatus(event.target.value);
-        setFormFields((prevState) => ({
-            ...prevState,
-            status: event.target.value
-        }))
-    }
 
     const removeAddress = (id) => {
         deleteData(`/api/address/${id}`).then((res) => {
@@ -96,6 +93,14 @@ const Address = () => {
         })
     }
 
+    const handleChangeAddressType=(event)=>{
+        setAddressType(event.target.value);
+        setFormFields((prevState) => ({
+            ...prevState,
+            addressType: event.target.value
+        }))
+    }
+
 
     const handleSubmit = (e) => {
         
@@ -104,54 +109,175 @@ const Address = () => {
         setIsLoading(true);
 
         if (formFields.street === "") {
-            context.openAlertBox("error", "Vui lòng điền địa chỉ nhà")
+            context.openAlertBox("error", "Vui lòng điền địa chỉ nhà");
+            return false
         }
 
         if (formFields.ward === "") {
-            context.openAlertBox("error", "Vui lòng điền tên phường" )
+            context.openAlertBox("error", "Vui lòng điền tên phường" );
+            return false
         }
 
         if (formFields.district === "") {
-            context.openAlertBox("error", "Vui lòng điền tên quận/huyện")
+            context.openAlertBox("error", "Vui lòng điền tên quận/huyện");
+            return false
         }
 
         if (formFields.city === "") {
-            context.openAlertBox("error", "Vui lòng điền tên thành phố/tỉnh")
+            context.openAlertBox("error", "Vui lòng điền tên thành phố/tỉnh");
+            return false
         }
 
         if (formFields.phone === "") {
-            context.openAlertBox("error", "Vui lòng điền số điện thoại")
+            context.openAlertBox("error", "Vui lòng điền số điện thoại");
+            return false
+        }
+
+        if (formFields.addressType === "") {
+            context.openAlertBox("error", "Vui lòng chọn loại địa chỉ");
+            return false
+        }
+
+        if(mode === "Thêm"){
+            const token = localStorage.getItem('accessToken');
+
+            postData(`/api/address/add?token=${token}`, formFields, {withCredentials: true}).then((res) => {
+                console.log("address",res)
+                if(res?.error !== true) {
+                    setTimeout(()=>{
+                      setIsLoading(false);
+                      setIsOpenModel(false);
+                    },500)
+                    // console.log("success",res?.message)
+                    context.openAlertBox("success", res?.message);
+                    
+    
+                    // context?.setisOpenFullScreenPanel({
+                    //     open: false
+                    // })
+    
+                    // fetchDataFromApi(`/api/address/get?userId=${context?.userData?._id}`).then((res) => {
+                    //     context?.setAddress(res.data);
+                    // })
+                    fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
+                        setAddress(res.data?.address_details);
+                        setFormFields({
+                            street:"",   
+                            ward:"",
+                            district:"",
+                            city:"",
+                            mobile: "",
+                            status:true,
+                            addressType:"",
+                            userId:context?.userData?._id 
+                        })
+                        setAddressType("");
+                        setPhone("");
+                    })
+                } else {
+                    context.openAlertBox("error", res?.data?.message);
+                    setIsLoading(false);
+                }
+            })   
         }
 
         // console.log("address---bf-bf",formFields);
+        if(mode==="Cập nhật"){
+            setIsLoading(true);
+            editData(`/api/address/${addressId}?token=${localStorage.getItem('accessToken')}`,formFields, {withCredentials: true}).then((res)=> {
+                // console.log("allAddress::",res);
+              
+                context.openAlertBox("success", res?.message);
+                fetchDataFromApi(`/api/address/get?userId=${context?.userData?._id}&&token=${localStorage.getItem('accessToken')}`).then((res) => {
+                    setAddress(res.data);
+                    setTimeout(()=>{
+                        setIsLoading(false);
+                        setIsOpenModel(false);
+                    },500)
+                    setFormFields({
+                        street:"",   
+                        ward:"",
+                        district:"",
+                        city:"",
+                        mobile: "",
+                        status:true,
+                        addressType:"",
+                        userId:context?.userData?._id 
+                    })
+                    setAddressType("");
+                    setPhone("");
+                })
+            })
+        }
+       
+    }
+
+    
+    const editAddress = (id) => {
+
+        setMode("Cập nhật");
+        setIsOpenModel(true);
+
+        setAddressId(id);
 
         const token = localStorage.getItem('accessToken');
+     
+        fetchDataFromApi(`/api/address/${id}?token=${token}`).then((res)=>{
+            setFormFields({
+                street: res?.data?.street,   
+                ward: res?.data?.ward,
+                district: res?.data?.district,
+                city: res?.data?.city,
+                mobile: res?.data?.mobile,
+                status: res?.data?.status,
+                addressType: res?.data?.addressType,
+                userId: res?.data?.userId
+            })
 
-        postData(`/api/address/add?token=${token}`, formFields, {withCredentials: true}).then((res) => {
-            console.log("address",res)
-            if(res?.error !== true) {
-                setIsLoading(false);
-                console.log("success",res?.message)
-                context.openAlertBox("success", res?.message);
-                setIsOpenModel(false);
+            const ph = `"${res?.data?.mobile}"`;
+            setPhone(ph);
 
-                // context?.setisOpenFullScreenPanel({
-                //     open: false
-                // })
+            // setPhone(res?.data?.mobile);
+            setAddressType(res?.data?.addressType)
+        })
 
-                // fetchDataFromApi(`/api/address/get?userId=${context?.userData?._id}`).then((res) => {
-                //     context?.setAddress(res.data);
-                // })
-                fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
-                    setAddress(res.data?.address_details);
-                    console.log("sewewe",res.data?.address_details )
-                })
-            } else {
-                context.openAlertBox("error", res?.data?.message);
-                setIsLoading(false);
-            }
-        })   
+        // postData(`/api/address/add?token=${token}`, formFields, {withCredentials: true}).then((res) => {
+        //     console.log("address",res)
+        //     if(res?.error !== true) {
+        //         setIsLoading(false);
+        //         console.log("success",res?.message)
+        //         context.openAlertBox("success", res?.message);
+        //         setIsOpenModel(false);
+
+        //         // context?.setisOpenFullScreenPanel({
+        //         //     open: false
+        //         // })
+
+        //         // fetchDataFromApi(`/api/address/get?userId=${context?.userData?._id}`).then((res) => {
+        //         //     context?.setAddress(res.data);
+        //         // })
+        //         fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
+        //             setAddress(res.data?.address_details);
+        //             setFormFields({
+        //                 street:"",   
+        //                 ward:"",
+        //                 district:"",
+        //                 city:"",
+        //                 mobile: "",
+        //                 status:true,
+        //                 addressType:"",
+        //                 userId:context?.userData?._id 
+        //             })
+        //             setAddressType("");
+        //             setPhone("");
+        //         })
+        //     } else {
+        //         context.openAlertBox("error", res?.data?.message);
+        //         setIsLoading(false);
+        //     }
+        // })   
     }
+
 
   return (
     <>
@@ -178,31 +304,7 @@ const Address = () => {
                             {
                                 address?.length > 0 && address?.map((address,index)=>{
                                     return (
-                                        <>
-                                            <label className="group border border-dashed border-[rgba(0,0,0,0.2)] addressBox w-full flex item-center
-                                            justify-center bg-[#f1faff] p-3 rounded-md cursor-pointer">
-                                                <div className="mr-auto">
-                                                    <Radio {...label} name="address" 
-                                                        checked={selectedValue === (address?._id)}
-                                                        value={address?._id} 
-                                                        onChange={handleChange}
-                                                    />
-                                                    <span className="text-[12px] ">
-                                                        {
-                                                            address?.street + " - "+
-                                                            address?.ward + " - "+
-                                                            address?.district + " - "+
-                                                            address?.city
-                                                        }
-                                                    </span>
-                                                </div>
-                                                
-                                                <span onClick={() => removeAddress(address?._id)} className="hidden group-hover:flex mt-[5px] items-center justify-center w-[30px] h-[30px] rounded-full bg-main-500 text-white ml-auto">
-                                                    <FaRegTrashAlt/>
-                                                </span>
-
-                                            </label>
-                                        </>
+                                        <AddressBox address={address} key={index} removeAddress={removeAddress} editAddress={editAddress}/>
                                     )
                                 })
 
@@ -215,7 +317,7 @@ const Address = () => {
         </section>
 
         <Dialog open={isOpenModel}>
-            <DialogTitle>Thêm địa chỉ</DialogTitle>
+            <DialogTitle>{mode==="add" ? 'Thêm' : 'Cập nhật'} địa chỉ</DialogTitle>
             <form className="p-8 py-3 pb-8" onSubmit={handleSubmit}>
                 <div className="flex items-center gap-5 pb-5">
                     <div className='col w-[100%]'>
@@ -289,20 +391,23 @@ const Address = () => {
                     </div>                      
                 </div>
 
-                <div className="flex items-center gap-5 pb-5">
-                    <div className='col w-[50%]'>
-                       <Select
-                            value={status === true ? true : (status === false ? false : '')}
-                            onChange={handleChangeStatus}
-                            displayEmpty
-                            inputProps={{ 'aria-label': 'Without label' }}
-                            size="small"
-                            className="w-full"
+                <div className="flex gap-5 pb-5 flex-col">
+                    <FormControl>
+                        <FormLabel id="demo-row-radio-buttons-group-label">Địa chỉ này là: </FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                            className='flex items-center gap-5'
+                            value={addressType}
+                            onChange={handleChangeAddressType}
                         >
-                            <MenuItem value={true}>True</MenuItem>
-                            <MenuItem value={false}>False</MenuItem>
-                       </Select>
-                    </div> 
+                            <FormControlLabel value="Nhà riêng" control={<Radio />} label="Nhà riêng" />
+                            <FormControlLabel value="Nơi làm việc" control={<Radio />} label="Nơi làm việc" />
+                            
+                        </RadioGroup>
+                    </FormControl>
+                
                     <div className='col w-[50%]'>
                        
                     </div>                      
@@ -311,7 +416,7 @@ const Address = () => {
                 <div className="flex items-center gap-5">
                 {
                     isLoading === true ?
-                    <Button type="submit" disabled={true} className="btn-org btn-lg w-full flex gap-2 items-center">
+                    <Button type="submit" disabled={true} className="btn-org btn-lg w-full flex gap-2 items-center CircularProgress">
                         <CircularProgress color="inherit"/>                                          
                     </Button>
                     :

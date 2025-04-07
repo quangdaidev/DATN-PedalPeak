@@ -69,16 +69,16 @@ const Home =()=>{
     //     })
     // },[context?.catData])
 
-    console.log("lll",catData)
+    // console.log("lll",catData)
       
-    console.log("pi::",context?.productsData)
-    const productsDataHot = context?.productsData.filter(product => product.rating === 5).slice(0, 8);
-    const productsDataSale = context?.productsData.filter(product => product.price !== 0).slice(0, 8);
+    // console.log("pi::",context?.productsData)
+    const productsDataHot = context?.productsData?.filter(product => product.rating === 5).slice(0, 8);
+    const productsDataSale = context?.productsData?.filter(product => product.price !== 0).slice(0, 8);
     const productsDataInStock  = [...context?.productsData].sort((a, b) => b.countInStock - a.countInStock).slice(0, 8);
-    const productsDataNew = context?.productsData.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0, 8);
+    const productsDataNew = context?.productsData?.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0, 8);
     
-    console.log("hhhhh",productsDataInStock)
-    console.log("ppppppppppp", productsDataHot);
+    // console.log("hhhhh",productsDataInStock)
+    // console.log("ppppppppppp", productsDataHot);
    
     useEffect(() => {
         window.scrollTo(0, 0);

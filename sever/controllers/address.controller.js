@@ -5,10 +5,10 @@ import UserModel from "../models/user.model.js";
 export const addAddressController = async (request, response) => {
 
     try{
-        const{ street, ward, district, city, mobile, note, status, userId, selected} = 
+        const{ street, ward, district, city, mobile, note, status, userId, addressType} = 
         request.body;
 
-        if (!street || !ward || !district || !city || !mobile || !userId) {
+        if (!street || !ward || !district || !city || !mobile || !userId ||!addressType) {
             return response.status(500).json({
                 message: "Vui lòng điền đầy đủ thông tin",
                 error: true,
@@ -17,7 +17,7 @@ export const addAddressController = async (request, response) => {
         }
 
         const address = new AddressModel({
-            street, ward, district, city, mobile, note, status, userId, selected
+            street, ward, district, city, mobile, note, status, userId, addressType
         })
 
         const savedAddress = await address.save();
@@ -167,4 +167,73 @@ export const deleteAddressController = async (request, response) => {
         success: false,
       });
     }
-  };
+};
+
+export const getSingleAddressController = async (request, response) => {
+    try {
+
+        const id = request.params.id;
+
+        const address = await AddressModel.findOne({_id:id});
+
+        if (!address) {
+            return response.status(404).json({
+              message: "not found ",
+              error: true,
+              success: false,
+            });
+        }
+
+        return response.status(200).json({
+            error: false,
+            success: true,
+            data: address,
+        });
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false,
+        });
+    }
+}
+
+export async function editAddress(request, response) {
+    try {
+
+        const id = request.params.id;
+
+        const{ street, ward, district, city, mobile, note, status, userId, addressType} = 
+        request.body;
+
+        const address = await AddressModel.findByIdAndUpdate(
+            id,
+            {
+                street: street,
+                ward: ward,
+                district: district,
+                city: city,
+                mobile: mobile,
+                note:note,
+                status:status,
+                userId: userId,
+                addressType:addressType
+            },
+            { new: true}
+        )
+
+        return response.json({
+            message: "Cập nhật địa chỉ thành công",
+            error: false,
+            success: true,
+            data: address
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
