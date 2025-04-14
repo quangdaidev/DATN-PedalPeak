@@ -81,20 +81,30 @@ const Products = () => {
 
   const [isShow, setIsShow] = useState(true);
 
-  const [page,setPage] = useState(4);
+  const [page,setPage] = useState();
 
   const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageChange = (event, value) => {
+    
     setCurrentPage(value);  // Cập nhật trang hiện tại khi người dùng chọn trang khác
+    // setPage(value);
+    fetchDataFromApi(`/api/product/getAllProducts?page=${value}&perPage=8`).then((res)=>{
+      setProData(res.data);
+      window.scrollTo({
+        top: 200,
+        behavior: 'smooth',
+      })
+    })
   };
 
 
   useEffect(() => {
     window.scrollTo(0, 0); //cuộn trang đến vị trí góc trên bên trái của trang
 
-    fetchDataFromApi('/api/product/getAllProducts').then((res)=>{
+    fetchDataFromApi('/api/product/getAllProducts?page=1&perPage=8').then((res)=>{
       setProData(res.data)
+      setPage(res.totalPages)
       console.log(res.data)
     })
   }, []);
@@ -104,7 +114,7 @@ const Products = () => {
     <>
       <div className="right-content w-100">
         <div className="card shadow border-0 w-100 flex-row p-4">
-          <h5 className="mb-0">Product List</h5>
+          <h5 className="mb-0">Danh sách sản phẩm</h5>
           <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
             <StyledBreadcrumb
               component="a"
@@ -277,9 +287,9 @@ const Products = () => {
             </table>
 
             <div className="d-flex tableFooter">
-              <p>
+              {/* <p>
                 hiển thị <b>{page}</b> trong <b>{proData?.length}</b> kết quả
-              </p>
+              </p> */}
               <Pagination
                 count={page}
                 page={currentPage} // Trang hiện tại

@@ -13,6 +13,7 @@ import { MyContext } from '../../App';
 // import { FaUser } from "react-icons/fa";
 import { BiSolidCategoryAlt } from "react-icons/bi";
 import { fetchDataFromApi } from '../../utils/api';
+import { FaClipboardCheck } from 'react-icons/fa';
 
 
 
@@ -51,7 +52,7 @@ const Sidebar = () => {
             <div className="sidebar">
                 <ul>
                     <li>
-                        <Link to="/">
+                        <Link to="/dashboard">
                             <Button className={`w-100 ${activeTab === 0 ? 'active' : ''}`} onClick={() => isOpenSubmenu(0)}>
                                 <span className='icon'><MdDashboard /></span>
                                 Tổng quan
@@ -84,6 +85,14 @@ const Sidebar = () => {
                                 <li><Link to="/category/add">Tạo mới</Link></li>
                             </ul>
                         </div>
+                    </li>
+                    <li>
+                        <Link to="/orders">
+                            <Button className={`w-100 ${activeTab === 3 && isToggleSubmenu === true ? 'active' : ''}`} onClick={() => isOpenSubmenu(3)}>
+                                <span className='icon'><FaClipboardCheck /></span>
+                                Đơn hàng
+                            </Button>
+                        </Link>
                     </li>
                 </ul>
 

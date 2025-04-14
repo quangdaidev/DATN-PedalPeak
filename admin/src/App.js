@@ -13,6 +13,7 @@ import ProductDetails from "./pages/ProductDetails";
 import ProductUpload from "./pages/ProductUpload";
 import CategoryAdd from "./pages/CategoryAdd";
 import Categories from "./pages/Categories";
+import Orders from "./pages/Orders";
 import { fetchDataFromApi } from "./utils/api";
 import { ToastContainer, toast } from 'react-toastify';
 import ProductEdit from "./pages/ProductEdit";
@@ -85,7 +86,7 @@ function App() {
       
     const token = localStorage.getItem('accessToken');
   
-    if(token!==undefined && token!==null && token !==""){
+    if(token!==undefined || token!==null || token !==""){
       setIsLogin(true);
 
       fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
@@ -107,6 +108,16 @@ function App() {
       setIsLogin(false);
     }
   },[isLogin])
+
+  useEffect(()=>{
+    const token = localStorage.getItem('accessToken');
+  
+    if(token!==undefined || token!==null || token !==""){
+      setIsLogin(true);
+    }else{
+        window.location.href = "/login"
+    }
+  },[])
 
   const values = {
     isToggleSidebar,
@@ -163,6 +174,7 @@ function App() {
               <Route path="/product/:id" exact={true} element={<ProductEdit />} />
               <Route path="/category/add" exact={true} element={<CategoryAdd />} />
               <Route path="/category" exact={true} element={<Categories />} />
+              <Route path="/orders" exact={true} element={<Orders />} />
             </Routes>
           </div>
         </div>

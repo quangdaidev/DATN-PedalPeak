@@ -1,4 +1,4 @@
-import {React, useState} from 'react'
+import {React, useContext, useEffect, useState} from 'react'
 // import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -9,11 +9,114 @@ import Button from "@mui/material/Button";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
 import Rating from '@mui/material/Rating';
+import { MyContext } from '../../App';
+import { useLocation } from 'react-router-dom';
+import { postData } from '../../utils/api';
 // import { CategoryCollapse } from '../CategoryCollapse'
 
-export const Sidebar = () => {
+export const Sidebar = (props) => {
+
+  const context = useContext(MyContext);
+
+  const location = useLocation();
+
   const [isOpenCategoryFilter, setIsOpenCategoryFilter] = useState(true);
   const [isOpenAvailFilter, setIsOpenAvailFilter] = useState(true);
+
+  const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  });
+
+  const [filters, setFilters] = useState({
+    catId: [],
+    subCatId: [],
+    thirdSubCatId: [],
+    minPrice: '',
+    maxPrice: '',
+    rating: '',
+    page: 1,
+    limit: 4,
+  })
+
+  const filterData =()=>{
+    console.log("Filters being applied:", filters);
+    props.setIsLoading(true);
+    postData(`/api/product/filters`, filters).then((res)=>{
+      console.log("api::",res)
+      props.setProductsData(res.data);
+      props.setTotalPro(res.total);
+      props.setIsLoading(false);
+      props.setTotalPages(res?.totalPages);
+      window.scrollTo(0,0);
+    })
+  }
+
+  const [price, setPrice] = useState([0, 600000]);
+
+  const handleCheckboxChange = (field, value) => {
+    const currentValues = filters[field] || []
+    const updatedValues = currentValues?.includes(value) ? currentValues.filter((item) => item !== value) : [...currentValues, value];
+
+    setFilters((prev) => ({
+      ...prev,
+      [field]: updatedValues
+    }))
+
+    if(field === "catId"){
+      setFilters((prev) => ({
+        ...prev,
+        subCatId:[],
+        thirdSubCatId:[]
+      }))
+    }
+  }
+
+  useEffect(()=>{
+
+    const url = window.location.href;
+    const queryParameters = new URLSearchParams(location.search);
+
+    if(url.includes("catId")){
+      const categoryId = queryParameters.get("catId");
+      const catArr = [];
+      catArr.push(categoryId);
+      filters.catId = catArr;
+      filters.subCatId = [];
+      filters.thirdSubCatId = [];
+      filters.rating = [];
+    }
+
+    // if(url.includes("subCatId")){
+    //   const subcategoryId = queryParameters.get("subCatId");
+    //   const subcatArr = [];
+    //   subcatArr.push(subcategoryId);
+    //   filters.subCatId = subcatArr;
+    //   filters.subCatId = [];
+    //   filters.thirdSubCatId = [];
+    //   filters.rating = [];
+    // }
+
+    filters.page = 1;
+
+    setTimeout(() => {
+      filterData();
+    }, 200);
+
+  },[location])
+
+  useEffect(()=>{
+    filters.page = props.page;
+    filterData();
+  },[filters, props.page])
+
+  useEffect(()=>{
+    setFilters((prev)=>({
+      ...prev,
+      minPrice: price[0],
+      maxPrice: price[1]
+    }))
+  },[price]);
 
   return (
     <div className="sidebar py-5">
@@ -28,13 +131,23 @@ export const Sidebar = () => {
           </h3>
           <Collapse isOpened={isOpenCategoryFilter}>
             <div className="scroll px-3 relative -left-[10px] text-[14px] flex items-start flex-col">
-                <FormControlLabel control={<Checkbox size="small"/>} label="Xe đạp trẻ em" className="w-full"/>
-                <FormControlLabel control={<Checkbox size="small"/>} label="Xe đạp thể thao" className="w-full"/>
-                <FormControlLabel control={<Checkbox size="small"/>} label="Xe đạp đường phố" className="w-full"/>   
-                <FormControlLabel control={<Checkbox size="small"/>} label="Xe đạp gấp" className="w-full"/>
-                <FormControlLabel control={<Checkbox size="small"/>} label="Xe đạp địa hình" className="w-full"/>
-                <FormControlLabel control={<Checkbox size="small"/>} label="Xe đạp nữ" className="w-full"/>
-                <FormControlLabel control={<Checkbox size="small"/>} label="Xe đạp Tour" className="w-full"/>
+                
+              {
+                context?.catData?.length!==0 && context?.catData?.map((item, index)=>{
+                  return(
+                    <FormControlLabel 
+                      key={index}
+                      value={item?._id}
+                      control={<Checkbox />}
+                      checked={filters?.catId?.includes(item?._id)}
+                      label={item?.name} 
+                      onChange={()=>handleCheckboxChange('catId', item?._id)}
+                    className="w-full"
+                    />
+                  )
+                })
+              }
+                
             </div>   
           </Collapse>
           {/* <CategoryCollapse/> */}
@@ -51,9 +164,9 @@ export const Sidebar = () => {
           </h3>
           <Collapse isOpened={isOpenAvailFilter}>
             <div className="scroll px-3 relative -left-[10px] text-[14px] flex items-start flex-col">
-                <FormControlLabel control={<Checkbox size="small"/>} label="Sản phẩm khuyến mãi (17)" className="w-full"/>
-                <FormControlLabel control={<Checkbox size="small"/>} label="Sản phẩm mới ra (12)" className="w-full"/>
-                <FormControlLabel control={<Checkbox size="small"/>} label="Sản phẩm bán chạy (18)" className="w-full"/>
+                <FormControlLabel control={<Checkbox />} label="Sản phẩm khuyến mãi (17)" className="w-full"/>
+                <FormControlLabel control={<Checkbox />} label="Sản phẩm mới ra (12)" className="w-full"/>
+                <FormControlLabel control={<Checkbox />} label="Sản phẩm bán chạy (18)" className="w-full"/>
             </div>   
           </Collapse>
           {/* <CategoryCollapse/> */}
@@ -62,35 +175,76 @@ export const Sidebar = () => {
       <div className="box mt-4">
         <h3 className="w-full mb-3 text-[16px] font-[600] flex items-center pr-5">Lọc theo giá
         </h3>
-        <RangeSlider />
+        <RangeSlider 
+          value={price}
+          onInput={setPrice}
+          min={300000}
+          max={30000000}
+          step={100000}
+        />
         <div className="flex pt-4 pb-2 priceRange">
           <span className="text-[13px]">
-            Từ: <strong className="text-dark">{1} triệu</strong> </span>
+            Từ: <strong className="text-dark">{VND.format(price[0])}</strong> </span>
           <span className="ml-auto text-[13px]">
-            Đến: <strong className="text-dark">{5} triệu</strong>
+            Đến: <strong className="text-dark">{VND.format(price[1])}</strong>
           </span>
         </div>
       </div>
 
       <div className="box mt-4">
-        <h3 className="w-full mb-3 text-[16px] font-[600] flex items-center pr-5">Lọc theo đánh giá
+        <h3 className="w-full mb-3 text-[16px] font-[600] flex items-center pr-5">Lọc theo xếp hạng
         </h3>
         
-        <div className="w-full">
-          <Rating name="size-mall" defaultValue={5} size="small" readOnly/>
+        <div className="flex items-center">
+          <FormControlLabel 
+            value={5}
+            control={<Checkbox />}
+            checked={filters?.rating?.includes(5)}
+            onChange={()=>handleCheckboxChange('rating',5)}
+          />
+          <Rating name="size-mall" defaultValue={5} readOnly/>
         </div>
-        <div className="w-full">
-          <Rating name="size-mall" defaultValue={4} size="small" readOnly/>
+
+        <div className="flex items-center">
+          <FormControlLabel 
+            value={4}
+            control={<Checkbox />}
+            checked={filters?.rating?.includes(4)}
+            onChange={()=>handleCheckboxChange('rating',4)}
+          />
+          <Rating name="size-mall" defaultValue={4} readOnly/>
         </div>
-        <div className="w-full">
-          <Rating name="size-mall" defaultValue={3} size="small" readOnly/>
+
+        <div className="flex items-center">
+          <FormControlLabel 
+            value={3}
+            control={<Checkbox />}
+            checked={filters?.rating?.includes(3)}
+            onChange={()=>handleCheckboxChange('rating',3)}
+          />
+          <Rating name="size-mall" defaultValue={3} readOnly/>
         </div>
-        <div className="w-full">
-          <Rating name="size-mall" defaultValue={2} size="small" readOnly/>
+
+        <div className="flex items-center">
+          <FormControlLabel 
+            value={2}
+            control={<Checkbox />}
+            checked={filters?.rating?.includes(2)}
+            onChange={()=>handleCheckboxChange('rating',2)}
+          />
+          <Rating name="size-mall" defaultValue={2} readOnly/>
         </div>
-        <div className="w-full">
-          <Rating name="size-mall" defaultValue={1} size="small" readOnly/>
-        </div>   
+
+        <div className="flex items-center">
+          <FormControlLabel 
+            value={1}
+            control={<Checkbox />}
+            checked={filters?.rating?.includes(1)}
+            onChange={()=>handleCheckboxChange('rating',1)}
+          />
+          <Rating name="size-mall" defaultValue={1} readOnly/>
+        </div>
+
       </div>
     </div>
   )

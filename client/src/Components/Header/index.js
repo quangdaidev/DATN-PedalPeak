@@ -158,7 +158,7 @@ const Header =()=>{
         const obj = {
             _id: id,
             qty: quantity+1,
-            subTotal: price*quantity+1
+            subTotal: (price*(quantity+1))
         }
 
         editData(`/api/cart/update-qty?token=${localStorage.getItem('accessToken')}`, obj).then((res)=>{
@@ -179,7 +179,7 @@ const Header =()=>{
             const obj = {
                 _id: id,
                 qty: quantity-1,
-                subTotal: price*quantity-1 
+                subTotal: (price*(quantity-1))
             }
     
             editData(`/api/cart/update-qty?token=${localStorage.getItem('accessToken')}`, obj).then((res)=>{
@@ -246,7 +246,7 @@ const Header =()=>{
                                                 catData?.length !== 0 && catData?.map((cat,index)=>{
                                                     return(
                                                         <li className="block ">
-                                                            <Link className="" to="/productListing">
+                                                            <Link className="" to={`/products?catId=${cat._id}`}>
                                                                 <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none button-lv1">{cat.name}</Button>
                                                             </Link>
                                                         </li>
@@ -612,7 +612,7 @@ const Header =()=>{
                                                                     <Link to="/checkout"
                                                                     className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                                                                     >
-                                                                        Thanh toán
+                                                                        Đặt hàng
                                                                     </Link>
                                                                 </div>
                                                                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">

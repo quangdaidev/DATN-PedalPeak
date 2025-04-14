@@ -1,38 +1,47 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-    invoice_recepipt: {
-        type: String,
-        default: ""
-    },
     userId: {
         type: mongoose.Schema.ObjectId,
         ref: "User"
     },
-    orderId: {
-        type: String,
-        required: [true, "Provide orderId"],
-        unique: true
-    },
-    productId: {
-        type: mongoose.Schema.ObjectId,
-        ref: "product"
-    },
-    product_details: {
-        name: String,
-        image: Array
-    }, 
+    products: [
+        {
+            productId: {
+                type: String
+            },
+            productTitle: {
+                type: String           
+            },
+            quantity: {
+                type: Number
+            },
+            price: {
+                type: Number
+            },
+            image: {
+                type: String
+            },
+            subTotal: {
+                type: Number
+            }
+        }
+    ],
     paymentId: {
         type: String,
         default: ""
     },
+    payment_status: {
+        type:String,
+        default: ""
+    },
+    order_status: {
+        type:String,
+        default: "chờ xác nhận"
+    },
     delivery_address: {
         type: mongoose.Schema.ObjectId,
         ref: "address"
-    },
-    subTotalAmt: {
-        type: Number,
-        default: 0
     },
     totalAmt: {
         type: Number,

@@ -32,6 +32,8 @@ import { TestApi } from './Pages/testAPI';
 import { fetchDataFromApi, postData } from './utils/api';
 import { useNavigate } from 'react-router-dom';
 import Address from './Pages/MyAccount/address';
+import { OrderSuccess } from './Pages/Orders/success';
+import { OrderFailed } from './Pages/Orders/failed';
 
 const alertBox = (msg, type)=>{
   if(type==="success"){
@@ -126,6 +128,18 @@ function App() {
     }
   }
 
+  const getCartItems=()=>{
+    fetchDataFromApi(`/api/cart/get?token=${token}`).then((res)=>{
+      if(res?.error===false){
+     
+        setCartData(res?.data)
+        console.log("cartData",cartData)
+        setProductColorsData(res?.data.map(item => ({ _id: item._id, color: item.color })));
+        
+      }
+    })
+  }
+
   useEffect(()=>{
     fetchDataFromApi("/api/category").then((res)=>{
       setCatData(res?.data);
@@ -133,7 +147,8 @@ function App() {
     fetchDataFromApi("/api/product/getAllProducts").then((res)=>{
       // console.log("po::",res.data)
       setProductsData(res?.data);
-  })
+    })
+
   },[])
 
   const addToCart=(product, userId, quantity)=>{
@@ -150,13 +165,12 @@ function App() {
       price:product?.price !==0 ? product?.price : product?.oldPrice,
       color: product?.color,
       quantity: quantity,
-      subTotal:parseInt(product?.price !==0 ? product?.price* quantity : product?.oldPrice* quantity),
+      subTotal:parseInt(product?.price !==0 ? product?.price*quantity : product?.oldPrice*quantity),
       productId: product?._id,
       countInStock: product?.countInStock,
       userId:userId,
     };
 
-    
 
     postData(`/api/cart/add?token=${token}`, data).then((res)=>{
       if(res?.error===false){
@@ -174,17 +188,7 @@ function App() {
   
   // console.log("set:::",productColorsData)
 
-  const getCartItems=()=>{
-    fetchDataFromApi(`/api/cart/get?token=${token}`).then((res)=>{
-      if(res?.error===false){
-     
-        setCartData(res?.data)
-        // console.log("yyyyy",res?.data)
-        setProductColorsData(res?.data.map(item => ({ _id: item._id, color: item.color })));
-        
-      }
-    })
-  }
+  
 
   const getMyListData=()=>{
     fetchDataFromApi(`/api/myList?token=${token}`).then((res)=>{
@@ -216,7 +220,8 @@ function App() {
     productColorsData,
     myListData,
     setMyListData,
-    getMyListData
+    getMyListData,
+    getCartItems
   }
 
   return (
@@ -231,7 +236,7 @@ function App() {
             <Routes>
               <Route path="/test-api" exact={true} element={<TestApi/>} />
               <Route path="/" exact={true} element={<Home/>} />
-              <Route path="/productListing" exact={true} element={<ProductListing/>} />
+              <Route path="/products" exact={true} element={<ProductListing/>} />
               <Route path="/login" exact={true} element={<Login/>} />
               <Route path="/verify" exact={true} element={<Verify/>} />
               <Route path="/forgot-password" exact={true} element={<ForgotPassword/>} />
@@ -241,6 +246,8 @@ function App() {
               <Route path="/checkout" exact={true} element={<Checkout/>} />
               <Route path="/my-account" exact={true} element={<MyAccount/>} />
               <Route path="/my-orders" exact={true} element={<Orders/>} />
+              <Route path="/order/success" exact={true} element={<OrderSuccess/>} />
+              <Route path="/order/failed" exact={true} element={<OrderFailed/>} />
               <Route path="/address" exact={true} element={<Address/>} />
             </Routes>
             <Footer />
@@ -256,6 +263,7 @@ function App() {
           </MyContext.Provider>
         </BrowserRouter>
       </div>
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
       <ToastContainer theme="colored"/>
       {/* <Toaster position="top-right"/> */}
 

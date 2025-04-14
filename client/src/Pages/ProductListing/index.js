@@ -12,12 +12,25 @@ import { LuMenu } from "react-icons/lu";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem"; 
 import Pagination from '@mui/material/Pagination';
+import ProductLoadingItem from "../../Components/ProductLoadingItem";
+import { postData } from "../../utils/api";
 
 // import { Link } from 'react-router-dom';
 
 const ProductListing = () =>{
     const [itemView, setItemView] = useState('grid');
     const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const [productsData, setProductsData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+
+    const [selectedSortVal, setSelectedSortVal] = useState("Tên, từ A đến Z");
+
+    const [totalPro, setTotalPro] = useState();
+
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -26,8 +39,21 @@ const ProductListing = () =>{
         setAnchorEl(null);
     };
 
+    const handleSortBy = (name,order,products,value)=>{
+        console.log("kkkk",products)
+        setSelectedSortVal(value);
+        postData(`/api/product/sortBy`,{
+            products: products,
+            sortBy: name,
+            order: order
+        }).then((res)=>{
+            setProductsData(res.data);
+            setAnchorEl(null)
+        })
+    }
+
     return ( 
-        <section className="py-8 mt-[120px]">
+        <section className="py-8 mt-[85px]">
             <div className="container">
                 <Breadcrumbs aria-label="breadcrumb">
                     <Link underline="hover" color="inherit" href="/" className="link transition">
@@ -48,7 +74,15 @@ const ProductListing = () =>{
             <div className="bg-white p-2 mt-4">
                 <div className="container flex gap-3">
                     <div className="sidebarWrapper w-[20%] h-full bg-white">
-                        <Sidebar/>
+                        <Sidebar 
+                            productsData={productsData} 
+                            setProductsData={setProductsData}
+                            isLoading = {isLoading}
+                            setIsLoading = {setIsLoading}
+                            page={page}
+                            setTotalPages={setTotalPages}
+                            setTotalPro={setTotalPro}
+                        />
                     </div>
 
                     <div className="rightContent w-[80%] py-3">
@@ -66,7 +100,7 @@ const ProductListing = () =>{
                                     <IoGridSharp className="text-[rgba(0,0,0,0.7)]" />
                                 </Button>
 
-                                <span className="text-[14px] font-[500] pl-3 text-black">Tìm thấy 27 sản phẩm.</span>
+                                <span className="text-[14px] font-[500] pl-3 text-black">Tìm thấy {totalPro !==0 ? totalPro : 0} sản phẩm.</span>
 
                             </div>
 
@@ -81,7 +115,7 @@ const ProductListing = () =>{
                                     onClick={handleClick}
                                     className="!bg-white !text-[12px] !text-black !capitalize !border-2 !border-black"
                                 >
-                                    Giá cao tới thấp
+                                    {selectedSortVal}
                                 </Button>
 
                                 <Menu
@@ -99,7 +133,24 @@ const ProductListing = () =>{
                                     horizontal: 'left',
                                     }}
                                 >
-                                    <MenuItem onClick={handleClose} className="!text-[13px] !text-black !capitalize">Khuyến mãi cao tới thấp</MenuItem>
+                                    <MenuItem 
+                                        onClick={()=>handleSortBy('name','asc',productsData, 'Tên, từ A đến Z')}
+                                        className="!text-[13px] !text-black !capitalize"
+                                    >
+                                        Tên, từ A đến Z
+                                    </MenuItem>
+                                    <MenuItem 
+                                        onClick={()=>handleSortBy('price','asc',productsData, 'Giá, từ thấp đến cao')}
+                                        className="!text-[13px] !text-black !capitalize"
+                                    >
+                                        Giá, từ thấp đến cao
+                                    </MenuItem>
+                                    <MenuItem 
+                                        onClick={()=>handleSortBy('price','desc',productsData, 'Giá, từ cao đến thấp')}
+                                        className="!text-[13px] !text-black !capitalize"
+                                    >
+                                        Giá, từ cao đến thấp
+                                    </MenuItem>
                                     <MenuItem onClick={handleClose} className="!text-[13px] !text-black !capitalize">Sắp xếp theo tên</MenuItem>
                                     <MenuItem onClick={handleClose} className="!text-[13px] !text-black !capitalize">Giá từ cao tới thấp</MenuItem>
                                     <MenuItem onClick={handleClose} className="!text-[13px] !text-black !capitalize">Giá từ thấp tới cao</MenuItem>
@@ -110,33 +161,52 @@ const ProductListing = () =>{
                         </div>
 
                         <div className={`grid ${itemView==='grid' ? 'grid-cols-4 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-1'}  gap-4`}>
+
                         {
                             itemView === 'grid' ? 
-                            <>
-                                <ProductItem />
-                                <ProductItem />
-                                <ProductItem />
-                                <ProductItem />
-                                <ProductItem />
-                                <ProductItem />
-                                <ProductItem />
-                            </>
+                            (<>
+                                {
+                                    isLoading === true ? <ProductLoadingItem view={itemView}/>
+                                    :
+                                    productsData?.length !== 0 && productsData?.map((item, index) => {
+                                        return (
+                                            <ProductItem key={index} item={item}/>
+                                        )
+                                    })
+                                }
+                         
+                            </>)
+                            
                             : 
-                            <>
-                                <ProductItemListView />
-                                <ProductItemListView />
-                                <ProductItemListView />
-                                <ProductItemListView />
-                                <ProductItemListView />
-                                <ProductItemListView />
-                                <ProductItemListView />
-                            </>
+                            (<>
+                                {
+                                    isLoading === true ? <ProductLoadingItem view={itemView}/>
+                                    :
+                                    productsData?.products?.length !== 0 && productsData?.products?.map((item, index) => {
+                                        return (
+                                            <ProductItemListView key={index} item={item}/>
+                                        )
+                                    })
+                                }                  
+                            
+                            </>)
                         }
                         </div>
 
-                        <div className="flex items-center justify-center mt-5">
-                            <Pagination count={10} showFirstButton showLastButton/>
-                        </div>
+                        {
+                            totalPages > 1 && 
+                            <div className="flex items-center justify-center mt-5">
+                                <Pagination 
+                                    count={totalPages} 
+                                    showFirstButton 
+                                    showLastButton
+                                    page={page}
+                                    onChange={(e,value)=>setPage(value)}
+                                />
+                            </div>
+                        }
+
+                       
                     </div>
 
                 </div>

@@ -23,6 +23,8 @@ import Pagination from "@mui/material/Pagination";
 import { MyContext } from "../../App";
 
 import Rating from "@mui/material/Rating";
+import { fetchDataFromApi } from "../../utils/api";
+import Orders from "../Orders";
 
 export const data = [
   ["Year", "Sales", "Expenses"],
@@ -47,10 +49,38 @@ const Dashboard = () => {
 
   const context = useContext(MyContext);
 
+  const [totalOrdersData, setTotalOrdersData] = useState([]);
+  const [users,setUsers] = useState([]);
+  const [proData, setProData] = useState([]);
+  const [catData, setCatData] = useState([]);
+
+
   useEffect(() => {
     context.setisHideSidebarAndHeader(false);
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    fetchDataFromApi("/api/user/getAllUsers").then((res)=>{
+      if(res?.error === false){
+        setUsers(res?.data)
+      }
+    })
+
+    fetchDataFromApi('/api/product/getAllProducts').then((res)=>{
+      setProData(res.data)
+    })
+
+    fetchDataFromApi('/api/category').then((res)=>{
+      setCatData(res.data)
+    })
+
+    fetchDataFromApi('/api/order/getAllOrders').then((res)=>{
+      setTotalOrdersData(res.data)
+    })
+  },[])
+
+  let orderNew = totalOrdersData?.filter(order => order.order_status === "chờ xác nhận");
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -66,22 +96,34 @@ const Dashboard = () => {
           <div className="col-md-8">
             <div className="dashboardBoxWrapper d-flex">
               <DashboardBox
-                color={["#1da256", "#48d483"]}
-                icon={<FaUserCircle />}
-                grow={true}
-              />
-              <DashboardBox
                 color={["#c012e2", "#eb64fe"]}
                 icon={<IoMdCart />}
+                grow={true}
+                title={"Đơn hàng chờ xử lý"}
+                number={orderNew?.length}
               />
               <DashboardBox
                 color={["#2c78e5", "#60aff5"]}
                 icon={<MdShoppingBag />}
+                grow={true}
+                title={"Tổng sản phẩm"}
+               number={proData?.length}
               />
               <DashboardBox
                 color={["#e1950e", "#f3cd29"]}
                 icon={<GiStarsStack />}
+                grow={true}
+                title={"Danh mục sản phẩm"}
+                number={catData?.length}
               />
+              <DashboardBox
+                color={["#1da256", "#48d483"]}
+                icon={<FaUserCircle />}
+                grow={true}
+                title={"Tổng người dùng"}
+                number={users?.length}
+              />
+              
             </div>
           </div>
 
@@ -139,7 +181,7 @@ const Dashboard = () => {
         </div>
 
         <div className="card shadow border-0 p-3 mt-4">
-          <h3 className="hd">Best Selling Products</h3>
+          {/* <h3 className="hd">Best Selling Products</h3> */}
 
           <div className="row cardFilters mt-3">
             <div className="col-md-3">
@@ -183,537 +225,12 @@ const Dashboard = () => {
                 </Select>
               </FormControl>
             </div>
+                    
+            <Orders/>
           </div>
 
-          <div className="table-responsive mt-3">
-            <table className="table table-bordered table-striped v-align">
-              <thead className="thead-dark">
-                <tr>
-                  <th>UID</th>
-                  <th style={{ width: "300px" }}>PRODUCT</th>
-                  <th>CATEGORY</th>
-                  {/* <th>BRAND</th> */}
-                  <th>PRICE</th>
-                  <th>STOCK</th>
-                  <th>RATING</th>
-                  <th>ORDER</th>
-                  <th>SALES</th>
-                  <th>ACTION</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center productBox">
-                      <div className="imgWrapper">
-                        <div className="img card shadow m-0">
-                          <img
-                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                            className="w-100"
-                          />
-                        </div>
-                      </div>
-                      <div className="info pl-3">
-                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
-                        <p>
-                          Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Xe đạp đường phố </td>
-                  {/* <td>richman</td> */}
-                  <td>
-                    <div style={{ width: "70px" }}>
-                      <del className="old">$21.00</del>
-                      <span className="new text-danger">$21.00</span>
-                    </div>
-                  </td>
-                  <td>
-                    <Rating
-                      name="read-only"
-                      defaultValue={4.5}
-                      precision={0.5}
-                      size="small"
-                      readOnly
-                    />
-                  </td>
-                  <td>4.9(16)</td>
-                  <td>380</td>
-                  <td>$38k</td>
-                  <td>
-                    <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
-                      <Button className="success" color="success">
-                        <FaPencilAlt />
-                      </Button>
-                      <Button className="error" color="error">
-                        <MdDelete />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center productBox">
-                      <div className="imgWrapper">
-                        <div className="img card shadow m-0">
-                          <img
-                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                            className="w-100"
-                          />
-                        </div>
-                      </div>
-                      <div className="info pl-3">
-                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
-                        <p>
-                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Xe đạp đường phố </td>
-                  {/* <td>richman</td> */}
-                  <td>
-                    <div style={{ width: "70px" }}>
-                      <del className="old">$21.00</del>
-                      <span className="new text-danger">$21.00</span>
-                    </div>
-                  </td>
-                  <td>
-                    <Rating
-                      name="read-only"
-                      defaultValue={4.5}
-                      precision={4.0}
-                      size="small"
-                      readOnly
-                    />
-                  </td>
-                  <td>4.9(16)</td>
-                  <td>380</td>
-                  <td>$38k</td>
-                  <td>
-                    <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
-                      <Button className="success" color="success">
-                        <FaPencilAlt />
-                      </Button>
-                      <Button className="error" color="error">
-                        <MdDelete />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center productBox">
-                      <div className="imgWrapper">
-                        <div className="img card shadow m-0">
-                          <img
-                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                            className="w-100"
-                          />
-                        </div>
-                      </div>
-                      <div className="info pl-3">
-                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
-                        <p>
-                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Xe đạp đường phố </td>
-                  {/* <td>richman</td> */}
-                  <td>
-                    <div style={{ width: "70px" }}>
-                      <del className="old">$21.00</del>
-                      <span className="new text-danger">$21.00</span>
-                    </div>
-                  </td>
-                  <td>
-                    <Rating
-                      name="read-only"
-                      defaultValue={4.5}
-                      precision={5.0}
-                      size="small"
-                      readOnly
-                    />
-                  </td>
-                  <td>4.9(16)</td>
-                  <td>380</td>
-                  <td>$38k</td>
-                  <td>
-                    <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
-                      <Button className="success" color="success">
-                        <FaPencilAlt />
-                      </Button>
-                      <Button className="error" color="error">
-                        <MdDelete />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center productBox">
-                      <div className="imgWrapper">
-                        <div className="img card shadow m-0">
-                          <img
-                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                            className="w-100"
-                          />
-                        </div>
-                      </div>
-                      <div className="info pl-3">
-                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
-                        <p>
-                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Xe đạp đường phố </td>
-                  {/* <td>richman</td> */}
-                  <td>
-                    <div style={{ width: "70px" }}>
-                      <del className="old">$21.00</del>
-                      <span className="new text-danger">$21.00</span>
-                    </div>
-                  </td>
-                  <td>
-                    <Rating
-                      name="read-only"
-                      defaultValue={4.5}
-                      precision={5.0}
-                      size="small"
-                      readOnly
-                    />
-                  </td>
-                  <td>4.9(16)</td>
-                  <td>380</td>
-                  <td>$38k</td>
-                  <td>
-                    <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
-                      <Button className="success" color="success">
-                        <FaPencilAlt />
-                      </Button>
-                      <Button className="error" color="error">
-                        <MdDelete />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center productBox">
-                      <div className="imgWrapper">
-                        <div className="img card shadow m-0">
-                          <img
-                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                            className="w-100"
-                          />
-                        </div>
-                      </div>
-                      <div className="info pl-3">
-                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
-                        <p>
-                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Xe đạp đường phố </td>
-                  {/* <td>richman</td> */}
-                  <td>
-                    <div style={{ width: "70px" }}>
-                      <del className="old">$21.00</del>
-                      <span className="new text-danger">$21.00</span>
-                    </div>
-                  </td>
-                  <td>
-                    <Rating
-                      name="read-only"
-                      defaultValue={4.5}
-                      precision={5.0}
-                      size="small"
-                      readOnly
-                    />
-                  </td>
-                  <td>4.9(16)</td>
-                  <td>380</td>
-                  <td>$38k</td>
-                  <td>
-                    <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
-                      <Button className="success" color="success">
-                        <FaPencilAlt />
-                      </Button>
-                      <Button className="error" color="error">
-                        <MdDelete />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center productBox">
-                      <div className="imgWrapper">
-                        <div className="img card shadow m-0">
-                          <img
-                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                            className="w-100"
-                          />
-                        </div>
-                      </div>
-                      <div className="info pl-3">
-                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
-                        <p>
-                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Xe đạp đường phố </td>
-                  {/* <td>richman</td> */}
-                  <td>
-                    <div style={{ width: "70px" }}>
-                      <del className="old">$21.00</del>
-                      <span className="new text-danger">$21.00</span>
-                    </div>
-                  </td>
-                  <td>
-                    <Rating
-                      name="read-only"
-                      defaultValue={4.5}
-                      precision={5.0}
-                      size="small"
-                      readOnly
-                    />
-                  </td>
-                  <td>4.9(16)</td>
-                  <td>380</td>
-                  <td>$38k</td>
-                  <td>
-                    <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
-                      <Button className="success" color="success">
-                        <FaPencilAlt />
-                      </Button>
-                      <Button className="error" color="error">
-                        <MdDelete />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center productBox">
-                      <div className="imgWrapper">
-                        <div className="img card shadow m-0">
-                          <img
-                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                            className="w-100"
-                          />
-                        </div>
-                      </div>
-                      <div className="info pl-3">
-                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
-                        <p>
-                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Xe đạp đường phố </td>
-                  {/* <td>richman</td> */}
-                  <td>
-                    <div style={{ width: "70px" }}>
-                      <del className="old">$21.00</del>
-                      <span className="new text-danger">$21.00</span>
-                    </div>
-                  </td>
-                  <td>
-                    <Rating
-                      name="read-only"
-                      defaultValue={4.5}
-                      precision={5.0}
-                      size="small"
-                      readOnly
-                    />
-                  </td>
-                  <td>4.9(16)</td>
-                  <td>380</td>
-                  <td>$38k</td>
-                  <td>
-                    <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
-                      <Button className="success" color="success">
-                        <FaPencilAlt />
-                      </Button>
-                      <Button className="error" color="error">
-                        <MdDelete />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center productBox">
-                      <div className="imgWrapper">
-                        <div className="img card shadow m-0">
-                          <img
-                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                            className="w-100"
-                          />
-                        </div>
-                      </div>
-                      <div className="info pl-3">
-                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
-                        <p>
-                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Xe đạp đường phố </td>
-                  {/* <td>richman</td> */}
-                  <td>
-                    <div style={{ width: "70px" }}>
-                      <del className="old">$21.00</del>
-                      <span className="new text-danger">$21.00</span>
-                    </div>
-                  </td>
-                  <td>
-                    <Rating
-                      name="read-only"
-                      defaultValue={4.5}
-                      precision={5.0}
-                      size="small"
-                      readOnly
-                    />
-                  </td>
-                  <td>4.9(16)</td>
-                  <td>380</td>
-                  <td>$38k</td>
-                  <td>
-                    <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
-                      <Button className="success" color="success">
-                        <FaPencilAlt />
-                      </Button>
-                      <Button className="error" color="error">
-                        <MdDelete />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>#1</td>
-                  <td>
-                    <div className="d-flex align-items-center productBox">
-                      <div className="imgWrapper">
-                        <div className="img card shadow m-0">
-                          <img
-                            src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                            className="w-100"
-                          />
-                        </div>
-                      </div>
-                      <div className="info pl-3">
-                        <h6>Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</h6>
-                        <p>
-                           Xe đạp Fixed Gear VINBIKE Megatron – Bánh 700C
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>Xe đạp đường phố </td>
-                  {/* <td>richman</td> */}
-                  <td>
-                    <div style={{ width: "70px" }}>
-                      <del className="old">$21.00</del>
-                      <span className="new text-danger">$21.00</span>
-                    </div>
-                  </td>
-                  <td>
-                    <Rating
-                      name="read-only"
-                      defaultValue={4.5}
-                      precision={5.0}
-                      size="small"
-                      readOnly
-                    />
-                  </td>
-                  <td>4.9(16)</td>
-                  <td>380</td>
-                  <td>$38k</td>
-                  <td>
-                    <div className="actions d-flex align-items-center">
-                      <Button className="secondary" color="secondary">
-                        <FaEye />
-                      </Button>
-                      <Button className="success" color="success">
-                        <FaPencilAlt />
-                      </Button>
-                      <Button className="error" color="error">
-                        <MdDelete />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <div className="d-flex tableFooter">
-              <p>
-                showing <b>12</b> of <b>60</b> results
-              </p>
-              <Pagination
-                count={10}
-                color="primary"
-                className="pagination"
-                showFirstButton
-                showLastButton
-              />
-            </div>
-          </div>
         </div>
+        
       </div>
     </>
   );

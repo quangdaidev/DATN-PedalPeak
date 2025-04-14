@@ -39,6 +39,7 @@ const productRoutes = require("./routes/products");
 app.use("/api/categories", categoryRoutes);
 app.use(`/api/products`, productRoutes);
 
+
 // Khởi động server
 app.listen(process.env.PORT, () => {
   console.log(`Server đang chạy tại http://localhost:${process.env.PORT}`);

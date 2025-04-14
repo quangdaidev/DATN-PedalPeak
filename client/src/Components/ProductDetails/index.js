@@ -22,7 +22,7 @@ export const ProductDetailsComponent = (props) => {
             <span className="text-gray-400 text-[13px]">Thương hiệu: <span className="font-[500] text-black opacity-75">{props?.item?.brand}</span></span>
 
             <Rating name="size-small" defaultValue={4} size="small" readOnly/>
-            <span className="text-[13px] cursor-pointer">Review (5)</span>
+            <span className="text-[13px] cursor-pointer" onClick={props.gotoReviews}>Review ({props.reviewsCount})</span>
 
         </div>
 
@@ -34,7 +34,7 @@ export const ProductDetailsComponent = (props) => {
                 <span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">{VND.format(props?.item?.oldPrice)}</span>
                 <span className="price text-orange-600 text-[20px] font-[600]">{VND.format(props?.item?.price)}</span> 
 
-                <span className="text-[14px]">Còn hàng: <span className="text-green-600 text-[14px] font-bold">47 sản phẩm</span></span>
+                <span className="text-[14px]">Còn hàng: <span className="text-green-600 text-[14px] font-bold">{props?.item?.countInStock} sản phẩm</span></span>
             </div>
             :
             <div className="flex items-center gap-4 mt-4">

@@ -226,6 +226,64 @@ export async function getAllProductsByCatId(request, response) {
     }
 }
 
+// export async function getAllProductsByCatId(request, response) {
+//     try {
+//       const { id } = request.params;
+  
+//       // Kiểm tra ID hợp lệ
+//       if (!mongoose.Types.ObjectId.isValid(id)) {
+//         return response.status(400).json({
+//           message: 'ID danh mục không hợp lệ',
+//           error: true,
+//           success: false,
+//         });
+//       }
+  
+//       const page = parseInt(request.query.page) || 1;
+//       const perPage = parseInt(request.query.perPage) || 10000;
+  
+//       // Đếm tổng sản phẩm theo catId
+//       const totalPosts = await ProductModel.countDocuments({ catId: id });
+//       const totalPages = Math.ceil(totalPosts / perPage);
+  
+//       if (page > totalPages && totalPages !== 0) {
+//         return response.status(404).json({
+//           message: 'Không tìm thấy trang',
+//           success: false,
+//           error: true,
+//         });
+//       }
+  
+//       const products = await ProductModel.find({ catId: id })
+//         .populate('category')
+//         .skip((page - 1) * perPage)
+//         .limit(perPage)
+//         .exec();
+  
+//       // Check nếu không có sản phẩm nào
+//       if (products.length === 0) {
+//         return response.status(404).json({
+//           message: 'Không tìm thấy sản phẩm nào',
+//           error: true,
+//           success: false,
+//         });
+//       }
+  
+//       return response.status(200).json({
+//         error: false,
+//         success: true,
+//         data: products,
+//         totalPages,
+//         page,
+//       });
+//     } catch (error) {
+//       return response.status(500).json({
+//         message: error.message || error,
+//         error: true,
+//         success: false,
+//       });
+//     }
+// }
 
 // get all products by category name
 export async function getAllProductsByCatName(request, response) {
@@ -1016,5 +1074,88 @@ export async function getProductColorById(request, response) {
         })
     }
 }
+export async function filters(request, response) {
+    const {catId, subCatId, thirdsubCatId, minPrice, maxPrice, rating, page, limit} = request.body;
+
+    const filters = {};
+
+    if(catId?.length){
+        filters.catId = {$in: catId}
+    };
+
+    if(subCatId?.length){
+        filters.subCatId = {$in: subCatId}
+    };
+
+    if(thirdsubCatId?.length){
+        filters.thirdsubCatId = {$in: thirdsubCatId}
+    };
+
+    if(minPrice || maxPrice){
+        filters.price = {$gte: +minPrice || 0, $lte: +maxPrice || Infinity}
+    };
+
+    if(rating?.length){
+        filters.rating = {$in: rating}
+    };
+
+    try {
+
+        const products = await ProductModel.find(filters).populate("category").skip((page - 1) * limit).limit(parseInt(limit));
+        const total = await ProductModel.countDocuments(filters);
+        return response.status (200).json({
+            error: false, 
+            success:true,
+            data: products,
+            total:total,
+            page:parseInt(page) || 1,
+            totalPages: Number.isFinite(total / limit) ? Math.ceil(total / limit) : 1
+            // totalPages:Math.ceil(total/limit) 
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+    
+const sortItems = (products, sortBy, order) => { 
+    const updatedProducts = products.map(product => {
+        const newProduct = { ...product };
+        if (newProduct.price === 0 && newProduct.oldPrice) {
+            newProduct.price = newProduct.oldPrice;
+        }
+        return newProduct;
+    });
+
+    return updatedProducts.sort((a, b) => {
+        if (sortBy === 'name') {
+            return order === 'asc' 
+                ? a.name.localeCompare(b.name) 
+                : b.name.localeCompare(a.name)
+        }
+        if (sortBy === "price") {
+            return order === 'asc' ? a.price - b.price: b.price - a.price
+        }
+
+        return 0;
+    })
+}
+
+export async function sortBy(request, response) {
+    const { products, sortBy, order } = request.body;
+    console.log(products)
+    const sortedItems = sortItems([... products], sortBy, order);
+
+    return response.status(200).json({
+        error: false,
+        success:true,
+        data: sortedItems,
+        page:0,
+        totalPages:0
+    })
+}    
     
     

@@ -183,6 +183,9 @@ h1,h2,h3,h4,h5,h6{@apply font-semibold}
 .btn-lg{@apply text-[18px] px-[20px] py-[10px] !important}
 .btn-sm{@apply text-[14px] px-[15px] py-[8px] !important}
 
+.btn-dark{@apply bg-slate-500 text-white border border-solid border-black !important}
+.btn-dark:hover{@apply bg-slate-800 !important}
+
 .ReactCollapse--collapse {
   @apply transition-all;
 }
@@ -267,3 +270,5 @@ input[type=number]::-webkit-outer-spin-button {
 .MuiButtonBase-root.MuiMenuItem-root.MuiMenuItem-gutters.selected{
   @apply !text-main-700
 }
+
+.css-wsxt5g-MuiTableCell-root .text-l{@apply text-left !important}

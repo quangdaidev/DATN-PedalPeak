@@ -335,9 +335,9 @@ const Categories = () => {
             </table>
 
             <div className="d-flex tableFooter">
-              <p>
+              {/* <p>
                 hiển thị <b>{page}</b> trong <b>{catData?.length}</b> kết quả
-              </p>
+              </p> */}
               <Pagination
                 count={page}
                 color="primary"

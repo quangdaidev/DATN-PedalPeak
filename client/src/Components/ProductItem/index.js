@@ -101,10 +101,10 @@ const ProductItem =(props)=>{
             </div> */}
 
             <div className="boxPro productItem !bg-slate-100 shadow-lg rounded-md overflow-hidden border-[1px] border-gray-500 border-1 mb-14">
-                <div className="group imgWrapper w-[100%] h-[280px] overflow-hidden rounded-md relative"> 
+                <div className="group imgWrapper w-[100%]  h-[360px] overflow-hidden rounded-md relative"> 
                     <Link to={`/product/${props?.item?._id}`}>
-                        <img alt="" src={props?.item?.images[0]} className="h-[280px] w-full bg-contain bg-no-repeat"/>
-                        <img alt="" src={props?.item?.images[1]} className="h-[280px] w-full bg-contain bg-no-repeat transition-all duration-700 absolute top-0 left-0 opacity-0 group-hover:opacity-100"/>
+                        <img alt="" src={props?.item?.images[0]} className=" w-full h-[360px]  bg-contain bg-no-repeat"/>
+                        <img alt="" src={props?.item?.images[1]} className="h-[360px]  w-full bg-contain bg-no-repeat transition-all duration-700 absolute top-0 left-0 opacity-0 group-hover:opacity-100"/>
                     </Link>
 
                     {
@@ -151,7 +151,7 @@ const ProductItem =(props)=>{
 
                 <div className='info p-3 py-5'>
                     <h6 className="text-[13px] !font-[400]"><Link to="/" className='link transition-all'> {props?.item?.brand}</Link></h6>
-                    <h3 className="overflow-hidden line-clamp-2  h-14 text-[14px] mt-1 font-[500] mb-2 text-[rgba(0,0,0,0.9)]"> <Link to={`/product/${props?.item?._id}`} className='link transition-all'>{props?.item?.name}</Link></h3>
+                    <h3 className="overflow-hidden line-clamp-2  h-12 text-[14px] mt-1 font-[500] mb-2 text-[rgba(0,0,0,0.9)]"> <Link to={`/product/${props?.item?._id}`} className='link transition-all'>{props?.item?.name}</Link></h3>
                     <Rating name="size-small" defaultValue={props?.item?.rating} size="small" readOnly/>
 
                     {

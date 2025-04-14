@@ -11,9 +11,11 @@ export const ProductZoom = (props) => {
     const [slideIndex, setSlideIndex] = useState(0);
     const zoomSliderBig = useRef();
     const zoomSliderSml = useRef();
+
     const goto = (index) => {
-    setSlideIndex(index);
-    zoomSliderSml.current.swiper.slideTo(index); zoomSliderBig.current.swiper.slideTo(index);
+        setSlideIndex(index);
+        zoomSliderSml.current.swiper.slideTo(index); 
+        zoomSliderBig.current.swiper.slideTo(index);
     }
 
 

@@ -28,8 +28,11 @@ import AdsBannerSlider from '../../Components/AdsBannerSlider';
 
 import {fetchDataFromApi} from "../../utils/api";
 import { MyContext } from "../../App";
+import ProductLoading from '../../Components/ProductLoading';
 
 const Home =()=>{
+
+    const [loading, setLoading] = useState(true);
 
     const context = useContext(MyContext);
 
@@ -72,6 +75,7 @@ const Home =()=>{
     // console.log("lll",catData)
       
     // console.log("pi::",context?.productsData)
+ 
     const productsDataHot = context?.productsData?.filter(product => product.rating === 5).slice(0, 8);
     const productsDataSale = context?.productsData?.filter(product => product.price !== 0).slice(0, 8);
     const productsDataInStock  = [...context?.productsData].sort((a, b) => b.countInStock - a.countInStock).slice(0, 8);
@@ -91,6 +95,18 @@ const Home =()=>{
         
         setValue(newValue);
     };
+
+    useEffect(() => {
+        // Khi tab có index = 0 được chọn thì mới xử lý loading
+        if (value === 0 || value === 1 || value === 2) {
+            setLoading(true);
+            const timer = setTimeout(() => {
+                setLoading(false);
+            }, 1000);
+
+            return () => clearTimeout(timer); // clear nếu chuyển tab nhanh
+        }
+    }, [value]); 
 
 
     function CustomTabPanel(props) {
@@ -167,14 +183,25 @@ const Home =()=>{
                         </div>
                     </div>
                     <CustomTabPanel value={value} index={0}>
+
                         {
-                            productsDataHot?.length !== 0 && <ProductsSlider items={5} data={productsDataHot}/>
+                            loading && <ProductLoading/>
                         }
+                       
+                        {
+                            !loading && productsDataHot?.length !== 0 && <ProductsSlider items={4} data={productsDataHot}/>
+                        }
+
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
+
+                        {
+                            loading && <ProductLoading/>
+                        }
+                       
                         
                         {
-                            productsDataSale?.length !== 0 && <ProductsSlider items={5} data={productsDataSale}/>
+                            !loading && productsDataSale?.length !== 0 && <ProductsSlider items={4} data={productsDataSale}/>
                         }
                         
                     </CustomTabPanel>
@@ -182,7 +209,12 @@ const Home =()=>{
                     <CustomTabPanel value={value} index={2}>
 
                         {
-                            productsDataInStock?.length !== 0 && <ProductsSlider items={5} data={productsDataInStock}/>
+                            loading && <ProductLoading/>
+                        }
+                       
+
+                        {
+                            !loading && productsDataInStock?.length !== 0 && <ProductsSlider items={4} data={productsDataInStock}/>
                         }
 
                     </CustomTabPanel>       
