@@ -34,14 +34,13 @@ export const ProductDetailsComponent = (props) => {
                 <span className="oldPrice line-through text-gray-500 text-[20px] font-[500]">{VND.format(props?.item?.oldPrice)}</span>
                 <span className="price text-orange-600 text-[20px] font-[600]">{VND.format(props?.item?.price)}</span> 
 
-                <span className="text-[14px]">Còn hàng: <span className="text-green-600 text-[14px] font-bold">{props?.item?.countInStock} sản phẩm</span></span>
+                {/* <span className="text-[14px]">Còn hàng: <span className="text-green-600 text-[14px] font-bold">{props?.item?.countInStock} sản phẩm</span></span> */}
             </div>
             :
             <div className="flex items-center gap-4 mt-4">
           
                 <span className="price text-orange-600 text-[20px] font-[600]">{VND.format(props?.item?.oldPrice)}</span> 
 
-                <span className="text-[14px]">Còn hàng: <span className="text-green-600 text-[14px] font-bold">{props?.item.countInStock} sản phẩm</span></span>
             </div>        
         }
 
@@ -75,8 +74,10 @@ export const ProductDetailsComponent = (props) => {
 
         }
 
+        <div className="mt-2 text-[14px]">Hiện còn: <span className="text-green-600 text-[14px] font-bold">{props?.item?.countInStock} sản phẩm</span></div>
+
        
-        <p className="text-[14px] mt-5 mb-2">Miễn phí vận chuyển toàn quốc* (nhận hàng sau 2-3 ngày)</p>           
+        <p className="text-[14px] mt-3 mb-2">Miễn phí vận chuyển toàn quốc* (nhận hàng sau 2-3 ngày)</p>           
         <div className="flex items-center gap-4">
             <div className="qtyBoxWrapper w-[80px]">
                 <QtyBox/>

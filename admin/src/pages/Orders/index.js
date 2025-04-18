@@ -20,6 +20,11 @@ import moment from 'moment';
 import Chip from '@mui/material/Chip';
 import { useContext } from 'react';
 import { MyContext } from '../../App';
+import SearchBox from '../../components/SearchBox';
+
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 const Orders = ()=>{
 
@@ -33,6 +38,8 @@ const Orders = ()=>{
     const context = useContext(MyContext);
 
     const [singleOrder, setSingleOder] = useState();
+
+    const [showBy, setshowBy] = useState("");
     
     useEffect(()=>{
     fetchDataFromApi('/api/order/getAllOrders').then((res)=>{
@@ -211,9 +218,42 @@ const Orders = ()=>{
         <div className="w-100">
             <div className="card shadow border-0 w-100 flex-row p-4">
                 <h5 className="mb-0">Danh sách đơn hàng</h5>
+                          <div className="row cardFilters mt-3">
+                           
+                          
+                          </div>
             </div>
 
             <div className="card shadow border-0 p-3 mt-4">
+                <h5 className="mb-0">Danh sách đơn hàng</h5>
+                <div className="row cardFilters mt-3">
+                    <div className="col-md-3">
+                        <h4>HIỂN THỊ THEO</h4>
+                        <FormControl size="small" className="w-100">
+                            <Select
+                                value={showBy}
+                                onChange={(e) => setshowBy(e.target.value)}
+                                displayEmpty
+                                inputProps={{ "aria-label": "Without label" }}
+                                labelId="demo-select-small-label"
+                                className="w-100"
+                            >
+                                <MenuItem value="">
+                                <em>Chọn </em>
+                                </MenuItem>
+                                <MenuItem value={10}>Ten</MenuItem>
+                                <MenuItem value={20}>Twenty</MenuItem>
+                                <MenuItem value={30}>Thirty</MenuItem>
+                            </Select>
+                        </FormControl>
+                        </div>
+                    <div className="col-md-3">
+                        <h4>NHẬP TỪ KHÓA </h4>
+                        <SearchBox />
+                    </div>
+                </div>
+                        
+                        
                 <div className="table-responsive mt-3">
                     <TableContainer component={Paper}>
                         <Table aria-label="collapsible table">
@@ -246,6 +286,7 @@ const Orders = ()=>{
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        labelRowsPerPage="Số hàng mỗi trang"
                     />
                 </div>
             </div>

@@ -9,6 +9,13 @@ import { MyContext } from "../../App";
 import { postData } from "../../utils/api";
 import { CircularProgress } from "@mui/material";
 
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+import { firebaseApp } from "../../firebase";
+
+const auth = getAuth(firebaseApp);
+const googleProvider = new GoogleAuthProvider();
+
 const Login=()=>{
 
     const [isLoading, setIsLoading] = useState(false);
@@ -120,10 +127,59 @@ const Login=()=>{
         })   
     }
 
-        useEffect(() => {
-            console.log("isLogin đã thay đổi:", context.isLogin);
-          }, [context.isLogin]); // 
-        
+    // useEffect(() => {
+    //     console.log("isLogin đã thay đổi:", context.isLogin);
+    // }, [context.isLogin]); // 
+    
+    const authWithGoogle=()=>{
+        signInWithPopup(auth, googleProvider).then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+
+            const fields = {
+                name: user?.providerData[0]?.displayName,
+                email: user?.providerData[0]?.email,
+                password: null,
+                avatar: user?.providerData[0]?.photoURL,
+                mobile: user?.providerData[0]?.phoneNumber
+            }
+
+            console.log("fdgfdg",fields)
+
+            postData("/api/user/authWithGoogle",fields).then((res)=>{
+                console.log(res)
+            
+                if (res?.error !== true) {
+                    setIsLoading(true)
+                    localStorage.setItem("userEmail",fields.email);
+                    localStorage.setItem("accessToken",res?.data?.accesstoken);
+                    localStorage.setItem("refreshToken",res?.data?.refreshtoken); 
+                    context.setIsLogin(true);
+                    context.openAlertBox("success", res?.message);
+                    history("/")         
+                } else{
+                    context.openAlertBox("error", res?.message);
+                    setIsLoading(false);
+                }
+            })
+
+            console.log("user::",user)
+            // IdP data available using getAdditionalUserInfo(result)
+            // ...
+        }).catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
+        });
+    }
 
     return (
         <div>
@@ -143,7 +199,8 @@ const Login=()=>{
                 <h1 className="text-sm font-semibold mb-6 text-gray-500 text-center">Tham gia Cộng đồng của chúng tôi với quyền truy cập mọi lúc và miễn phí </h1>
                 <div className="mt-4 flex flex-col lg:flex-row items-center justify-between">
                     <div className="w-full lg:w-1/2 mb-2 lg:mb-0">
-                    <button type="button" className="w-full flex justify-center items-center gap-2 bg-white text-sm text-gray-600 p-2 rounded-md hover:bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors duration-300">
+                    <button type="button" className="w-full flex justify-center items-center gap-2 bg-white text-sm text-gray-600 p-2 rounded-md hover:bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors duration-300"
+                    onClick={authWithGoogle}>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" className="w-4" id="google">
                         <path fill="#fbbb00" d="M113.47 309.408 95.648 375.94l-65.139 1.378C11.042 341.211 0 299.9 0 256c0-42.451 10.324-82.483 28.624-117.732h.014L86.63 148.9l25.404 57.644c-5.317 15.501-8.215 32.141-8.215 49.456.002 18.792 3.406 36.797 9.651 53.408z"></path>
                         <path fill="#518ef8" d="M507.527 208.176C510.467 223.662 512 239.655 512 256c0 18.328-1.927 36.206-5.598 53.451-12.462 58.683-45.025 109.925-90.134 146.187l-.014-.014-73.044-3.727-10.338-64.535c29.932-17.554 53.324-45.025 65.646-77.911h-136.89V208.176h245.899z"></path>
@@ -193,9 +250,9 @@ const Login=()=>{
                     </div>
                         {
                             isLoading === true ?
-                            <button type="button"  disabled={true} onClick={forgotPassword}><p className="mt-10 link cursor-pointer text-[14px] font-[600]">Quên mật khẩu?</p></button>
+                            <button type="button"  disabled={true} onClick={forgotPassword}><p className="mt-3 link cursor-pointer text-[14px] font-[600]">Quên mật khẩu?</p></button>
                             :
-                            <button type="button"  disabled={false} onClick={forgotPassword}><p className="mt-10 link cursor-pointer text-[14px] font-[600]">Quên mật khẩu?</p></button>
+                            <button type="button"  disabled={false} onClick={forgotPassword}><p className="mt-3 link cursor-pointer text-[14px] font-[600]">Quên mật khẩu?</p></button>
                         }
                     <div>
                     {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}

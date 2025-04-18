@@ -91,7 +91,7 @@ const Header = () => {
                     <MdOutlineMenu />
                   )}
                 </Button>
-                <SearchBox />
+               
               </div>
             )}
 

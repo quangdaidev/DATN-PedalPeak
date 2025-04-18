@@ -34,7 +34,7 @@ export async function registerUserController(request, response) {
 
         if (user) {
             return response.json({
-                message: "Email này đã được đăng ký",
+                message: "Email này đã tồn tại",
                 error: true,
                 success: false
             })
@@ -200,6 +200,92 @@ export async function loginUserController(request, response) {
             error : true,
             success : false
         })
+    }
+}
+
+export async function authWithGoogle(request, response) {
+    const { name, email, password, avatar, mobile } = request.body;
+
+    try {
+        const existingUser = await UserModel.findOne({email: email});
+
+        if(!existingUser) {
+            const user = await UserModel.create({
+                name: name,
+                mobile: mobile,
+                email: email,
+                password: password,
+                avatar: avatar,
+                role: "USER",
+                verify_email: true,
+                signUpWithGoogle: true
+            })
+
+            await user.save();
+
+            const accesstoken = await generatedAccessToken(user._id);
+     
+            const refreshtoken = await generatedRefreshToken(user._id);
+        
+
+            // await UserModel.findByIdAndUpdate(user?._id, {
+            //     last_login_date: new Date()
+            // });
+            
+            const cookiesOption = {
+                httpOnly: true,
+                secure: true,
+                sameSite: "None"
+            };
+        
+            response.cookie('accessToken', accesstoken, cookiesOption);
+            response.cookie('refreshToken', refreshtoken, cookiesOption);
+    
+            return response.json({
+                message: "Đăng nhập thành công!",
+                error: false,
+                success: true,
+                data: {
+                    accesstoken,
+                    refreshtoken
+                }
+            });
+        }else{
+            const accesstoken = await generatedAccessToken(existingUser._id);
+     
+            const refreshtoken = await generatedRefreshToken(existingUser._id);
+        
+
+            // await UserModel.findByIdAndUpdate(user?._id, {
+            //     last_login_date: new Date()
+            // });
+            
+            const cookiesOption = {
+                httpOnly: true,
+                secure: true,
+                sameSite: "None"
+            };
+        
+            response.cookie('accessToken', accesstoken, cookiesOption);
+            response.cookie('refreshToken', refreshtoken, cookiesOption);
+    
+            return response.json({
+                message: "Đăng nhập thành công!",
+                error: false,
+                success: true,
+                data: {
+                    accesstoken,
+                    refreshtoken
+                }
+            });
+        }
+        
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        });
     }
 }
 
@@ -602,14 +688,16 @@ export async function resetpassword(request, response) {
             })
         }
 
-        const checkPassword = await bcryptjs.compare(oldPassword, user.password);
+        if(user?.signUpWithGoogle===false){
+            const checkPassword = await bcryptjs.compare(oldPassword, user.password);
 
-        if(!checkPassword){
-            return response.status(400).json({
-                message: "Mật khẩu cũ không đúng",
-                error: true,
-                success: false
-            })
+            if(!checkPassword){
+                return response.status(400).json({
+                    message: "Mật khẩu cũ không đúng",
+                    error: true,
+                    success: false
+                })
+            }
         }
 
         if (newPassword !== confirmPassword) {
@@ -624,6 +712,8 @@ export async function resetpassword(request, response) {
         const hashPassword = await bcryptjs.hash(confirmPassword, salt);
 
         user.password = hashPassword;
+
+        user.signUpWithGoogle = false;
 
         await user.save();
 

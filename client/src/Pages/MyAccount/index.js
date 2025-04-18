@@ -44,7 +44,7 @@ const MyAccount = () => {
         if(token===null){
             history("/");
         }
-    },)
+    },[])
 
     useEffect(()=>{
         if(context?.userData?._id!=="" && context?.userData?._id!==undefined){ 
@@ -149,7 +149,7 @@ const MyAccount = () => {
         })   
     }
 
-    const kkkChangePassword= (e) =>{
+    const ChangePassword= (e) =>{
     
         e.preventDefault();
 
@@ -259,27 +259,33 @@ const MyAccount = () => {
                             </div>
                             <hr/>
 
-                            <form className="mt-5" onSubmit={kkkChangePassword}>
+                            <form className="mt-5" onSubmit={ChangePassword}>
                                 <div className="flex items-center gap-5">
-                                    <div className="w-[50%] relative flex items-center">
-                                        <TextField  
-                                            type={isShowPassword===false ? 'password' : 'text'}                             
-                                            label="Mật khẩu cũ" 
-                                            size="small"
-                                            className="w-full"
-                                            name="oldPassword"
-                                            value={changePassword.oldPassword}
-                                            disabled={isLoading2===true ? true : false}
-                                            onChange={onChangeInput}
-                                        />
-                                        <Button className="!absolute top-[3px] right-[5px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-[#bbb]"
-                                            onClick={()=>setIsShowPassword(!isShowPassword)}
-                                            >
-                                            {
-                                                isShowPassword===true ?  <IoMdEye className="text-[20px] opacity-75"/> :  <IoMdEyeOff className="text-[20px] opacity-75"/>
-                                            }                          
-                                        </Button>
-                                    </div>
+
+                                    {
+                                        context?.userData?.signUpWithGoogle===false &&
+                                        <div className="w-[50%] relative flex items-center">
+                                            <TextField  
+                                                type={isShowPassword===false ? 'password' : 'text'}                             
+                                                label="Mật khẩu cũ" 
+                                                size="small"
+                                                className="w-full"
+                                                name="oldPassword"
+                                                value={changePassword.oldPassword}
+                                                disabled={isLoading2===true ? true : false}
+                                                onChange={onChangeInput}
+                                            />
+                                            <Button className="!absolute top-[3px] right-[5px] z-50 !w-[35px] !h-[35px] !min-w-[35px] !rounded-full !text-[#bbb]"
+                                                onClick={()=>setIsShowPassword(!isShowPassword)}
+                                                >
+                                                {
+                                                    isShowPassword===true ?  <IoMdEye className="text-[20px] opacity-75"/> :  <IoMdEyeOff className="text-[20px] opacity-75"/>
+                                                }                          
+                                            </Button>
+                                        </div>
+                                    }
+
+                                   
                                     <div className="w-[50%]">                               
                                     </div> 
                                 </div>

@@ -328,11 +328,11 @@ const Header =()=>{
                                             :
 
                                             <div>
-                                                <Badge badgeContent={4} color="primary">
+                                                <Badge badgeContent={context?.myListData?.length!==0 ? context?.myListData?.length : '0'} color="primary">
                                                     <FaRegUser className="ct-icon" />
                                                 </Badge> 
                                                 <span className=" mx-2" onClick={handleClickAc}>
-                                                    Xin chào, {context?.userData?.name}
+                                                    Xin chào, {context?.userData?.name.length<10 ? context?.userData?.name : context?.userData?.name.substr(0, 10)+"..." }
                                                 </span>   
                                                 <ul>
                                                 <Menu

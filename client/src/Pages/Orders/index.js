@@ -272,6 +272,7 @@ const Orders = () => {
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
+                        labelRowsPerPage="Số hàng mỗi trang"
                         onRowsPerPageChange={handleChangeRowsPerPage}
                       />
 

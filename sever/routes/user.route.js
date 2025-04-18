@@ -3,7 +3,7 @@ import { loginUserController,logoutController,verifyEmailController,
     registerUserController, userAvatarController,removeImageFromCloudinary,
     updateUserDetails,forgotPasswordController,verifyForgotPasswordOtp,
     resetpassword,refreshToken,userDetails,loginAdminController,
-    addReview,getReviews,getAllReviews,getAllUsers
+    addReview,getReviews,getAllReviews,getAllUsers,authWithGoogle
 } from '../controllers/user.controller.js'
 import auth from '../middlewares/auth.js';
 import upload from '../middlewares/multer.js';
@@ -11,8 +11,10 @@ import upload from '../middlewares/multer.js';
 const userRouter = Router()
 
 userRouter.post('/register', registerUserController);
+
 userRouter.post('/verifyEmail',verifyEmailController);
 userRouter.post('/login',loginUserController);
+userRouter.post('/authWithGoogle',authWithGoogle);
 userRouter.post('/login-admin',loginAdminController);
 userRouter.get('/logout',auth,logoutController);
 userRouter.put('/reset-password',resetpassword);

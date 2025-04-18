@@ -121,25 +121,25 @@ const ProductItem =(props)=>{
 
                     <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-4 flex-col w-[50px] transition-all duration-300 group-hover:top-[15px]">
                         <Tooltip title="Chi tiết" placement="left-start">
-                            <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black  hover:!bg-main-400 hover:text-white group"
+                            <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black  hover:!bg-primary-600 hover:text-white group"
                             onClick={()=>context.handleOpenProductDetailsModal(true, props?.item)}
                             >
                                 <MdZoomOutMap className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
                             </Button>
                         </Tooltip>
                         <Tooltip title="Thêm vào giỏ" placement="left-start">
-                            <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black hover:!bg-main-400 hover:text-white group"
+                            <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black hover:!bg-primary-600 hover:text-white group"
                             onClick={()=>addToCart(props?.item, context?.userData?._id, 1)}>
                                 <MdOutlineShoppingCart className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
                             </Button>
                         </Tooltip>
                         <Tooltip title="Theo dõi" placement="left-start">
-                            <Button className={`!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black hover:!bg-main-400 hover:text-white group`}
+                            <Button className={`!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black hover:!bg-primary-600 hover:text-white group`}
                             onClick={()=>handleAddToMyList(props?.item)}>
 
                             {
                                 isAddedInMyList === true ?                                  
-                                <IoMdHeart className="text-[20px] !text-main-400 group-hover:text-white hover:!text-white"/> 
+                                <IoMdHeart className="text-[20px] !text-primary-600 group-hover:text-white hover:!text-white"/> 
                                 : 
                                 <FaRegHeart className="text-[20px] !text-black group-hover:text-white hover:!text-white"/>
                             }

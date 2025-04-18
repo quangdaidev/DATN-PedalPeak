@@ -25,13 +25,14 @@ import { MyContext } from "../../App";
 import Rating from "@mui/material/Rating";
 import { fetchDataFromApi } from "../../utils/api";
 import Orders from "../Orders";
+import SearchBox from "../../components/SearchBox";
 
 export const data = [
   ["Year", "Sales", "Expenses"],
-  ["2013", 1000, 400],
-  ["2014", 1170, 460],
-  ["2015", 660, 1120],
-  ["2016", 1030, 540],
+  ["quý 1", 1000, 400],
+  ["quý 2", 1170, 460],
+  ["quý 3", 660, 1120],
+  ["quý 4", 1030, 540],
 ];
 
 export const options = {
@@ -100,14 +101,16 @@ const Dashboard = () => {
                 icon={<IoMdCart />}
                 grow={true}
                 title={"Đơn hàng chờ xử lý"}
-                number={orderNew?.length}
+                // number={orderNew?.length}
+                number={12}
               />
               <DashboardBox
                 color={["#2c78e5", "#60aff5"]}
                 icon={<MdShoppingBag />}
                 grow={true}
                 title={"Tổng sản phẩm"}
-               number={proData?.length}
+              //  number={proData?.length}
+              number={62}
               />
               <DashboardBox
                 color={["#e1950e", "#f3cd29"]}
@@ -121,7 +124,8 @@ const Dashboard = () => {
                 icon={<FaUserCircle />}
                 grow={true}
                 title={"Tổng người dùng"}
-                number={users?.length}
+                // number={users?.length}
+                number={23}
               />
               
             </div>
@@ -130,7 +134,7 @@ const Dashboard = () => {
           <div className="col-md-4 pl-0 topPart2">
             <div className="box graphBox">
               <div className="d-flex align-items-center w-100 bottomEle">
-                <h6 className="text-white mb-0 mt-0">Total Sales</h6>
+                <h6 className="text-white mb-0 mt-0">Tổng Doanh thu bán hàng năm 2024</h6>
                 <div className="ml-auto">
                   <Button className="ml-auto toggleIcon" onClick={handleClick}>
                     <HiDotsVertical />
@@ -166,8 +170,8 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <h3 className="text-white font-weight-bold">$3,787,681.00</h3>
-              <p>$3,578.90 in last month</p>
+              <h3 className="text-white font-weight-bold">5.387.681.000 VND</h3>
+              <p>58.900.000 VND vào tuần trước</p>
 
               <Chart
                 chartType="PieChart"
@@ -185,7 +189,7 @@ const Dashboard = () => {
 
           <div className="row cardFilters mt-3">
             <div className="col-md-3">
-              <h4>SHOW BY</h4>
+              <h4>HIỂN THỊ THEO</h4>
               <FormControl size="small" className="w-100">
                 <Select
                   value={showBy}
@@ -196,7 +200,7 @@ const Dashboard = () => {
                   className="w-100"
                 >
                   <MenuItem value="">
-                    <em>None</em>
+                    <em>Chọn </em>
                   </MenuItem>
                   <MenuItem value={10}>Ten</MenuItem>
                   <MenuItem value={20}>Twenty</MenuItem>
@@ -204,26 +208,9 @@ const Dashboard = () => {
                 </Select>
               </FormControl>
             </div>
-
             <div className="col-md-3">
-              <h4>CATEGORY BY</h4>
-              <FormControl size="small" className="w-100">
-                <Select
-                  value={showBysetCatBy}
-                  onChange={(e) => setCatBy(e.target.value)}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
-                  labelId="demo-select-small-label"
-                  className="w-100"
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
+            <h4>NHẬP TỪ KHÓA </h4>
+            <SearchBox />
             </div>
                     
             <Orders/>

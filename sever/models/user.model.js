@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, "Provide password"],
+        default: "",
     },
     avatar: {
         type: String,
@@ -76,8 +76,11 @@ const userSchema = mongoose.Schema({
     refresh_token: {
         type: String,
         default: ''
+    },
+    signUpWithGoogle: {
+        type: Boolean,
+        default: false
     }
-
     
 }, {timestamps: true}) // Mongoose tự động cập nhật các trường này mỗi khi tài liệu được tạo ra hoặc thay đổi.
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sidebar } from "../../Components/Sidebar";
 
 // import Typography from '@mui/material/Typography';
@@ -151,9 +151,6 @@ const ProductListing = () =>{
                                     >
                                         Giá, từ cao đến thấp
                                     </MenuItem>
-                                    <MenuItem onClick={handleClose} className="!text-[13px] !text-black !capitalize">Sắp xếp theo tên</MenuItem>
-                                    <MenuItem onClick={handleClose} className="!text-[13px] !text-black !capitalize">Giá từ cao tới thấp</MenuItem>
-                                    <MenuItem onClick={handleClose} className="!text-[13px] !text-black !capitalize">Giá từ thấp tới cao</MenuItem>
                                 </Menu>
                             </div>
 
@@ -164,7 +161,9 @@ const ProductListing = () =>{
 
                         {
                             itemView === 'grid' ? 
+                  
                             (<>
+                            
                                 {
                                     isLoading === true ? <ProductLoadingItem view={itemView}/>
                                     :
@@ -182,7 +181,7 @@ const ProductListing = () =>{
                                 {
                                     isLoading === true ? <ProductLoadingItem view={itemView}/>
                                     :
-                                    productsData?.products?.length !== 0 && productsData?.products?.map((item, index) => {
+                                    productsData?.length !== 0 && productsData?.map((item, index) => {
                                         return (
                                             <ProductItemListView key={index} item={item}/>
                                         )

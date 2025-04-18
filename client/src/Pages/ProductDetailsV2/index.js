@@ -90,7 +90,7 @@ export const ProductDetailsV2 = () => {
                         href="/"
                         className="link transition !text-[14px]"
                         >
-                        Xe đạp thể thao
+                        {productData?.catName}
                         </Link>
                         <Link
                         underline="hover"
@@ -98,7 +98,7 @@ export const ProductDetailsV2 = () => {
                         href="/"
                         className="link transition !text-[14px]"
                         >
-                        Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C
+                        {productData?.name}
                         </Link>
                         {/* <Typography sx={{ color: 'text.primary' }}>Breadcrumbs</Typography> */}
                     </Breadcrumbs>          

@@ -38,6 +38,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { FaRegImages } from "react-icons/fa";
+import SearchBox from "../../components/SearchBox";
 
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -229,10 +230,9 @@ const Categories = () => {
         </div>
 
         <div className="card shadow border-0 p-3 mt-4">
-
           <div className="row cardFilters mt-3">
             <div className="col-md-3">
-              <h4>SHOW BY</h4>
+              <h4>HIỂN THỊ THEO</h4>
               <FormControl size="small" className="w-100">
                 <Select
                   value={showBy}
@@ -243,7 +243,7 @@ const Categories = () => {
                   className="w-100"
                 >
                   <MenuItem value="">
-                    <em>None</em>
+                    <em>Chọn </em>
                   </MenuItem>
                   <MenuItem value={10}>Ten</MenuItem>
                   <MenuItem value={20}>Twenty</MenuItem>
@@ -251,28 +251,12 @@ const Categories = () => {
                 </Select>
               </FormControl>
             </div>
-
             <div className="col-md-3">
-              <h4>CATEGORY BY</h4>
-              <FormControl size="small" className="w-100">
-                <Select
-                  value={showBysetCatBy}
-                  onChange={(e) => setCatBy(e.target.value)}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Without label" }}
-                  labelId="demo-select-small-label"
-                  className="w-100"
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
+              <h4>NHẬP TỪ KHÓA </h4>
+              <SearchBox />
             </div>
           </div>
+       
 
           <div className="table-responsive mt-3">
             <table className="table table-bordered table-striped v-align">
@@ -320,9 +304,9 @@ const Categories = () => {
                                 isShow===true ?  <IoMdEye/> :  <IoMdEyeOff/>
                             }                          
                           </Button>  
-                          <Button className="error" color="error" onClick={()=>deleteCat(item._id)}>
+                          {/* <Button className="error" color="error" onClick={()=>deleteCat(item._id)}>
                             <MdDelete />
-                          </Button>
+                          </Button> */}
                         </div>
                       </td>
                     </tr>

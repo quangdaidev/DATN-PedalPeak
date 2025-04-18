@@ -116,7 +116,12 @@ export const Reviews = (props) => {
                                             <p className="mt-0 mb-0">{review?.review}</p>
                                         </div>                                  
                                     </div>
-                                    <Rating name="size-small" value={review?.rating} s readOnly/>
+                                    {
+                                        review?.rating !== "" ?
+                                        <Rating name="size-small" value={review?.rating} s readOnly/>
+                                        :
+                                        ""
+                                    }
                                 </div>
                             )
                         })
