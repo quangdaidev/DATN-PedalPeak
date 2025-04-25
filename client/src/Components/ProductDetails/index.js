@@ -22,7 +22,7 @@ export const ProductDetailsComponent = (props) => {
             <span className="text-gray-400 text-[13px]">Thương hiệu: <span className="font-[500] text-black opacity-75">{props?.item?.brand}</span></span>
 
             <Rating name="size-small" defaultValue={4} size="small" readOnly/>
-            <span className="text-[13px] cursor-pointer" onClick={props.gotoReviews}>Review ({props.reviewsCount})</span>
+            <span className="text-[13px] cursor-pointer" onClick={props.gotoReviews}>Bình luận ({props.reviewsCount>0?props.reviewsCount:0})</span>
 
         </div>
 
@@ -90,7 +90,7 @@ export const ProductDetailsComponent = (props) => {
 
         <div className="flex items-center gap-4 mt-6">
             <span className="flex items-center gap-2 text-[15px] link cursor-pointer font- [500]"><FaRegHeart className="text-[18px]"/> Thêm vào danh sách yêu thích</span>
-            <span className="flex items-center gap-2 text-[15px] link cursor-pointer font- [500]"><IoGitCompareOutline className="text-[18px]" />So sánh sản phẩm</span>
+            {/* <span className="flex items-center gap-2 text-[15px] link cursor-pointer font- [500]"><IoGitCompareOutline className="text-[18px]" />So sánh sản phẩm</span> */}
         </div> 
     </>
   )

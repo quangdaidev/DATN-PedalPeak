@@ -15,12 +15,14 @@ import { uploadImages, createProduct, deleteProduct, getAllFeaturedProducts,
     getProductColorById,
     filters,
     sortBy,
-    getAllProductsBySubCatId 
+    getAllProductsBySubCatId, 
+    searchProductController
  } from "../controllers/product.controller.js";
 
 const productRouter = Router();
 productRouter.post('/filters', filters);            
 productRouter.post('/sortBy', sortBy);
+productRouter.post('/search/get', searchProductController);
 
 productRouter.post('/uploadImages',upload.array('images'),uploadImages);
 productRouter.post('/create',createProduct);

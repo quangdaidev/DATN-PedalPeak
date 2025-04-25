@@ -161,55 +161,69 @@ const Checkout = () => {
 
     const checkout = (e) => {
         e.preventDefault();
+        const user = context?.userData;
 
         if(userData?.address_details?.length !==0){
+            const payLoad = { 
+                userId: user?._id,
+                products: context?.cartData, 
+                paymentId: '',
+                payment_status: "Thanh toán online", 
+                delivery_address: selectedAddress,
+                totalAmt: totalAmount,
+                date: new Date().toLocaleString("en-US", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                })
+            };
+
             postData("/api/payment/create_payment_url",{ amount: amount }).then((res)=>{
-                // console.log("dddddddddd",res)
-                window.open(res.data, '_blank', 'width=1100,height=900');
+                window.open(res?.data, '_blank', 'width=1100,height=900');
             })
 
             // Xử lý sau khi thanh toán thành công hoặc thất bại
-            window.addEventListener("paymentResult", function(event) {
-                const result = event.detail;
+            // window.addEventListener("paymentResult", function(event) {
+            //     const result = event.detail;
                 
-                // Kiểm tra kết quả thanh toán
-                if (result.vnp_ResponseCode === '00') {
-                    // Thanh toán thành công
-                    const paymentId = result.vnp_PaymentId;
+            //     // Kiểm tra kết quả thanh toán
+            //     if (result.vnp_ResponseCode === '00') {
+            //         // Thanh toán thành công
+            //         const paymentId = result.vnp_PaymentId;
         
-                    const user = context?.userData;
+            //         const user = context?.userData;
         
-                    const payLoad = {
-                        userId: user?._id,
-                        products: context?.cartData,
-                        paymentId: paymentId,
-                        payment_status: "COMPLETED",
-                        delivery_address: selectedAddress,
-                        totalAmt: totalAmount,
-                        date: new Date().toLocaleString("en-US", {
-                            month: "short",
-                            day: "2-digit",
-                            year: "numeric",
-                        }),
-                    };
+            //         const payLoad = {
+            //             userId: user?._id,
+            //             products: context?.cartData,
+            //             paymentId: paymentId,
+            //             payment_status: "COMPLETED",
+            //             delivery_address: selectedAddress,
+            //             totalAmt: totalAmount,
+            //             date: new Date().toLocaleString("en-US", {
+            //                 month: "short",
+            //                 day: "2-digit",
+            //                 year: "numeric",
+            //             }),
+            //         };
         
-                    // // Gửi dữ liệu đơn hàng lên server
-                    // postData(`/api/order/create`, payLoad).then((res) => {
-                    //     context.openAlertBox("success", res?.message);
-                    //     if (res?.error === false) {
-                    //         deleteData(`/api/cart/emptyCart/${user?._id}`).then((res) => {
-                    //             context?.getCartItems();
-                    //         });
-                    //         history("/");
-                    //     } else {
-                    //         context.alertBox("error", res?.message);
-                    //     }
-                    // });
-                } else {
-                    // Thanh toán thất bại
-                    context.alertBox("error", "Thanh toán không thành công!");
-                }
-            });
+            //         // // Gửi dữ liệu đơn hàng lên server
+            //         // postData(`/api/order/create`, payLoad).then((res) => {
+            //         //     context.openAlertBox("success", res?.message);
+            //         //     if (res?.error === false) {
+            //         //         deleteData(`/api/cart/emptyCart/${user?._id}`).then((res) => {
+            //         //             context?.getCartItems();
+            //         //         });
+            //         //         history("/");
+            //         //     } else {
+            //         //         context.alertBox("error", res?.message);
+            //         //     }
+            //         // });
+            //     } else {
+            //         // Thanh toán thất bại
+            //         context.alertBox("error", "Thanh toán không thành công!");
+            //     }
+            // });
         } else {
             context.openAlertBox("error", "Bạn cần thêm địa chỉ nhận hàng");
         } 

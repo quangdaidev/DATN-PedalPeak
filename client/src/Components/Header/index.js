@@ -312,7 +312,7 @@ const Header =()=>{
                                         {
                                             context.isLogin === false ?
                                             <div >
-                                                <Badge badgeContent={4} color="primary">
+                                                <Badge badgeContent={'0'} color="primary">
                                                     <FaRegUser className="ct-icon" />
                                                 </Badge> 
                                                 <span className="uppercase mx-2">

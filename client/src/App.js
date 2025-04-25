@@ -34,6 +34,7 @@ import { useNavigate } from 'react-router-dom';
 import Address from './Pages/MyAccount/address';
 import { OrderSuccess } from './Pages/Orders/success';
 import { OrderFailed } from './Pages/Orders/failed';
+import SearchPage from './Pages/Search';
 
 const alertBox = (msg, type)=>{
   if(type==="success"){
@@ -59,6 +60,8 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [userData, setUserData] = useState(null);
   const [address, setAddress] = useState([]);
+
+  const [searchData, setSearchData] = useState([]);
   // const apiUrl = import.meta.env.VITE_API_URL;
 
   const [catData, setCatData] = useState([]);
@@ -221,7 +224,9 @@ function App() {
     myListData,
     setMyListData,
     getMyListData,
-    getCartItems
+    getCartItems,
+    setSearchData,
+    searchData
   }
 
   return (
@@ -249,6 +254,7 @@ function App() {
               <Route path="/order/success" exact={true} element={<OrderSuccess/>} />
               <Route path="/order/failed" exact={true} element={<OrderFailed/>} />
               <Route path="/address" exact={true} element={<Address/>} />
+              <Route path="/search" exact={true} element={<SearchPage/>} />
             </Routes>
             <Footer />
               {/* {children} */}

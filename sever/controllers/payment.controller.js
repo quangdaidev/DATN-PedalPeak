@@ -16,7 +16,7 @@ export const payment = async (req, res) => {
     let tmnCode = "14QVDL9N";
     let secretKey = "57G56MRY30CVNJ9MC3S0S24IXJJGK2ZG";
     let vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    let returnUrl = "http://localhost:3000/order/success";
+    let returnUrl = "http://localhost:4000/api/payment/vnpay_return";
     let orderId = moment(date).format('DDHHmmss');
     let amount = req.body.amount;
     // let bankCode = req.body.bankCode;
@@ -39,6 +39,7 @@ export const payment = async (req, res) => {
     vnp_Params['vnp_ReturnUrl'] = returnUrl;
     vnp_Params['vnp_IpAddr'] = "127.0.0.1"; //https://api.ipify.org/?format=json
     vnp_Params['vnp_CreateDate'] = createDate;
+
     // if(bankCode !== null && bankCode !== ''){
     //     vnp_Params['vnp_BankCode'] = bankCode;
     // }
@@ -73,7 +74,7 @@ export const payment = async (req, res) => {
     let finalUrl = vnpUrl + '?' + qs.stringify(vnp_Params, { encode: false });
 
     // Trả về URL cho client
-    res.json({ data: finalUrl });
+    res.json({ data: finalUrl});
 }
 
 export const paymentReturn = async (req, res) => {
@@ -111,6 +112,7 @@ export const paymentReturn = async (req, res) => {
     let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
 
     if(secureHash === signed){
+        
         //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
         res.status(200).json({code: vnp_Params['vnp_ResponseCode']})
     } else{

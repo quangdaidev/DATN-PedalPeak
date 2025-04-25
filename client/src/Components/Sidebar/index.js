@@ -40,21 +40,33 @@ export const Sidebar = (props) => {
   })
 
   const filterData =()=>{
-    console.log("Filters being applied:", filters);
+    // console.log("Filters being applied:", filters);
     props.setIsLoading(true);
-    postData(`/api/product/filters`, filters).then((res)=>{
-      console.log("api::",res)
-      props.setProductsData(res.data);
-      props.setTotalPro(res.total);
+   
+    if(context?.searchData?.data?.length>0){
+      props.setProductsData(context?.searchData?.data);
+      props.setTotalPro(context?.searchData?.total);
       props.setIsLoading(false);
-      props.setTotalPages(res?.totalPages);
+      props.setTotalPages(context?.searchData?.totalPages);
       window.scrollTo(0,0);
-    })
+    } else {
+      postData(`/api/product/filters`, filters).then((res)=>{
+        console.log("api::",res)
+        props.setProductsData(res.data);
+        props.setTotalPro(res.total);
+        props.setIsLoading(false);
+        props.setTotalPages(res?.totalPages);
+        window.scrollTo(0,0);
+      })
+    }
   }
 
   const [price, setPrice] = useState([0, 600000]);
 
   const handleCheckboxChange = (field, value) => {
+
+    context?.setSearchData([]);
+    
     const currentValues = filters[field] || []
     const updatedValues = currentValues?.includes(value) ? currentValues.filter((item) => item !== value) : [...currentValues, value];
 
@@ -102,6 +114,8 @@ export const Sidebar = (props) => {
     setTimeout(() => {
       filterData();
     }, 200);
+
+    // context?.setSearchData([]);
 
   },[location])
 
