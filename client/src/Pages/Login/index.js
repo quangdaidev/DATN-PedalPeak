@@ -147,8 +147,6 @@ const Login=()=>{
                 mobile: user?.providerData[0]?.phoneNumber
             }
 
-            console.log("fdgfdg",fields)
-
             postData("/api/user/authWithGoogle",fields).then((res)=>{
                 console.log(res)
             
