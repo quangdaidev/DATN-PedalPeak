@@ -34,7 +34,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DashboardBox from "../Dashboard/components/dashboardBox";
 
 import Checkbox from "@mui/material/Checkbox";
-import { fetchDataFromApi } from "../../utils/api";
+import { fetchDataFromApi, postData } from "../../utils/api";
 
 import { IoInformationCircle } from "react-icons/io5";
 import SearchBox from "../../components/SearchBox";
@@ -110,6 +110,18 @@ const Products = () => {
     })
   }, []);
 
+  const handleSortBy = (name,order,products,value)=>{
+    
+    postData(`/api/product/sortBy`,{
+        products: products,
+        sortBy: name,
+        order: order
+    }).then((res)=>{
+      setProData(res.data);
+    
+    })
+  }
+
 
   return (
     <>
@@ -148,16 +160,34 @@ const Products = () => {
                   <MenuItem value="">
                     <em>Chọn </em>
                   </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  <MenuItem 
+                    value="Tên, từ A đến Z"
+                    onClick={()=>handleSortBy('name','asc', proData, 'Tên, từ A đến Z')}
+                    className="!text-[13px] !text-black !capitalize"
+                  >
+                    Tên, từ A đến Z
+                  </MenuItem>
+                  <MenuItem 
+                    value="Giá, từ thấp đến cao"
+                    onClick={()=>handleSortBy('price','asc',proData, 'Giá, từ thấp đến cao')}
+                    className="!text-[13px] !text-black !capitalize"
+                  >
+                    Giá, từ thấp đến cao
+                  </MenuItem>
+                  <MenuItem 
+                    value="Giá, từ cao đến thấp"
+                    onClick={()=>handleSortBy('price','desc',proData, 'Giá, từ cao đến thấp')}
+                    className="!text-[13px] !text-black !capitalize"
+                  >
+                    Giá, từ cao đến thấp
+                  </MenuItem>
                 </Select>
               </FormControl>
             </div>
-            <div className="col-md-3">
+            {/* <div className="col-md-3">
               <h4>NHẬP TỪ KHÓA </h4>
               <SearchBox />
-            </div>
+            </div> */}
           </div>
 
           <div className="table-responsive mt-3">

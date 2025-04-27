@@ -40,7 +40,6 @@ const ProductListing = () =>{
     };
 
     const handleSortBy = (name,order,products,value)=>{
-        console.log("kkkk",products)
         setSelectedSortVal(value);
         postData(`/api/product/sortBy`,{
             products: products,

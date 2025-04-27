@@ -1,5 +1,6 @@
 import OrderModel from "../models/order.model.js"; 
 import ProductModel from '../models/product.model.js'; 
+import mongoose from "mongoose";
 // import paypal from "@paypal/checkout-server-sdk";
 
 export const createOrderController = async (request, response) => { 
@@ -118,5 +119,88 @@ export async function updatedOrder(request, response) {
     success: true,
     data:  order,
   });
+}
+
+const sortItems = (orders, sortBy, order) => { 
+    // const updatedOrders = orders.map(order => {
+    //     const newOrder = { ...Order };
+    //     if (newOrder.price === 0 && newOrder.oldPrice) {
+    //         newOrder.price = newOrder.oldPrice;
+    //     }
+    //     return newOrder;
+    // });
+    const updatedOrders =orders;
+    return updatedOrders.sort((a, b) => {
+        if (sortBy === 'name') {
+            return order === 'asc' 
+                ? a.name.localeCompare(b.name) 
+                : b.name.localeCompare(a.name)
+        }
+        if (sortBy === "totalAmt") {
+            return order === 'asc' ? a.totalAmt - b.totalAmt: b.totalAmt - a.totalAmt
+        }
+
+        if (sortBy === "createdAt") {
+            return order === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt): new Date(b.createdAt) - new Date(a.createdAt)
+        }
+
+        return 0;
+    })
+}
+
+
+export async function sortBy(request, response) {
+    const { orders, sortBy, order } = request.body;
+    console.log(orders)
+    const sortedItems = sortItems([... orders], sortBy, order);
+
+    return response.status(200).json({
+        error: false,
+        success:true,
+        data: sortedItems,
+        // page:0,
+        // totalPages:0
+    })
+}  
+
+export async function searchOrderController(request, response) {
+    try {
+        const { query} = request.body;
+
+        if (!query) {
+            return response.status(400).json({
+                error: true,
+                success: false,
+                message: "Không nhận được yêu cầu"
+            })
+        }
+
+        let idQuery = null;
+
+        if (mongoose.Types.ObjectId.isValid(query)) {
+            idQuery = new mongoose.Types.ObjectId(query);
+          }
+
+        const items  = await OrderModel.find({
+            $or: [
+                ...(idQuery ? [{ _id: idQuery }] : []),
+                { ["delivery_address.street"]: { $regex: query, $options: "i" } },
+            ],
+        })
+        .populate('delivery_address');
+
+        return response.status(200).json({
+            error: false, 
+            success: true, 
+            data: items,
+        })
+        
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
 }
 

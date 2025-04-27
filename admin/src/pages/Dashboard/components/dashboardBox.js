@@ -25,9 +25,10 @@ const DashboardBox = (props) => {
     };
 
     return (
-        <Button className="dashboardBox" style={{
+        <Button className="dashboardBox"  style={{
             backgroundImage:
-                `linear-gradient(to right, ${props.color?.[0]} , ${props.color?.[1]})`
+                `linear-gradient(to right, ${props.color?.[0]} , ${props.color?.[1]})`,
+            width: `${props.width}`
         }}>
 
             {
@@ -46,6 +47,23 @@ const DashboardBox = (props) => {
                     <span className="text-white">{props.number}</span>
                 </div>
 
+                {/* <div className="ml-auto">
+                    {
+                        props.icon ?
+                            <span span className="icon">
+                                {props.icon ? props.icon : ''}
+                            </span>
+
+                            :
+
+                            ''
+                    }
+
+                </div> */}
+            </div>
+
+
+            <div className="d-flex align-items-center w-100 bottomEle">
                 <div className="ml-auto">
                     {
                         props.icon ?
@@ -59,11 +77,7 @@ const DashboardBox = (props) => {
                     }
 
                 </div>
-            </div>
-
-
-            <div className="d-flex align-items-center w-100 bottomEle">
-                <h6 className="text-white mb-0 mt-0">Last Month</h6>
+                {/* <h6 className="text-white mb-0 mt-0">Last Month</h6>
                 <div className="ml-auto">
                     <Button className="ml-auto toggleIcon" onClick={handleClick}><HiDotsVertical /></Button>
                     <Menu
@@ -96,7 +110,7 @@ const DashboardBox = (props) => {
                         </MenuItem>
 
                     </Menu>
-                </div>
+                </div> */}
 
             </div>
 

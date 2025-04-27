@@ -105,7 +105,7 @@ body.dark header button.rounded-circle svg{color: #fff !important;}
 
 header .part2{padding-left: 50px;}
 
-.searchBox{width: 500px; height: 40px; background: #f0f5ff; border-radius: 6px; padding: 3px 15px;}
+.searchBox{width: 260px; height: 40px; background: #f0f5ff; border-radius: 6px; padding: 3px 15px;}
 
 body.dark .searchBox{background: #12254e;}
 
@@ -235,8 +235,8 @@ border-radius: 100%; position: absolute; top: -20px; right: -20px; opacity: 0.5;
 .right-content{padding: 90px 30px; padding-bottom: 10px;}
 
 .dashboardBoxWrapper{gap: 20px; width: 100%; flex-wrap: wrap;}
-.dashboardBoxWrapper .dashboardBox{width: 48%; height: 170px; border-radius: 10px; overflow: hidden; padding: 20px; display: flex; flex-direction: column;
-    justify-content: space-around; text-align: left !important; position: relative; color: #fff; text-transform: capitalize !important; }
+.dashboardBoxWrapper .dashboardBox{ height: 170px; border-radius: 10px; overflow: hidden; padding: 20px; display: flex; flex-direction: column;
+    justify-content: space-between; text-align: left !important; position: relative; color: #fff; text-transform: capitalize !important; }
 
 .dashboardBoxWrapper .dashboardBox .col1 h4{font-size: 16px; font-weight: 600;}
 .dashboardBoxWrapper .dashboardBox .col1 span{font-size: 35px !important; font-weight: bold;

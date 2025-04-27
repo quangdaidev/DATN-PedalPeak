@@ -15,7 +15,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import TablePagination from '@mui/material/TablePagination';
-import { editData, fetchDataFromApi } from '../../utils/api';
+import { editData, fetchDataFromApi, postData } from '../../utils/api';
 import moment from 'moment';
 import Chip from '@mui/material/Chip';
 import { useContext } from 'react';
@@ -26,7 +26,7 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
-const Orders = ()=>{
+const OrdersDashboard = ()=>{
 
     const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
@@ -45,7 +45,8 @@ const Orders = ()=>{
     fetchDataFromApi('/api/order/getAllOrders').then((res)=>{
         console.log("orderList::",res)
         if(res?.error===false){
-            setOrders(res?.data);
+            const pendingOrders = res.data.filter(order => order.order_status === "chờ xác nhận");
+            setOrders(pendingOrders);
         }
     })
     },[])
@@ -214,14 +215,27 @@ const Orders = ()=>{
         })
     }
 
+   
+
+    const handleSortBy = (name,order,orders,value)=>{
+        postData(`/api/order/sortBy`,{
+            orders: orders,
+            sortBy: name,
+            order: order
+        }).then((res)=>{
+            setOrders(res?.data);
+            // setAnchorEl(null)
+        })
+    }
+
     return(
         <div className="w-100">
             <div className="card shadow border-0 p-3 mt-4">
-                <h5 className="mb-0">Danh sách đơn hàng</h5>
+                <h4 className="mb-0 ">Danh sách đơn hàng chưa xử lý</h4>
                 <div className="row cardFilters mt-3">
-                    <div className="col-md-3">
-                        <h4>HIỂN THỊ THEO</h4>
-                        <FormControl size="small" className="w-100">
+                    <div className="col-10 d-flex align-items-center gap-8">
+                        <div>HIỂN THỊ THEO</div>
+                        <FormControl size="small" className="px-3 w-25">
                             <Select
                                 value={showBy}
                                 onChange={(e) => setshowBy(e.target.value)}
@@ -233,16 +247,40 @@ const Orders = ()=>{
                                 <MenuItem value="">
                                 <em>Chọn </em>
                                 </MenuItem>
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                <MenuItem 
+                                    value="Tổng tiền, từ thấp đến cao"
+                                    onClick={()=>handleSortBy('totalAmt','asc',orders, 'Tổng tiền, từ thấp đến cao')}
+                                    className="!text-[13px] !text-black !capitalize"
+                                >
+                                    Tổng tiền, từ thấp đến cao
+                                </MenuItem>
+                                <MenuItem 
+                                    value="Tổng tiền, từ cao đến thấp"
+                                    onClick={()=>handleSortBy('totalAmt','desc',orders, 'Tổng tiền, từ cao đến thấp')}
+                                    className="!text-[13px] !text-black !capitalize"
+                                >
+                                    Tổng tiền, từ cao đến thấp
+                                </MenuItem>
+                                <MenuItem 
+                                    value="Ngày đặt hàng, từ mới đến cũ"
+                                    onClick={()=>handleSortBy('createdAt','desc',orders, 'Ngày đặt hàng, từ mới đến cũ')}
+                                    className="!text-[13px] !text-black !capitalize"
+                                >
+                                    Ngày đặt hàng, từ mới đến cũ
+                                </MenuItem>
+                                <MenuItem 
+                                    value="Ngày đặt hàng, từ cũ đến mới"
+                                    onClick={()=>handleSortBy('createdAt','asc',orders, 'Ngày đặt hàng, từ cũ đến mới')}
+                                    className="!text-[13px] !text-black !capitalize"
+                                >
+                                    Ngày đặt hàng, từ cũ đến mới
+                                </MenuItem>
                             </Select>
                         </FormControl>
+                        <div className="pr-3">NHẬP MÃ ĐƠN HÀNG </div>
+                        <SearchBox setOrders={setOrders}/>
                     </div>
-                    <div className="col-md-3">
-                        <h4>NHẬP TỪ KHÓA </h4>
-                        <SearchBox />
-                    </div>
+                    
                 </div>
                         
                         
@@ -286,4 +324,4 @@ const Orders = ()=>{
     )
 }
 
-export default Orders;
+export default  OrdersDashboard;
