@@ -206,11 +206,11 @@ const OrdersDashboard = ()=>{
             editData(`/api/order/${id}`,order).then((res)=>{
                 fetchDataFromApi('/api/order/getAllOrders').then((res)=>{
                     if(res?.error===false){
-                        setOrders(res?.data);
+                        setOrders(res.data.filter(order => order.order_status === "chờ xác nhận"));
                     }
                 })
             })
-
+            
             setSingleOder(res.data)
         })
     }
@@ -277,8 +277,8 @@ const OrdersDashboard = ()=>{
                                 </MenuItem>
                             </Select>
                         </FormControl>
-                        <div className="pr-3">NHẬP MÃ ĐƠN HÀNG </div>
-                        <SearchBox setOrders={setOrders}/>
+                        <div className="pr-3">TÌM MÃ ĐƠN HÀNG </div>
+                        <SearchBox setData={setOrders} api="order"/>
                     </div>
                     
                 </div>

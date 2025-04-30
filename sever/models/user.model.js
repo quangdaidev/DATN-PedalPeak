@@ -36,9 +36,8 @@ const userSchema = mongoose.Schema({
         }
     ],
     status: {
-        type: String,
-        enum: ["Hoạt động", "Không hoạt động", "Cấm"],
-        default: "Hoạt động"
+        type: Boolean,
+        default: true
     },
     verify_email: {
         type: Boolean,

@@ -1022,6 +1022,119 @@ export async function getAllReviews(request, response) {
     }
 }
 
+// get all users
+export async function getAllUsersData(request, response) {
+    try {
+
+        const page = parseInt(request.query.page) || 1;
+        const perPage = parseInt(request.query.perPage);
+        const totalPosts = await UserModel.countDocuments();
+        const totalPages = Math.ceil(totalPosts / perPage); // ceil() làm tròn lên >< floor(): tròn xuống
+
+
+        if (page > totalPages) {
+            return response.status(404).json(
+                {
+                    message: "Không tìm thấy trang",
+                    success: false,
+                    error: true
+                }
+            );
+          }
+
+        const users = await UserModel.find().populate("orderHistory")
+            .sort({ createdAt: -1 }) // sắp xếp từ mới đến cũ
+            .skip((page - 1) * perPage)
+            .limit(perPage)
+            .exec();
+
+        if(!users) {
+            response.status(500).json({
+                error:true, 
+                success: false
+            })
+        }
+
+        return response.status(200).json({
+            error: false, 
+            success: true,
+            data: users,
+            totalPages: totalPages,
+            page: page,
+        })
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
+const sortItems = (users, sortBy, order) => { 
+
+  return users.sort((a, b) => {
+    if (sortBy === 'name') {
+        return order === 'asc' 
+            ? a.name.localeCompare(b.name) 
+            : b.name.localeCompare(a.name)
+    }
+
+    return 0;
+  })
+}
+
+export async function sortBy(request, response) {
+    const { users, sortBy, order } = request.body;
+ 
+    const sortedItems = sortItems([... users], sortBy, order);
+    
+
+    return response.status(200).json({
+        error: false,
+        success:true,
+        data: sortedItems,
+        page:0,
+        totalPages:0
+    })
+}    
+
+export async function searchUserController(request, response) {
+  try {
+      const { query} = request.body;
+
+      if (!query) {
+          return response.status(400).json({
+              error: true,
+              success: false,
+              message: "Không nhận được yêu cầu"
+          })
+      }
+
+      const items  = await UserModel.find({
+          $or: [
+            { name: {$regex: query, $options: "i"}},
+            { email: {$regex: query, $options: "i"}},
+            { mobile: {$regex: query, $options: "i"}},
+          ],
+      })
+
+      return response.status(200).json({
+          error: false, 
+          success: true, 
+          data: items,
+      })
+      
+  } catch (error) {
+      return response.status(500).json({
+          message: error.message || error,
+          error: true,
+          success: false
+      })
+  }
+}
+
 
 
 

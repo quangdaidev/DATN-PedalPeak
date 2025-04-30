@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import { MdDashboard } from "react-icons/md";
 import { FaAngleRight } from "react-icons/fa6";
-import { FaProductHunt } from "react-icons/fa";
+import { FaProductHunt, FaUser } from "react-icons/fa";
 // import { FaCartArrowDown } from "react-icons/fa6";
 // import { MdMessage } from "react-icons/md";
 // import { FaBell } from "react-icons/fa6";
@@ -11,7 +11,7 @@ import { useContext, useState } from 'react';
 import { IoMdLogOut } from "react-icons/io";
 import { MyContext } from '../../App';
 // import { FaUser } from "react-icons/fa";
-import { BiSolidCategoryAlt } from "react-icons/bi";
+import { BiSolidCategoryAlt} from "react-icons/bi";
 import { fetchDataFromApi } from '../../utils/api';
 import { FaClipboardCheck } from 'react-icons/fa';
 
@@ -91,6 +91,14 @@ const Sidebar = () => {
                             <Button className={`w-100 ${activeTab === 3 && isToggleSubmenu === true ? 'active' : ''}`} onClick={() => isOpenSubmenu(3)}>
                                 <span className='icon'><FaClipboardCheck /></span>
                                 Đơn hàng
+                            </Button>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/users">
+                            <Button className={`w-100 ${activeTab === 4 && isToggleSubmenu === true ? 'active' : ''}`} onClick={() => isOpenSubmenu(4)}>
+                                <span className='icon'><FaUser /></span>
+                                Người dùng
                             </Button>
                         </Link>
                     </li>

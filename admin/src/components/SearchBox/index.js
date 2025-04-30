@@ -16,19 +16,61 @@ const SearchBox = (props)=>{
             query: e.target.value
         }
 
-        if(e.target.value!==""){
-            postData(`/api/order/search/get`,obj).then((res)=>{
-                props.setOrders(res.data);
-            })
-        } else {
-            fetchDataFromApi('/api/order/getAllOrders').then((res)=>{
-                console.log("orderList::",res)
-                if(res?.error===false){
-                    const pendingOrders = res.data.filter(order => order.order_status === "chờ xác nhận");
-                    props.setOrders(pendingOrders);
-                }
-            })
+        if(props.api === "order"){
+            if(e.target.value!==""){
+                postData(`/api/${props.api}/search/get`,obj).then((res)=>{
+                    props.setData(res.data);
+                })
+            } else {
+                fetchDataFromApi('/api/order/getAllOrders').then((res)=>{
+                    console.log("orderList::",res)
+                    if(res?.error===false){
+                        const pendingOrders = res.data.filter(order => order.order_status === "chờ xác nhận");
+                        props.setData(pendingOrders);
+                    }
+                })
+            }
         }
+
+        if(props.api === "product"){
+            if(e.target.value!==""){
+                postData(`/api/${props.api}/search/get`,obj).then((res)=>{
+                    props.setData(res.data);
+                    props.setPage(res.totalPages);
+                })
+            } else {
+                fetchDataFromApi('/api/product/getAllProducts?page=1&perPage=8').then((res)=>{
+                    props.setData(res.data)
+                    props.setPage(res.totalPages);
+                })
+            }
+        }
+
+        if(props.api === "category"){
+            if(e.target.value!==""){
+                postData(`/api/${props.api}/search/get`,obj).then((res)=>{
+                    props.setData(res.data);
+                })
+            } else {
+                fetchDataFromApi('/api/category').then((res)=>{
+                     props.setData(res.data)
+                   })
+            }
+        }
+
+        if(props.api === "user"){
+            if(e.target.value!==""){
+                postData(`/api/${props.api}/search/get`,obj).then((res)=>{
+                    props.setData(res.data);
+                })
+            } else {
+                fetchDataFromApi('/api/user/getAllUsersData?page=1&perPage=8').then((res)=>{
+                    props.setData(res.data)
+                    props.setPage(res.totalPages)
+                })
+            }
+        }
+       
     }
 
     return(

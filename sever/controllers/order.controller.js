@@ -129,8 +129,14 @@ const sortItems = (orders, sortBy, order) => {
     //     }
     //     return newOrder;
     // });
-    const updatedOrders =orders;
-    return updatedOrders.sort((a, b) => {
+
+    const validStatuses = ["chờ xác nhận", "đang giao", "hoàn thành"];
+
+    if (validStatuses.includes(sortBy)) {
+        orders = orders.filter(order => order.order_status === sortBy);
+    }
+
+    return orders.sort((a, b) => {
         if (sortBy === 'name') {
             return order === 'asc' 
                 ? a.name.localeCompare(b.name) 
@@ -141,6 +147,18 @@ const sortItems = (orders, sortBy, order) => {
         }
 
         if (sortBy === "createdAt") {
+            return order === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt): new Date(b.createdAt) - new Date(a.createdAt)
+        }
+
+        if (sortBy === "chờ xác nhận") {
+            return order === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt): new Date(b.createdAt) - new Date(a.createdAt)
+        }
+
+        if (sortBy === "đang giao") {
+            return order === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt): new Date(b.createdAt) - new Date(a.createdAt)
+        }
+
+        if (sortBy === "hoàn thành") {
             return order === 'asc' ? new Date(a.createdAt) - new Date(b.createdAt): new Date(b.createdAt) - new Date(a.createdAt)
         }
 

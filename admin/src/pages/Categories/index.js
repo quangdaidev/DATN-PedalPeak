@@ -39,6 +39,8 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import { FaRegImages } from "react-icons/fa";
 import SearchBox from "../../components/SearchBox";
+import { useContext } from "react";
+import { MyContext } from "../../App";
 
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -65,6 +67,8 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 });
 
 const Categories = () => {
+
+  const context = useContext(MyContext);
 
   const [showBy, setshowBy] = useState("");
   const [showBysetCatBy, setCatBy] = useState("");
@@ -209,6 +213,44 @@ const Categories = () => {
     })
   }
 
+  const handleSortBy = (name,order,products,value)=>{
+    
+    postData(`/api/category/sortBy`,{
+        products: products,
+        sortBy: name,
+        order: order,
+    }).then((res)=>{
+      setCatData(res.data);
+    })
+  }
+
+  const getAll =()=>{
+    fetchDataFromApi('/api/category').then((res)=>{
+      setCatData(res.data)
+    })
+  }
+
+  const categoryStatus=(status,id)=>{
+    fetchDataFromApi(`/api/category/${id}`).then((res)=>{
+      const category ={
+          // userId: res.data._id,
+          // products: res.data.products, 
+          // paymentId: res.data.paymentId,
+          // payment_status:res.data.payment_status, 
+          // delivery_address: res.data.delivery_address,
+          // totalAmt: res.data.totalAmt,
+          // date: res.data.createAt,
+          status: status
+      }
+      context.openAlertBox("success", "Cập nhật trạng thái thành công");
+      editData(`/api/category/updateStatus/${id}`,category).then((res)=>{
+        fetchDataFromApi('/api/category').then((res)=>{
+          setCatData(res.data)
+        })
+      })
+    })
+  }
+
   return (
     <>
       <div className="right-content w-100">
@@ -242,18 +284,23 @@ const Categories = () => {
                   labelId="demo-select-small-label"
                   className="w-100"
                 >
-                  <MenuItem value="">
-                    <em>Chọn </em>
+                  <MenuItem value=""
+                  onClick={()=>getAll()}>
+                    <em>Tất cả </em>
                   </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  <MenuItem 
+                    value="Tên, từ A đến Z"
+                    onClick={()=>handleSortBy('name','asc', catData, 'Tên, từ A đến Z')}
+                    className="!text-[13px] !text-black !capitalize"
+                  >
+                    Tên, từ A đến Z
+                  </MenuItem>
                 </Select>
               </FormControl>
             </div>
             <div className="col-md-3">
               <h4>NHẬP TỪ KHÓA </h4>
-              <SearchBox />
+              <SearchBox setData={setCatData} api="category"/>
             </div>
           </div>
        
@@ -301,7 +348,7 @@ const Categories = () => {
                             onClick={()=>setIsShow(!isShow)}
                             >
                             {
-                                isShow===true ?  <IoMdEye/> :  <IoMdEyeOff/>
+                                item.status===true ?  <IoMdEye onClick={()=>categoryStatus("false",item._id)}/> :  <IoMdEyeOff onClick={()=>categoryStatus("true",item._id)}/>
                             }                          
                           </Button>  
                           {/* <Button className="error" color="error" onClick={()=>deleteCat(item._id)}>

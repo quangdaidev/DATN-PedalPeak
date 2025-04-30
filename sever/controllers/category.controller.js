@@ -95,7 +95,7 @@ export async function createCategory(request, response) {
 //get categories
 export async function getCategories(request, response) {
   try {
-    const categories = await CategoryModel.find();
+    const categories = await CategoryModel.find().sort({ createdAt: -1 }) // sắp xếp từ mới đến cũ;
     const categoryMap = {};
 
     categories.forEach(cat => {
@@ -315,5 +315,90 @@ export async function updatedCategory(request, response) {
     error: false,
     success: true,
     data: category,
+  });
+}
+
+const sortItems = (products, sortBy, order) => { 
+
+  return products.sort((a, b) => {
+      if (sortBy === 'name') {
+          return order === 'asc' 
+              ? a.name.localeCompare(b.name) 
+              : b.name.localeCompare(a.name)
+      }
+
+      return 0;
+  })
+}
+
+export async function sortBy(request, response) {
+  const { products, sortBy, order } = request.body;
+  console.log(products)
+  const sortedItems = sortItems([... products], sortBy, order);
+  
+
+  return response.status(200).json({
+      error: false,
+      success:true,
+      data: sortedItems,
+      page:0,
+      totalPages:0
+  })
+}    
+
+export async function searchProductController(request, response) {
+  try {
+      const { query} = request.body;
+
+      if (!query) {
+          return response.status(400).json({
+              error: true,
+              success: false,
+              message: "Không nhận được yêu cầu"
+          })
+      }
+
+      const items  = await CategoryModel.find({
+          $or: [
+            { name: {$regex: query, $options: "i"}}
+          ],
+      })
+
+      return response.status(200).json({
+          error: false, 
+          success: true, 
+          data: items,
+      })
+      
+  } catch (error) {
+      return response.status(500).json({
+          message: error.message || error,
+          error: true,
+          success: false
+      })
+  }
+}
+
+export async function updatedStatus(request, response) {
+  const category = await CategoryModel.findByIdAndUpdate(
+    request.params.id,
+    {
+      status: request.body.status,
+    },
+    { new: true }
+  );
+
+  if (!category) {
+    return response.status(500).json({
+      message: "Không tìm thấy",
+      success: false,
+      error: true,
+    });
+  }
+
+  response.status(200).json({
+    error: false,
+    success: true,
+    data:  category,
   });
 }

@@ -148,6 +148,7 @@ export async function getAllProducts(request, response) {
           }
 
         const products = await ProductModel.find().populate("category")
+            .sort({ createdAt: -1 }) // sắp xếp từ mới đến cũ
             .skip((page - 1) * perPage)
             .limit(perPage)
             .exec();
@@ -1123,13 +1124,17 @@ export async function filters(request, response) {
 }
     
 const sortItems = (products, sortBy, order) => { 
-    const updatedProducts = products.map(product => {
+    let updatedProducts = products.map(product => {
         const newProduct = { ...product };
         if (newProduct.price === 0 && newProduct.oldPrice) {
             newProduct.price = newProduct.oldPrice;
         }
         return newProduct;
     });
+
+    if (sortBy === "isFeatured") {
+        updatedProducts = products.filter(product => product.isFeatured === true);
+    }
 
     return updatedProducts.sort((a, b) => {
         if (sortBy === 'name') {
@@ -1138,6 +1143,10 @@ const sortItems = (products, sortBy, order) => {
                 : b.name.localeCompare(a.name)
         }
         if (sortBy === "price") {
+            return order === 'asc' ? a.price - b.price: b.price - a.price
+        }
+       
+        if (sortBy === "isFeatured") {
             return order === 'asc' ? a.price - b.price: b.price - a.price
         }
 
@@ -1149,6 +1158,8 @@ export async function sortBy(request, response) {
     const { products, sortBy, order } = request.body;
     console.log(products)
     const sortedItems = sortItems([... products], sortBy, order);
+    
+    const total = await sortedItems?.length;
 
     return response.status(200).json({
         error: false,
@@ -1198,6 +1209,30 @@ export async function searchProductController(request, response) {
             success: false
         })
     }
+}
+
+export async function updatedProduct(request, response) {
+  const product = await ProductModel.findByIdAndUpdate(
+    request.params.id,
+    {
+      status: request.body.status,
+    },
+    { new: true }
+  );
+
+  if (!product) {
+    return response.status(500).json({
+      message: "Không tìm thấy",
+      success: false,
+      error: true,
+    });
+  }
+
+  response.status(200).json({
+    error: false,
+    success: true,
+    data:  product,
+  });
 }
     
     

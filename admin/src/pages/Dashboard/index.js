@@ -472,7 +472,7 @@ totalOrdersData
           </div>
 
         </div>
-        <OrdersDashboard />
+        <OrdersDashboard/>
       </div>
     </>
   );

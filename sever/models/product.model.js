@@ -86,7 +86,8 @@ const productSchema = mongoose.Schema({
         default: Date.now,
     },
     status: {
-        type: String,
+        type: Boolean,
+        default: true,
     },
 },{
     timestamps: true

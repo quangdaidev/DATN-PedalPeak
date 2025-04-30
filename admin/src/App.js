@@ -17,6 +17,7 @@ import Orders from "./pages/Orders";
 import { fetchDataFromApi } from "./utils/api";
 import { ToastContainer, toast } from 'react-toastify';
 import ProductEdit from "./pages/ProductEdit";
+import Users from "./pages/Users";
 
 const MyContext = createContext();
 
@@ -175,6 +176,7 @@ function App() {
               <Route path="/category/add" exact={true} element={<CategoryAdd />} />
               <Route path="/category" exact={true} element={<Categories />} />
               <Route path="/orders" exact={true} element={<Orders />} />
+              <Route path="/users" exact={true} element={<Users />} />
             </Routes>
           </div>
         </div>

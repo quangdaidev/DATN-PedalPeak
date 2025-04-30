@@ -5,7 +5,7 @@ import { MdShoppingBag } from "react-icons/md";
 // import { GiStarsStack } from "react-icons/gi";
 // import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import { IoIosTimer } from "react-icons/io";
 import Button from "@mui/material/Button";
 // import { Chart } from "react-google-charts";
@@ -34,11 +34,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DashboardBox from "../Dashboard/components/dashboardBox";
 
 import Checkbox from "@mui/material/Checkbox";
-import { editData, fetchDataFromApi, postData } from "../../utils/api";
+import { fetchDataFromApi, postData } from "../../utils/api";
 
 import { IoInformationCircle } from "react-icons/io5";
 import SearchBox from "../../components/SearchBox";
-import { MyContext } from "../../App";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -66,22 +65,19 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 
 
 
-const Products = () => {
+const Users = () => {
 
   const VND = new Intl.NumberFormat('vi-VN', {
     style: 'currency',
     currency: 'VND',
   });
 
-  const context = useContext(MyContext);
-
   // const [anchorEl, setAnchorEl] = useState(null);
   const [showBy, setshowBy] = useState("");
-  const [showBysetCatBy, setCatBy] = useState("");
   // const open = Boolean(anchorEl);
 
   // const [productList, setProductList] = useState([]);
-  const [proData, setProData] = useState([]);
+  const [usersData, setUsersData] = useState([]);
 
   const [isShow, setIsShow] = useState(true);
 
@@ -93,8 +89,8 @@ const Products = () => {
     
     setCurrentPage(value);  // Cập nhật trang hiện tại khi người dùng chọn trang khác
     // setPage(value);
-    fetchDataFromApi(`/api/product/getAllProducts?page=${value}&perPage=8`).then((res)=>{
-      setProData(res.data);
+    fetchDataFromApi(`/api/user/getAllUsersData?page=${value}&perPage=8`).then((res)=>{
+      setUsersData(res.data);
       window.scrollTo({
         top: 200,
         behavior: 'smooth',
@@ -106,61 +102,36 @@ const Products = () => {
   useEffect(() => {
     window.scrollTo(0, 0); //cuộn trang đến vị trí góc trên bên trái của trang
 
-    fetchDataFromApi('/api/product/getAllProducts?page=1&perPage=8').then((res)=>{
-      setProData(res.data)
+    fetchDataFromApi('/api/user/getAllUsersData?page=1&perPage=8').then((res)=>{
+      setUsersData(res.data)
       setPage(res.totalPages)
       console.log(res.data)
     })
   }, []);
 
-  const handleSortBy = (name,order,products,value)=>{
+  const handleSortBy = (name,order,users,value)=>{
     
-    postData(`/api/product/sortBy`,{
-        products: products,
+    postData(`/api/user/sortBy`,{
+        users: users,
         sortBy: name,
         order: order,
     }).then((res)=>{
-      setProData(res.data);
+      setUsersData(res.data);
     })
   }
 
   const getAll=()=>{
-    fetchDataFromApi('/api/product/getAllProducts?page=1&perPage=8').then((res)=>{
-      setProData(res.data)
+    fetchDataFromApi('/api/user/getAllUsersData?page=1&perPage=8').then((res)=>{
+      setUsersData(res.data)
       setPage(res.totalPages)
     })
-  }
-
-  const productStatus=(status,id)=>{
-      fetchDataFromApi(`/api/product/${id}`).then((res)=>{
-        const product ={
-            // userId: res.data._id,
-            // products: res.data.products, 
-            // paymentId: res.data.paymentId,
-            // payment_status:res.data.payment_status, 
-            // delivery_address: res.data.delivery_address,
-            // totalAmt: res.data.totalAmt,
-            // date: res.data.createAt,
-            status: status
-        }
-        context.openAlertBox("success", "Cập nhật trạng thái thành công");
-        editData(`/api/product/${id}`,product).then((res)=>{
-          fetchDataFromApi(`/api/product/getAllProducts?page=${currentPage}&perPage=8`).then((res)=>{
-            setProData(res.data);
-            window.scrollTo({
-              top: 200,
-              behavior: 'smooth',
-            })
-          })
-        })
-      })
   }
 
   return (
     <>
       <div className="right-content w-100">
         <div className="card shadow border-0 w-100 flex-row p-4">
-          <h5 className="mb-0">Danh sách sản phẩm</h5>
+          <h5 className="mb-0">Danh sách tài khoản người dùng</h5>
           <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
             <StyledBreadcrumb
               component="a"
@@ -170,14 +141,14 @@ const Products = () => {
             />
 
             <StyledBreadcrumb
-              label="Sản phẩm"
+              label="Người dùng"
               deleteIcon={<ExpandMoreIcon />}
             />
           </Breadcrumbs>
         </div>
 
         <div className="card shadow border-0 p-3 mt-4">
-          <h3 className="hd">Danh sách sản phẩm</h3>
+          <h3 className="hd">Danh sách người dùng</h3>
           <div className="row cardFilters mt-3">
             <div className="col-md-3">
               <h4>HIỂN THỊ THEO</h4>
@@ -195,38 +166,18 @@ const Products = () => {
                   </MenuItem>
                   <MenuItem 
                     value="Tên, từ A đến Z"
-                    onClick={()=>handleSortBy('name','asc', proData, 'Tên, từ A đến Z')}
+                    onClick={()=>handleSortBy('name','asc', usersData, 'Tên, từ A đến Z')}
                     className="!text-[13px] !text-black !capitalize"
                   >
                     Tên, từ A đến Z
                   </MenuItem>
-                  <MenuItem 
-                    value="Giá, từ thấp đến cao"
-                    onClick={()=>handleSortBy('price','asc',proData, 'Giá, từ thấp đến cao')}
-                    className="!text-[13px] !text-black !capitalize"
-                  >
-                    Giá, từ thấp đến cao
-                  </MenuItem>
-                  <MenuItem 
-                    value="Giá, từ cao đến thấp"
-                    onClick={()=>handleSortBy('price','desc',proData, 'Giá, từ cao đến thấp')}
-                    className="!text-[13px] !text-black !capitalize"
-                  >
-                    Giá, từ cao đến thấp
-                  </MenuItem>
-                  <MenuItem 
-                    value="Sản phẩm nổi bật"
-                    onClick={()=>handleSortBy('isFeatured','asc',proData, 'Sản phẩm nổi bật')}
-                    className="!text-[13px] !text-black !capitalize"
-                  >
-                    Sản phẩm nổi bật
-                  </MenuItem>
+              
                 </Select>
               </FormControl>
             </div>
             <div className="col-md-3">
               <h4>NHẬP TỪ KHÓA </h4>
-              <SearchBox setData={setProData} api="product" setPage={setPage}/>
+              <SearchBox setData={setUsersData} api="user" setPage={setPage}/>
             </div>
           </div>
 
@@ -235,21 +186,18 @@ const Products = () => {
               <thead className="thead-dark">
                 <tr>
                   <th>UID</th>
-                  <th>ẢNH SẢN PHẨM</th>
-                  <th style={{ width: "300px" }}>TÊN SẢN PHẨM</th>
-                  <th>DANH MỤC</th>
-                  <th>THƯƠNG HIỆU</th>
-                  <th>GIÁ</th>
-                  <th>TỒN KHO</th>
-                  <th>XẾP HẠNG</th>
-                  <th>NỔI BẬT</th>
+                  <th>ẢNH ĐẠI DIỆN</th>
+                  <th >TÊN NGƯỜI DÙNG</th>
+                  <th>EMAIL</th>
+                  <th>SĐT</th>
+                  <th>TRẠNG THÁI</th>
                   <th>ACTION</th>
                 </tr>
               </thead>
 
               <tbody>
                  {
-                    proData?.length!==0 && proData?.map((item,index)=>{
+                    usersData?.length!==0 && usersData?.map((item,index)=>{
                       return(
                         <tr>
                           <td>
@@ -261,7 +209,7 @@ const Products = () => {
                             <div className="d-flex justify-content-center align-items-center ">
                               <div>
                                 <img
-                                  src={item.images[0]} 
+                                  src={item.avatar !== "" ? item.avatar : "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/477713Dpz/anh-mo-ta.png"} 
                                   alt="" 
                                   width="110" 
                                   height="100" 
@@ -271,55 +219,18 @@ const Products = () => {
                             </div>
                           </td>
                           <td>{item.name} </td>
-                          <td>{item.catName} </td>
-                          <td>{item.brand} </td>
-                          <td>
-                            {
-                              item.price !== 0 ?
-                              <div  style={{ width: "90px" }}>
-                                <del className="old"> {VND.format(item.oldPrice)} </del>
-                                <span className="new text-danger"> {VND.format(item.price)}</span>
-                              </div>
-                              :
-                              <div  style={{ width: "90px" }}>
-                                <span className="new text-danger"> {VND.format(item.oldPrice)}</span>
-                              </div>
-                            }
-                           
+                          <td>{item.email} </td>
+                          <td>{item.mobile != null ? item.mobile : "Trống"} </td>                 
                           
-                          </td>
-                          <td>{item.countInStock} </td>
-                          <td>
-                            <Rating
-                              name="read-only"
-                              defaultValue={item.rating}
-                              precision={0.5}
-                              size="small"
-                              readOnly
-                            />
-                          </td>
-                          <td>{item.isFeatured? "Có" : "Không"} </td>
+                          <td>{item.status? "Hoạt động" : "Khóa"} </td>
                           <td>
                             <div className="actions d-flex align-items-center">
-
-                              <Link to={`/product/details/${item._id}`}>
-                                <Button className="primary" color="primary">
-                                  <IoInformationCircle />
-                                </Button>  
-                              </Link>                 
-                            
-                              <Link to={`/product/${item._id}`}>
-                                <Button className="success" color="success">
-                                  <FaPencilAlt />
-                                </Button>
-                              </Link>
-
                               <Link to="#">                              
                                 <Button className="secondary" color="secondary"
                                   onClick={()=>setIsShow(!isShow)}
                                   >
                                   {
-                                     item?.status===true ?  <IoMdEye onClick={()=>productStatus("false",item._id)}/> :  <IoMdEyeOff onClick={()=>productStatus("true",item._id)}/>
+                                      isShow===true ?  <IoMdEye/> :  <IoMdEyeOff/>
                                   }                          
                                 </Button>                             
                               </Link>
@@ -360,4 +271,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Users;

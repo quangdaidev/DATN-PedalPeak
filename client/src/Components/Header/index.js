@@ -243,7 +243,7 @@ const Header =()=>{
                                         <ul className=" hidden group-hover:block font">
 
                                             {
-                                                catData?.length !== 0 && catData?.map((cat,index)=>{
+                                                context?.catData?.length !== 0 && context?.catData?.map((cat,index)=>{
                                                     return(
                                                         <li className="block ">
                                                             <Link className="" to={`/products?catId=${cat._id}`}>

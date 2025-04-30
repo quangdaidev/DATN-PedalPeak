@@ -14,7 +14,8 @@ const categorySchema = new mongoose.Schema(
       },
     ],
     status: {
-      type: String,
+      type: Boolean,
+      default: true,
      
     },
     parentCatName:{

@@ -153,7 +153,7 @@ const Home =()=>{
             {/* End slider */}
 
             
-            { catData?.length!==0 &&  <HomeCatSlider catData={catData}/>}
+            { context?.catData?.length!==0 &&  <HomeCatSlider catData={context?.catData}/>}
 
 
             <section className="bg-white pt-4">

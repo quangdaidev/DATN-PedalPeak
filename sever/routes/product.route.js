@@ -16,7 +16,8 @@ import { uploadImages, createProduct, deleteProduct, getAllFeaturedProducts,
     filters,
     sortBy,
     getAllProductsBySubCatId, 
-    searchProductController
+    searchProductController,
+    updatedProduct
  } from "../controllers/product.controller.js";
 
 const productRouter = Router();
@@ -58,6 +59,7 @@ productRouter.get('/productColor/get', getProductColor);
 productRouter.get('/productColor/:id', getProductColorById);
 
 productRouter.get('/:id',getProduct);
+productRouter.put("/:id", updatedProduct);
 
 
 

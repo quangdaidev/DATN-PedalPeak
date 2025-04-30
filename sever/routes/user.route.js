@@ -3,7 +3,8 @@ import { loginUserController,logoutController,verifyEmailController,
     registerUserController, userAvatarController,removeImageFromCloudinary,
     updateUserDetails,forgotPasswordController,verifyForgotPasswordOtp,
     resetpassword,refreshToken,userDetails,loginAdminController,
-    addReview,getReviews,getAllReviews,getAllUsers,authWithGoogle
+    addReview,getReviews,getAllReviews,getAllUsers,authWithGoogle,getAllUsersData,
+    sortBy, searchUserController
 } from '../controllers/user.controller.js'
 import auth from '../middlewares/auth.js';
 import upload from '../middlewares/multer.js';
@@ -11,6 +12,9 @@ import upload from '../middlewares/multer.js';
 const userRouter = Router()
 
 userRouter.post('/register', registerUserController);
+
+userRouter.post('/sortBy', sortBy);
+userRouter.post('/search/get', searchUserController);
 
 userRouter.post('/verifyEmail',verifyEmailController);
 userRouter.post('/login',loginUserController);
@@ -29,6 +33,7 @@ userRouter.post('/addReview',auth,addReview);
 userRouter.get('/getReviews',getReviews);
 userRouter.get('/getAllReviews',getAllReviews);
 userRouter.get('/getAllUsers',getAllUsers);
+userRouter.get('/getAllUsersData',getAllUsersData);
 
 
 

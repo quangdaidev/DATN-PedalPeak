@@ -145,11 +145,11 @@ function App() {
 
   useEffect(()=>{
     fetchDataFromApi("/api/category").then((res)=>{
-      setCatData(res?.data);
+      setCatData(res?.data.filter(category => category.status === true));
     });
     fetchDataFromApi("/api/product/getAllProducts").then((res)=>{
       // console.log("po::",res.data)
-      setProductsData(res?.data);
+      setProductsData(res?.data.filter(product => product.status === true));
     })
 
   },[])

@@ -15,7 +15,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import TablePagination from '@mui/material/TablePagination';
-import { editData, fetchDataFromApi } from '../../utils/api';
+import { editData, fetchDataFromApi, postData } from '../../utils/api';
 import moment from 'moment';
 import Chip from '@mui/material/Chip';
 import { useContext } from 'react';
@@ -26,6 +26,33 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import HomeIcon from "@mui/icons-material/Home";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { emphasize, styled } from "@mui/material/styles";
+
+//breadcrumb code
+const StyledBreadcrumb = styled(Chip)(({ theme }) => {
+    const backgroundColor =
+      theme.palette.mode === "light"
+        ? theme.palette.grey[100]
+        : theme.palette.grey[800];
+    return {
+      backgroundColor,
+      height: theme.spacing(3),
+      color: theme.palette.text.primary,
+      fontWeight: theme.typography.fontWeightRegular,
+      "&:hover, &:focus": {
+        backgroundColor: emphasize(backgroundColor, 0.06),
+      },
+      "&:active": {
+        boxShadow: theme.shadows[1],
+        backgroundColor: emphasize(backgroundColor, 0.12),
+      },
+    };
+  });
+  
+
 const Orders = ()=>{
 
     const VND = new Intl.NumberFormat('vi-VN', {
@@ -34,6 +61,8 @@ const Orders = ()=>{
     });
     
     const [orders, setOrders] = useState([]);
+
+    const [allOrders, setAllOrders] = useState([]);
 
     const context = useContext(MyContext);
 
@@ -46,6 +75,7 @@ const Orders = ()=>{
         console.log("orderList::",res)
         if(res?.error===false){
             setOrders(res?.data);
+            setAllOrders(res?.data)
         }
     })
     },[])
@@ -214,34 +244,118 @@ const Orders = ()=>{
         })
     }
 
+    const handleSortBy = (name,order,orders,value)=>{
+        postData(`/api/order/sortBy`,{
+            orders: orders,
+            sortBy: name,
+            order: order
+        }).then((res)=>{
+            setOrders(res?.data);
+            // setAnchorEl(null)
+        })
+
+    }
+
+    const getAll=()=>{
+        fetchDataFromApi('/api/order/getAllOrders').then((res)=>{
+            if(res?.error===false){
+                setOrders(res?.data);
+            }
+        })
+    }
+
     return(
-        <div className="w-100">
+        <div className="right-content w-100">
+            <div className="card shadow border-0 w-100 flex-row p-4">
+                <h5 className="mb-0">Danh sách tài khoản người dùng</h5>
+                <Breadcrumbs aria-label="breadcrumb" className="ml-auto breadcrumbs_">
+                    <StyledBreadcrumb
+                    component="a"
+                    href="#"
+                    label="Tổng quan"
+                    icon={<HomeIcon fontSize="small" />}
+                    />
+
+                    <StyledBreadcrumb
+                    label="Đơn hàng"
+                    deleteIcon={<ExpandMoreIcon />}
+                    />
+                </Breadcrumbs>
+            </div>
+
             <div className="card shadow border-0 p-3 mt-4">
-                <h5 className="mb-0">Danh sách đơn hàng</h5>
+                <h3 className="hd">Danh sách người dùng</h3>
                 <div className="row cardFilters mt-3">
                     <div className="col-md-3">
-                        <h4>HIỂN THỊ THEO</h4>
-                        <FormControl size="small" className="w-100">
-                            <Select
-                                value={showBy}
-                                onChange={(e) => setshowBy(e.target.value)}
-                                displayEmpty
-                                inputProps={{ "aria-label": "Without label" }}
-                                labelId="demo-select-small-label"
-                                className="w-100"
+                    <h4>HIỂN THỊ THEO</h4>
+                    <FormControl size="small" className="w-100">
+                        <Select
+                        value={showBy}
+                        onChange={(e) => setshowBy(e.target.value)}
+                        displayEmpty
+                        inputProps={{ "aria-label": "Without label" }}
+                        labelId="demo-select-small-label"
+                        className="w-100"
+                        >
+                            <MenuItem value="" onClick={()=>getAll()}>
+                                <em>Tất cả </em>
+                            </MenuItem>
+                            <MenuItem 
+                                value="Trạng thái đơn hàng, chờ xác nhận"
+                                onClick={()=>handleSortBy('chờ xác nhận','desc',allOrders, 'Trạng thái đơn hàng, chờ xác nhận')}
+                                className="!text-[13px] !text-black !capitalize"
                             >
-                                <MenuItem value="">
-                                <em>Chọn </em>
-                                </MenuItem>
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                        </FormControl>
+                                Trạng thái đơn hàng, chờ xác nhận
+                            </MenuItem>
+                            <MenuItem 
+                                value="Trạng thái đơn hàng, đang giao"
+                                onClick={()=>handleSortBy('đang giao','desc',allOrders, 'Trạng thái đơn hàng, đang giao')}
+                                className="!text-[13px] !text-black !capitalize"
+                            >
+                                Trạng thái đơn hàng, đang giao
+                            </MenuItem>
+                            <MenuItem 
+                                value="Trạng thái đơn hàng, hoàn thành"
+                                onClick={()=>handleSortBy('hoàn thành','desc',allOrders, 'Trạng thái đơn hàng, hoàn thành')}
+                                className="!text-[13px] !text-black !capitalize"
+                            >
+                                Trạng thái đơn hàng, hoàn thành
+                            </MenuItem>
+                            <MenuItem 
+                                value="Tổng tiền, từ thấp đến cao"
+                                onClick={()=>handleSortBy('totalAmt','asc',orders, 'Tổng tiền, từ thấp đến cao')}
+                                className="!text-[13px] !text-black !capitalize"
+                            >
+                                Tổng tiền, từ thấp đến cao
+                            </MenuItem>
+                            <MenuItem 
+                                value="Tổng tiền, từ cao đến thấp"
+                                onClick={()=>handleSortBy('totalAmt','desc',orders, 'Tổng tiền, từ cao đến thấp')}
+                                className="!text-[13px] !text-black !capitalize"
+                            >
+                                Tổng tiền, từ cao đến thấp
+                            </MenuItem>
+                            <MenuItem 
+                                value="Ngày đặt hàng, từ mới đến cũ"
+                                onClick={()=>handleSortBy('createdAt','desc',orders, 'Ngày đặt hàng, từ mới đến cũ')}
+                                className="!text-[13px] !text-black !capitalize"
+                            >
+                                Ngày đặt hàng, từ mới đến cũ
+                            </MenuItem>
+                            <MenuItem 
+                                value="Ngày đặt hàng, từ cũ đến mới"
+                                onClick={()=>handleSortBy('createdAt','asc',orders, 'Ngày đặt hàng, từ cũ đến mới')}
+                                className="!text-[13px] !text-black !capitalize"
+                            >
+                                Ngày đặt hàng, từ cũ đến mới
+                            </MenuItem>
+                        
+                        </Select>
+                    </FormControl>
                     </div>
                     <div className="col-md-3">
-                        <h4>NHẬP TỪ KHÓA </h4>
-                        <SearchBox />
+                    <h4>TÌM MÃ ĐƠN HÀNG </h4>
+                    <SearchBox setData={setOrders} api="order" setPage={setPage}/>
                     </div>
                 </div>
                         
@@ -261,8 +375,8 @@ const Orders = ()=>{
                             </TableRow>
                             </TableHead>    
                             <TableBody>
-                            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                              <Row key={row.name} row={row} />
+                            {rows?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                              <Row key={row._id} row={row} />
                             ))}
                             </TableBody>
                         </Table>
@@ -273,7 +387,7 @@ const Orders = ()=>{
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25, 100]}
                         component="div"
-                        count={rows.length}
+                        count={rows?.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
