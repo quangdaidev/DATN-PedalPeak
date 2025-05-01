@@ -21,7 +21,7 @@ export const ProductDetailsComponent = (props) => {
         <div className="flex items-center gap-3">
             <span className="text-gray-400 text-[13px]">Thương hiệu: <span className="font-[500] text-black opacity-75">{props?.item?.brand}</span></span>
 
-            <Rating name="size-small" defaultValue={4} size="small" readOnly/>
+            <Rating name="size-small" defaultValue={(props?.item?.reviews.reduce((sum, review) => sum + Number(review.rating), 0))/ props?.item?.reviews.length} size="small" readOnly/>
             <span className="text-[13px] cursor-pointer" onClick={props.gotoReviews}>Bình luận ({props.reviewsCount>0?props.reviewsCount:0})</span>
 
         </div>

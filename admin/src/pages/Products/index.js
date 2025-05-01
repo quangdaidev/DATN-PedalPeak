@@ -1,5 +1,5 @@
 // import { HiDotsVertical } from "react-icons/hi";
-import { FaUserCircle } from "react-icons/fa";
+import {  FaCloud } from "react-icons/fa";
 import { IoMdCart } from "react-icons/io";
 import { MdShoppingBag } from "react-icons/md";
 // import { GiStarsStack } from "react-icons/gi";
@@ -34,11 +34,21 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DashboardBox from "../Dashboard/components/dashboardBox";
 
 import Checkbox from "@mui/material/Checkbox";
-import { editData, fetchDataFromApi, postData } from "../../utils/api";
+import { deleteData, editData, fetchDataFromApi, postData } from "../../utils/api";
 
 import { IoInformationCircle } from "react-icons/io5";
 import SearchBox from "../../components/SearchBox";
 import { MyContext } from "../../App";
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import TextField from '@mui/material/TextField';
+
+import DialogTitle from '@mui/material/DialogTitle';
+import CircularProgress from '@mui/material/CircularProgress';
+
+import { TiDeleteOutline } from "react-icons/ti";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -109,7 +119,7 @@ const Products = () => {
     fetchDataFromApi('/api/product/getAllProducts?page=1&perPage=8').then((res)=>{
       setProData(res.data)
       setPage(res.totalPages)
-      console.log(res.data)
+      console.log("proData",res.data)
     })
   }, []);
 
@@ -155,6 +165,113 @@ const Products = () => {
         })
       })
   }
+
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+ 
+
+  const [formFields, setFormFields] = useState({
+    name:"",
+    countInStock:"",
+    productId:""
+  });
+
+  const addColor=(id)=>{
+    // setFormFields({
+    //   name:"",
+    //   images:"",
+    // });
+    setOpen(true)
+    formFields.productId = id
+    // setEditId(id);
+    // // console.log("jjjjj",id)
+
+    // fetchDataFromApi(`/api/category/${id}`).then((res)=>{
+    //   // console.log("dfdfdf",res.data)
+    //   setFormFields({
+    //     name:res.data.name,
+    //     images:res.data.images,
+    //   });
+    // })
+  }
+
+  const onChangeInput = (e) => {
+    const {name, value} = e.target;
+    setFormFields(()=>{
+      return {
+          ...formFields,
+          [name]: value
+      }
+    })
+  }
+
+  const addColorEditFun=(e)=>{
+    e.preventDefault();
+    setIsLoading(true);
+
+    console.log("color",formFields)
+
+    if (formFields.color === "") {
+      context.openAlertBox("error", "Vui lòng điền tên màu");
+      return false
+    }
+
+    if (formFields.countInStock === "") {
+      context.openAlertBox("error", "Vui nhập số lượng" );
+      return false
+    }
+
+
+    postData(`/api/productColor/add`, formFields).then((res) => {
+        console.log("proColor::",res)
+        if(res?.error !== true) {
+          setTimeout(()=>{
+            setIsLoading(false);
+            setOpen(false);
+          },500)
+          // console.log("success",res?.message)
+          context.openAlertBox("success", res?.message);
+          
+
+          fetchDataFromApi('/api/product/getAllProducts?page=1&perPage=8').then((res)=>{
+            setProData(res.data)
+            setPage(res.totalPages)
+            setFormFields({
+              name:"",
+              countInStock:"",
+              productId:""
+            })
+            ;
+          })
+        } else {
+          context.openAlertBox("error", res?.data?.message);
+          setIsLoading(false);
+        }
+    })   
+          
+  };
+
+  const deleteColor=(id)=>{
+    
+    deleteData(`/api/productColor/${id}`).then(res=>{
+      if(res?.error !== true) {
+        context.openAlertBox("success", res?.message);
+        fetchDataFromApi('/api/product/getAllProducts?page=1&perPage=8').then((res)=>{
+          setProData(res.data)
+          setPage(res.totalPages)
+        })
+      }else {
+        context.openAlertBox("error", res?.data?.message);
+      }
+    })
+  }
+
+  
 
   return (
     <>
@@ -240,7 +357,7 @@ const Products = () => {
                   <th>DANH MỤC</th>
                   <th>THƯƠNG HIỆU</th>
                   <th>GIÁ</th>
-                  <th>TỒN KHO</th>
+                  <th>BIẾN THỂ MÀU</th>
                   <th>XẾP HẠNG</th>
                   <th>NỔI BẬT</th>
                   <th>ACTION</th>
@@ -288,12 +405,32 @@ const Products = () => {
                            
                           
                           </td>
-                          <td>{item.countInStock} </td>
+
+                          <td>
+                            {item.color.length >0 ?
+                              <div style={{ width: "120px" }}>
+                                {item.color?.map((c, index) => (
+                                  <div key={index} class="d-flex align-items-center ">
+                                    <div>
+                                      <TiDeleteOutline onClick={()=>deleteColor(item.color[index]._id)} style={{cursor: 'pointer', color: "red", fontSize: "18px" }}/>
+                                    </div>
+                                    <div style={{ marginLeft: '4px' }}>
+                                      {c.name} - SL: {c.countInStock}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                          
+                              :
+                              <div>Chưa nhập màu</div>
+                            }
+                            
+                          </td>
                           <td>
                             <Rating
                               name="read-only"
-                              defaultValue={item.rating}
-                              precision={0.5}
+                              defaultValue={(item.reviews.reduce((sum, review) => sum + Number(review.rating), 0))/ item.reviews.length}
+                              // precision={0.5}
                               size="small"
                               readOnly
                             />
@@ -323,6 +460,13 @@ const Products = () => {
                                   }                          
                                 </Button>                             
                               </Link>
+
+                              <Link to={""}>
+                                <Button className="error" color="error"  onClick={()=>addColor(item._id)}>
+                                  <FaCloud/>
+                                </Button>
+                              </Link>
+
 {/* 
                               <Button className="error" color="error">
                                 <MdDelete />
@@ -356,6 +500,70 @@ const Products = () => {
           </div>
         </div>
       </div>
+
+      
+      <Dialog
+      className="editModal"
+        open={open}
+        onClose={handleClose}
+        slotProps={{
+          paper: {
+            component: 'form',
+            onSubmit: (event) => {
+              event.preventDefault();
+              const formData = new FormData(event.currentTarget);
+              const formJson = Object.fromEntries(formData.entries());
+              const email = formJson.email;
+              console.log(email);
+              handleClose();
+            },
+          },
+        }}
+      >
+        <DialogTitle>Cập nhật danh mục</DialogTitle>
+        <form>
+          <DialogContent>
+            
+          <TextField
+              // value={formFields.name}
+              autoFocus
+              required
+              margin="dense"
+              id="name"
+              name="name"
+              label="Tên màu"
+              type="text"
+              fullWidth
+              onChange={onChangeInput}
+            />
+             <TextField
+              // value={formFields.name}
+              autoFocus
+              required
+              margin="dense"
+              id="countInStock"
+              name="countInStock"
+              label="Số lượng"
+              type="text"
+              fullWidth
+              onChange={onChangeInput}
+            />
+          </DialogContent>
+
+        </form>
+        <DialogActions>
+          <Button onClick={handleClose} variant="outlined">Hủy</Button>
+          <Button type="button" onClick={addColorEditFun} variant="contained">
+            {
+              isLoading===true 
+              ? <CircularProgress color="inherit" className="loader"/>
+              : ' Cập nhật'
+            }
+          </Button>
+        </DialogActions>
+
+        <br/>
+      </Dialog>
     </>
   );
 };

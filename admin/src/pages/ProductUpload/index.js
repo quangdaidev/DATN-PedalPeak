@@ -86,11 +86,11 @@ const ProductUpload = () => {
         subCatName:"",
         thirdsubCat:"",
         thirdsubCatId:"",
-        countInStock:"",
-        rating:0,
+        // countInStock:"",
+        // rating:0,
         isFeatured: null,
         discount: "",
-        color:[],
+        // color:[],
         productWeight:"",
     })
 
@@ -293,32 +293,32 @@ const ProductUpload = () => {
             return false;
         }
       
-        if(formFields.countInStock===""){
-            context.openAlertBox(
-                "error",
-                "Bạn chưa nhập số lượng sản phẩm"
-            )
-            setIsLoading(false);
-            return false;
-        }
+        // if(formFields.countInStock===""){
+        //     context.openAlertBox(
+        //         "error",
+        //         "Bạn chưa nhập số lượng sản phẩm"
+        //     )
+        //     setIsLoading(false);
+        //     return false;
+        // }
 
-        if(productColor.length === 0){
-            context.openAlertBox(
-                "error",
-                "Bạn chưa chọn màu sản phẩm"
-            )
-            setIsLoading(false);
-            return false;
-        }
+        // if(productColor.length === 0){
+        //     context.openAlertBox(
+        //         "error",
+        //         "Bạn chưa chọn màu sản phẩm"
+        //     )
+        //     setIsLoading(false);
+        //     return false;
+        // }
 
-        if(formFields.rating===0){
-            context.openAlertBox(
-                "error",
-                "Bạn chưa xếp hạng sản phẩm"
-            )
-            setIsLoading(false);
-            return false;
-        }
+        // if(formFields.rating===0){
+        //     context.openAlertBox(
+        //         "error",
+        //         "Bạn chưa xếp hạng sản phẩm"
+        //     )
+        //     setIsLoading(false);
+        //     return false;
+        // }
 
    
 
@@ -351,9 +351,9 @@ const ProductUpload = () => {
                 price:'',
                 oldPrice:'',
                 category:'',
-                countInStock:'',
-                color:'',
-                rating:'',
+                // countInStock:'',
+                // color:'',
+                // rating:'',
                 isFeatured: null,
             })
             setProductColor([]);
@@ -501,25 +501,29 @@ const ProductUpload = () => {
                                             </Select>
                                         </div>
                                     </div>
-
-
                                     <div className='col'>
+                                       
+                                    </div>
+
+
+                                    {/* <div className='col'>
                                         <div className='form-group'>
                                             <h6>TỒN KHO </h6>
                                             <input type='number' name="countInStock" value={formFields.countInStock} onChange={onChangeInput}/>
                                         </div>
                                     </div>
 
-                                </div>
-
-                                <div className='row'>                   
-                                    {/* <div className='col-md-4'>
+                                    <div className='col-md-4'>
                                         <div className='form-group'>
                                             <h6>DISCOUNT</h6>
                                             <input type='text' name="discount" />
                                         </div>
                                     </div> */}
 
+                                </div>
+
+                                {/* <div className='row'>                   
+                                   
 
                                     <div className='col-md-4'>
                                         <div className='form-group'>
@@ -567,7 +571,7 @@ const ProductUpload = () => {
                                         </div>
                                     </div>
 
-                                </div>
+                                </div> */}
 
 
                                 <div className='row'>

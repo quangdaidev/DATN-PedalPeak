@@ -91,11 +91,11 @@ const ProductEdit = () => {
         subCatName:"",
         thirdsubCat:"",
         thirdsubCatId:"",
-        countInStock:"",
-        rating:0,
+        // countInStock:"",
+        // rating:0,
         isFeatured: null,
         discount: "",
-        color:[],
+        // color:[],
         productWeight:"",
     })
 
@@ -128,11 +128,11 @@ const ProductEdit = () => {
                 subCatId:res.data.subCatId,
                 subCat:res.data.subCat,
                 thirdsubCat:res.data.thirdsubCat,
-                countInStock:res.data.countInStock,
-                rating:res.data.rating,
+                // countInStock:res.data.countInStock,
+                // rating:res.data.rating,
                 isFeatured:res.data.isFeatured,
                 discount:res.data.discount,
-                color:res.data.color,
+                // color:res.data.color,
                 productWeight:res.data.productWeight,
             });
         
@@ -315,32 +315,32 @@ const ProductEdit = () => {
             return false;
         }
       
-        if(formFields.countInStock===""){
-            context.openAlertBox(
-                "error",
-                "Bạn chưa nhập số lượng sản phẩm"
-            )
-            setIsLoading(false);
-            return false;
-        }
+        // if(formFields.countInStock===""){
+        //     context.openAlertBox(
+        //         "error",
+        //         "Bạn chưa nhập số lượng sản phẩm"
+        //     )
+        //     setIsLoading(false);
+        //     return false;
+        // }
 
-        if(productColor.length === 0){
-            context.openAlertBox(
-                "error",
-                "Bạn chưa chọn màu sản phẩm"
-            )
-            setIsLoading(false);
-            return false;
-        }
+        // if(productColor.length === 0){
+        //     context.openAlertBox(
+        //         "error",
+        //         "Bạn chưa chọn màu sản phẩm"
+        //     )
+        //     setIsLoading(false);
+        //     return false;
+        // }
 
-        if(formFields.rating===0){
-            context.openAlertBox(
-                "error",
-                "Bạn chưa xếp hạng sản phẩm"
-            )
-            setIsLoading(false);
-            return false;
-        }
+        // if(formFields.rating===0){
+        //     context.openAlertBox(
+        //         "error",
+        //         "Bạn chưa xếp hạng sản phẩm"
+        //     )
+        //     setIsLoading(false);
+        //     return false;
+        // }
 
    
 
@@ -509,10 +509,10 @@ const ProductEdit = () => {
 
 
                                     <div className='col'>
-                                        <div className='form-group'>
+                                        {/* <div className='form-group'>
                                             <h6>TỒN KHO </h6>
                                             <input type='number' name="countInStock" value={formFields.countInStock} onChange={onChangeInput}/>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                 </div>
@@ -525,7 +525,7 @@ const ProductEdit = () => {
                                         </div>
                                     </div> */}
 
-
+{/* 
                                     <div className='col-md-4'>
                                         <div className='form-group'>
                                             <h6>MÀU SẮC</h6>
@@ -553,9 +553,9 @@ const ProductEdit = () => {
                                                 <MenuItem value="Cam" >Cam</MenuItem>
                                             </Select>
                                         </div>
-                                    </div>
+                                    </div> */}
 
-                                    <div className='col-md-4'>
+                                    {/* <div className='col-md-4'>
                                         <div className='form-group'>
                                             <h6>XẾP HẠNG</h6>                                        
                                             <Rating
@@ -571,7 +571,7 @@ const ProductEdit = () => {
                                                 }}
                                             />
                                         </div>
-                                    </div>
+                                    </div> */}
 
                                 </div>
 

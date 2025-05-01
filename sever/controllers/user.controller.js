@@ -11,6 +11,7 @@ import fs from "fs";
 import { error } from 'console';
 
 import ReviewModel from '../models/reviews.model.js';
+import ProductModel from '../models/product.model.js';
 
 cloudinary.config({
     cloud_name: process.env.cloudinary_Config_Cloud_Name,
@@ -141,7 +142,7 @@ export async function loginUserController(request, response) {
 
         const user = await UserModel.findOne({ email: email });
 
-        if (user.status!=="Hoạt động") {
+        if (user.status!==true) {
             response.status(400).json({
                 message: "Liên hệ admin để kích hoạt lại tài khoản",
                 error: true,
@@ -295,7 +296,7 @@ export async function loginAdminController(request, response) {
 
         const user = await UserModel.findOne({ email: email });
 
-        if (user.status!=="Hoạt động") {
+        if (user.status!==true) {
             response.status(400).json({
                 message: "Liên hệ admin để kích hoạt lại tài khoản",
                 error: true,
@@ -821,7 +822,16 @@ export async function addReview(request, response) {
             productId:productId
         })
 
-        await userReview.save();
+        const reviewsNew = await userReview.save();
+
+        const updateProductReviews = await ProductModel.updateOne(
+            { _id: productId },
+            {
+            $push: {
+                reviews: reviewsNew?._id,
+            },
+            }
+        );
 
         return response.json({
             message: "Gửi bình luận thành công",

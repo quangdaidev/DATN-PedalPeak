@@ -5,9 +5,13 @@ const productColorSchema = mongoose.Schema({
         type: String,
         require: true,
     },
-    dateCreated: {
-        type: Date,
-        default: Date.now,
+    countInStock: {
+        type: Number,
+        default: 0,
+    },
+    productId: {
+        type: String,
+        default: ""
     }
 },{
     timestamps: true

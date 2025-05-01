@@ -14,6 +14,7 @@ import myListRouter from './routes/mylist.route.js';
 import addressRouter from './routes/address.route.js';
 import paymentRouter from './routes/payment.route.js';
 import orderRouter from './routes/order.route.js';
+import productColorRouter from './routes/productColor.route.js';
 
 
 const app = express();
@@ -41,6 +42,7 @@ app.use('/api/product',productRouter)
 app.use('/api/cart',cartRouter)
 app.use('/api/myList',myListRouter)
 app.use('/api/address',addressRouter)
+app.use('/api/productColor',productColorRouter)
 app.use('/api/payment', paymentRouter);
 app.use('/api/order', orderRouter);
 

@@ -54,14 +54,12 @@ const productSchema = mongoose.Schema({
         ref: "Category",
 
     },
-    countInStock: {
-        type: Number,
-        default: 0,
-    },
-    rating: {
-        type: Number,
-        default: 0,
-    },
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "reviews",
+        }
+    ],
     isFeatured: {
         type: Boolean,
         default: false,
@@ -72,8 +70,8 @@ const productSchema = mongoose.Schema({
     },
     color: [
         {
-            type: String,
-            default: null,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "ProductColor",
         }
     ],
     productWeight:{
@@ -87,7 +85,7 @@ const productSchema = mongoose.Schema({
     },
     status: {
         type: Boolean,
-        default: true,
+        default: false,
     },
 },{
     timestamps: true

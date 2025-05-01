@@ -46,57 +46,57 @@ const Login = () => {
         setInputIndex(index);
     }
 
-     const handleSubmit= (e) =>{
-    
-            e.preventDefault();
-    
-            setIsLoading(true)
-    
-            if(formFields.email===""){
-                context.openAlertBox(
-                    "error",
-                    "Bạn chưa nhập email"
-                )
-                setIsLoading(false);
-                return false
-            }
-    
-            if(formFields.password===""){
-                context.openAlertBox(
-                    "error",
-                    "Bạn chưa nhập mật khẩu"
-                )
-                setIsLoading(false);
-                return false
-            }
-    
-            postData("/api/user/login-admin",formFields).then((res)=>{
-                console.log(res)
-                
-                if (res?.error !== true) {
-                    setIsLoading(true)
-                    context.openAlertBox("success", res?.message);
-    
-                    setFormFields({
-                        email:"",
-                        password:""
-                    })
-    
-                    localStorage.setItem("accessToken",res?.data?.accesstoken);
-                    localStorage.setItem("refreshToken",res?.data?.refreshtoken); 
-                    
-                    context.setIsLogin(true);
-    
-                    console.log("isLogin", context.isLogin)
-                    
-                    history("/dashboard")
-                    
-                } else{
-                    context.openAlertBox("error", res?.message);
-                    setIsLoading(false);
-                }
-            })   
+    const handleSubmit= (e) =>{
+
+        e.preventDefault();
+
+        setIsLoading(true)
+
+        if(formFields.email===""){
+            context.openAlertBox(
+                "error",
+                "Bạn chưa nhập email"
+            )
+            setIsLoading(false);
+            return false
         }
+
+        if(formFields.password===""){
+            context.openAlertBox(
+                "error",
+                "Bạn chưa nhập mật khẩu"
+            )
+            setIsLoading(false);
+            return false
+        }
+
+        postData("/api/user/login-admin",formFields).then((res)=>{
+            console.log(res)
+            
+            if (res?.error !== true) {
+                setIsLoading(true)
+                context.openAlertBox("success", res?.message);
+
+                setFormFields({
+                    email:"",
+                    password:""
+                })
+
+                localStorage.setItem("accessToken",res?.data?.accesstoken);
+                localStorage.setItem("refreshToken",res?.data?.refreshtoken); 
+                
+                context.setIsLogin(true);
+
+                console.log("isLogin", context.isLogin)
+                
+                history("/dashboard")
+                
+            } else{
+                context.openAlertBox("error", res?.message);
+                setIsLoading(false);
+            }
+        })   
+    }
 
     return (
         <>

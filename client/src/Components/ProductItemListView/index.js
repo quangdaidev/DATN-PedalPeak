@@ -151,7 +151,7 @@ const ProductItemListView =(props)=>{
 
                     <p className="text-[14px] mb-3">{props?.item?.description}</p>
                     
-                    <Rating name="size-small" defaultValue={4} size="small" readOnly/>
+                    <Rating name="size-small" defaultValue={(props?.item.reviews.reduce((sum, review) => sum + Number(review.rating), 0))/ props?.item.reviews.length} size="small" readOnly/>
 
                     {
                         props?.item?.price !== 0 

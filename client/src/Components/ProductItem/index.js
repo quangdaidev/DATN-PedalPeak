@@ -152,7 +152,7 @@ const ProductItem =(props)=>{
                 <div className='info p-3 py-5'>
                     <h6 className="text-[13px] !font-[400]"><Link to="/" className='link transition-all'> {props?.item?.brand}</Link></h6>
                     <h3 className="overflow-hidden line-clamp-2  h-12 text-[14px] mt-1 font-[500] mb-2 text-[rgba(0,0,0,0.9)]"> <Link to={`/product/${props?.item?._id}`} className='link transition-all'>{props?.item?.name}</Link></h3>
-                    <Rating name="size-small" defaultValue={props?.item?.rating} size="small" readOnly/>
+                    <Rating name="size-small" defaultValue={(props?.item.reviews.reduce((sum, review) => sum + Number(review.rating), 0))/ props?.item.reviews.length} size="small" readOnly/>
 
                     {
                         props?.item?.price !== 0 

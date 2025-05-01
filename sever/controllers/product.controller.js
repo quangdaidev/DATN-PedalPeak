@@ -90,11 +90,11 @@ export async function createProduct(request, response) {
             subCatId: request.body.subCatId,
             subCat: request.body.subCat,
             thirdsubCat: request.body.thirdsubCat,
-            countInStock: request.body.countInStock,
-            rating: request.body.rating,
+            // countInStock: request.body.countInStock,
+            // rating: request.body.rating,
             isFeatured: request.body.isFeatured,
             discount: request.body.discount,
-            color: request.body.color,
+            // color: request.body.color,
             productWeight: request.body.productWeight,
 
         });
@@ -147,7 +147,7 @@ export async function getAllProducts(request, response) {
             );
           }
 
-        const products = await ProductModel.find().populate("category")
+        const products = await ProductModel.find().populate("category").populate("color").populate("reviews")
             .sort({ createdAt: -1 }) // sắp xếp từ mới đến cũ
             .skip((page - 1) * perPage)
             .limit(perPage)
@@ -198,7 +198,7 @@ export async function getAllProductsByCatId(request, response) {
 
         const products = await ProductModel.find({
             catId: request.params.id        
-        }).populate("category")
+        }).populate("category").populate("reviews")
             .skip((page - 1) * perPage)
             .limit(perPage)
             .exec();
@@ -832,7 +832,7 @@ export async function deleteMultipleProduct(request, response) {
 // get single product
 export async function getProduct(request, response) {
     try {
-        const product = await ProductModel.findById(request.params.id).populate("category");
+        const product = await ProductModel.findById(request.params.id).populate("category").populate("reviews");
 
         if(!product) {
             return response.status(404).json({
@@ -864,7 +864,7 @@ export async function updateProduct(request, response) {
             {
                 name: request.body.name,
                 description: request.body.description,
-                images: imagesArr,
+                images: imagesArr.length > 0 ? imagesArr : request.body.images,
                 brand: request.body.brand,
                 price: request.body.price,
                 oldPrice: request.body.oldPrice,
@@ -874,11 +874,11 @@ export async function updateProduct(request, response) {
                 subCat: request.body.subCat,
                 category: request.body.category,
                 thirdsubCat: request.body.thirdsubCat,
-                countInStock: request.body.countInStock,
-                rating: request.body.rating,
+                // countInStock: request.body.countInStock,
+                // rating: request.body.rating,
                 isFeatured: request.body.isFeatured,
                 discount: request.body.discount,
-                color: request.body.color,
+                // color: request.body.color,
                 productWeight: request.body.productWeight,
             },
             { new: true }
@@ -1078,6 +1078,7 @@ export async function getProductColorById(request, response) {
 
 export async function filters(request, response) {
     const {catId, subCatId, thirdsubCatId, minPrice, maxPrice, rating, page, limit} = request.body;
+    console.log(rating)
 
     const filters = {};
 
@@ -1098,12 +1099,26 @@ export async function filters(request, response) {
     };
 
     if(rating?.length){
-        filters.rating = {$in: rating}
+
+        const products = await ProductModel.find().populate("reviews");
+
+        const fiveStarProducts = products.filter((product) => {
+            if ( product.reviews.length === 0) return false;
+      
+            const total = product.reviews.reduce((sum, review) => sum + Number(review.rating), 0);
+            const avg = total / product.reviews.length;
+      
+            const roundedAvg = Math.round(avg);
+            return rating.includes(roundedAvg);
+        });
+
+        const productIds = fiveStarProducts.map(p => p._id);
+        filters._id = { $in: productIds };
     };
 
     try {
 
-        const products = await ProductModel.find(filters).populate("category").skip((page - 1) * limit).limit(parseInt(limit));
+        const products = await ProductModel.find(filters).populate("category").populate("reviews").skip((page - 1) * limit).limit(parseInt(limit));
         const total = await ProductModel.countDocuments(filters);
         return response.status (200).json({
             error: false, 
