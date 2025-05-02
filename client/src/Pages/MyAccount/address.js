@@ -110,31 +110,37 @@ const Address = () => {
 
         if (formFields.street === "") {
             context.openAlertBox("error", "Vui lòng điền địa chỉ nhà");
+            setIsLoading(false);
             return false
         }
 
         if (formFields.ward === "") {
             context.openAlertBox("error", "Vui lòng điền tên phường" );
+            setIsLoading(false);
             return false
         }
 
         if (formFields.district === "") {
             context.openAlertBox("error", "Vui lòng điền tên quận/huyện");
+            setIsLoading(false);
             return false
         }
 
         if (formFields.city === "") {
             context.openAlertBox("error", "Vui lòng điền tên thành phố/tỉnh");
+            setIsLoading(false);
             return false
         }
 
         if (formFields.phone === "") {
             context.openAlertBox("error", "Vui lòng điền số điện thoại");
+            setIsLoading(false);
             return false
         }
 
         if (formFields.addressType === "") {
             context.openAlertBox("error", "Vui lòng chọn loại địa chỉ");
+            setIsLoading(false);
             return false
         }
 
@@ -317,7 +323,7 @@ const Address = () => {
         </section>
 
         <Dialog open={isOpenModel}>
-            <DialogTitle>{mode==="add" ? 'Thêm' : 'Cập nhật'} địa chỉ</DialogTitle>
+            <DialogTitle>{mode==="Thêm" ? 'Thêm' : 'Cập nhật'} địa chỉ</DialogTitle>
             <form className="p-8 py-3 pb-8" onSubmit={handleSubmit}>
                 <div className="flex items-center gap-5 pb-5">
                     <div className='col w-[100%]'>
