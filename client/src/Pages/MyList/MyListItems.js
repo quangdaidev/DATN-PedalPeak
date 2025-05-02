@@ -47,7 +47,7 @@ const MyListItems = (props) => {
                 <h3 className="text-[15px]">
                     <Link to={`/product/${props?.item?.productId}`} className="link overflow-hidden line-clamp-2  h-12">{props?.item?.productTitle}</Link>
                 </h3>
-                <Rating name="size-small" value={props?.item?.rating} size="small" readOnly/>
+                <Rating name="size-small" value={(props?.item.reviews.reduce((sum, review) => sum + Number(review.rating), 0))/ props?.item.reviews.length} size="small" readOnly/>
 
                 {
                     props?.item?.price !== 0 ?

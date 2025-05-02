@@ -26,7 +26,13 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import { deleteData, editData, fetchDataFromApi } from '../../utils/api';
 import { QtyBox } from '../QtyBox';
 
-import { FaMinus, FaPlus } from "react-icons/fa6"
+import { FaMinus, FaPlus } from "react-icons/fa6";
+
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
 // import Tooltip from '@mui/material/Tooltip';
 // import IconButton from '@mui/material/IconButton';
@@ -61,7 +67,8 @@ const Header =()=>{
     const [colorAnchorEl, setColorAnchorEl] = useState(null);
     const openColorSe = Boolean(colorAnchorEl);
     const [openColor, setOpenColor] = useState(false);
-    const [selectedColor, setSelectedColor] = useState({});
+    // const [selectedColor, setSelectedColor] = useState({});
+    const [selectedColor, setSelectedColor] = useState("");
 
 
     const handleClickColor = (event, itemId) => {
@@ -152,8 +159,10 @@ const Header =()=>{
     //     }
     // })
 
-    const addQty=(id,price)=>{
-        setQuantity(quantity + 1);
+    const addQty=(countInStock,id,price)=>{
+        if (quantity < Number(countInStock)-1) {
+            setQuantity(quantity + 1);
+        } 
 
         const obj = {
             _id: id,
@@ -220,6 +229,35 @@ const Header =()=>{
         })
     }
 
+   
+    const [isChecked, setIsChecked] = useState(0);
+
+    const handleChange=(e,index,itemId)=>{
+        if(e.target.checked){
+            setIsChecked(index);
+            setSelectedColor(e.target.value)
+
+            const obj = {
+                _id: itemId,
+                color: e.target.value
+            }
+
+            // console.log("change",obj)
+
+    
+            editData(`/api/cart/update-color?token=${localStorage.getItem('accessToken')}`,obj).then((res)=>{
+                // context.openAlertBox("success", res?.message);
+                fetchDataFromApi(`/api/cart/get?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+                    if(res?.error===false){
+                    context.setCartData(res?.data)
+                    }
+                })
+                console.log("addColor:::",res)
+            })
+    
+        }
+    }
+
     // console.log("cartData:::", context.cartData)
 
     return (
@@ -229,7 +267,7 @@ const Header =()=>{
                     <header className="py-3 ">
                         <nav className="flex flex-row justify-between items-center relative">
                             <div className="logo basis-2/12  text-xl font-semibold cursor-pointer">
-                                <img alt="" src="/img/products/logopedalpeak-2.png" classNamr=""/>
+                                <img alt="" src="/img/products/logopedalpeak-2.png" className=""/>
                             </div>
                           
                             <ul className="nav basis-5/12 flex items-center justify-center gap-8 uppercase text-sm text-gray-500">
@@ -245,7 +283,7 @@ const Header =()=>{
                                             {
                                                 context?.catData?.length !== 0 && context?.catData?.map((cat,index)=>{
                                                     return(
-                                                        <li className="block ">
+                                                        <li key={index} className="block ">
                                                             <Link className="" to={`/products?catId=${cat._id}`}>
                                                                 <Button className="!text-gray-500 w-full !text-left !justify-start !rounded-none button-lv1">{cat.name}</Button>
                                                             </Link>
@@ -514,20 +552,41 @@ const Header =()=>{
                         
                                                                                                     </div>
 
-                                                                                                    <Rating name="size-small" value={item.rating} size="small" readOnly/>
+                                                                                                    <Rating name="size-small" value={(item?.reviews?.reduce((sum, review) => sum + Number(review.rating), 0))/ item?.reviews?.length} size="small" readOnly/>
                                                                                                     
                                                                                                     {/* <p className="mt-1 text-sm text-gray-500">Đen</p> */}
                                                                                                 </div>
                                                                                             
                                                                                             </div>                                                                                            
                                                                                         </div>  
+                                                                                        <div>
+                                                                                            <FormControl>
+                                                                                                <FormLabel sx={{color: '#1976d2',fontWeight: 'bold',fontFamily: 'Arial',fontSize: '16px'}} id="demo-row-radio-buttons-group-label">Chọn màu</FormLabel>
+                                                                                                <RadioGroup
+                                                                                                    row
+                                                                                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                                                                                    name="row-radio-buttons-group"
+                                                                                                >
+                                                                                                    {
+                                                                                                        item?.color?.map((color,index)=>{
+                                                                                                            return (
+                                                                                                                color.countInStock===0 ? 
+                                                                                                                "" 
+                                                                                                                : <FormControlLabel checked={isChecked === index} onChange={(e)=>handleChange(e,index,item._id)} key={index} value={color.name} control={<Radio />} label={color.name + " (" + color.countInStock + ")"} />
+                                                                                                            )
+                                                                                                        })
+                                                                                                    }
+                                                                                                </RadioGroup>
+                                                                                            </FormControl>
+                                                                                        </div>
+                                                                                        
                                                                                         <div className="mt-2 flex flex-1 items-end justify-between text-sm">
                                                                                             {/* <span className="text-gray-500">Số lượng: </span><input type="number" min={1} defaultValue={item.quantity}  className='max-w-14 border p-2 rounded mt-4' 
                                                                                             onChange={(e:any) => dispatch(updateQuantity({ item: item, quantity:Number(e.target.defaultValue)}))}
                                                                                 
                                                                                             />  */}
                                                                                             <div className="flex items-center space-x-4">
-                                                                                                <div className="relative">
+                                                                                                {/* <div className="relative">
                                                                                                     <span className="flex items-center justify-center bg-slate-200 text-[11px] font-[600] py-1 px-2 rounded-md cursor-pointer">
                                                                                                         <button className="w-40" onClick={(event) => handleClickColor(event, item._id)}>Màu: {selectedColor[item._id]} </button> <GoTriangleDown/>
                                                                                                     </span>
@@ -541,7 +600,7 @@ const Header =()=>{
                                                                                                         'aria-labelledby': 'basic-button',
                                                                                                         }}
                                                                                                     >
-                                                                                                        {/* {console.log("ccccc",context?.productColorsData)} */}
+                                                                                                     
                                                                                                         {
                                                                                                             item.color.map((color, index) => {
                                                                                                                 return (
@@ -554,16 +613,19 @@ const Header =()=>{
                                                                                                         }
              
                                                                                                     </Menu>
-                                                                                                </div>     
+                                                                                                </div>      */}
+                                                                                                <FormControl>
+                                                                                                    <FormLabel sx={{color: '#1976d2',fontWeight: 'bold',fontFamily: 'Arial',fontSize: '16px'}} id="demo-row-radio-buttons-group-label">Số lượng</FormLabel>
+                                                                                                </FormControl>
 
                                                                                                 <div className=" flex w-[110px] items-center justify-between overflow-hidden rounded-full border border-[rgba(0,0,0,0.1)]">
                                                                                                     <Button className="!min-w-[35px] !w-[35px] !h-[30px] !bg-[#f1f1f1] !rounded-none" 
                                                                                                     onClick={()=>minusQty(item._id, item.price !== 0 ? item.price : item.oldPrice)}>
-                                                                                                        <FaMinus className="text-[rgba(0,0,0,0.7)]"/>
+                                                                                                        <FaMinus className="text-[rgba(0,0,0,0.7)]"/>   
                                                                                                     </Button>
                                                                                                     <span>{item.quantity}</span>
                                                                                                     <Button className="!min-w-[35px] !w-[35px] !h-[30px] !bg-main-400 !rounded-none"
-                                                                                                    onClick={()=>addQty(item._id, item.price !== 0 ? item.price : item.oldPrice)}>
+                                                                                                    onClick={()=>addQty(item.color[isChecked].countInStock, item._id, item.price !== 0 ? item.price : item.oldPrice)}>
                                                                                                         <FaPlus className="text-white"/>
                                                                                                     </Button> 
                                                                                                 </div>

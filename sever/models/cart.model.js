@@ -15,9 +15,14 @@ const cartProductSchema = new mongoose.Schema({
     },
     color: [
         {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "ProductColor",
         }
     ],
+    colorChose: {
+        type: String,
+        default:""
+    },
     quantity: {
         type: Number,
         required: true
@@ -34,6 +39,12 @@ const cartProductSchema = new mongoose.Schema({
         type:String,
         required: true
     },
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "reviews",
+        }
+    ],
 }, {
     timestamps: true
 });

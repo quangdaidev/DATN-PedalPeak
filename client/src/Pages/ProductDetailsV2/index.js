@@ -154,72 +154,72 @@ export const ProductDetailsV2 = () => {
                         {
                             activeTab===1 && (     
                                 <div className="shadow-md w-full py-5 px-8 rounded-md">                   
-                                    <div class="relative overflow-x-auto">
-                                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                            {/* <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <div className="relative overflow-x-auto">
+                                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                            {/* <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                                 <tr>
-                                                    <th scope="col" class="px-6 py-3">
+                                                    <th scope="col" className="px-6 py-3">
                                                     Kích cỡ/Sizes
                                                     </th>
-                                                    <th scope="col" class="px-6 py-3">
+                                                    <th scope="col" className="px-6 py-3">
                                                     Màu sắc/Colors
                                                     </th>
-                                                    <th scope="col" class="px-6 py-3">
+                                                    <th scope="col" className="px-6 py-3">
                                                     Chất liệu khung/Frame	
                                                     </th>
-                                                    <th scope="col" class="px-6 py-3">
+                                                    <th scope="col" className="px-6 py-3">
                                                         Price
                                                     </th>
                                                 </tr>
                                             </thead> */}
                                             <tbody>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     Kích cỡ/Sizes
                                                     </th>
-                                                    <td class="px-6 py-4">
+                                                    <td className="px-6 py-4">
                                                     One Size
                                                     </td>
                                                 </tr>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     Màu sắc/Colors</th>
-                                                    <td class="px-6 py-4">
+                                                    <td className="px-6 py-4">
                                                    {productData?.color.join(", ")}
                                                     </td>
                                                 </tr>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     Chất liệu khung/Frame</th>
-                                                    <td class="px-6 py-4">
+                                                    <td className="px-6 py-4">
                                                     Max Bike STL 24
                                                     </td>
                                                 </tr>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     Phuộc/Fork</th>
-                                                    <td class="px-6 py-4">
+                                                    <td className="px-6 py-4">
                                                     Max Bike STL 24
                                                     </td>
                                                 </tr>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     Vành xe/Rims</th>
-                                                    <td class="px-6 py-4">
+                                                    <td className="px-6 py-4">
                                                     ALU, Double Wall, 36H, Schrader valve
                                                     </td>
                                                 </tr>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     Đùm/Hubs</th>
-                                                    <td class="px-6 py-4">
+                                                    <td className="px-6 py-4">
                                                     N/A
                                                     </td>
                                                 </tr>
-                                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                                                    <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     Lốp xe/Tires</th>
-                                                    <td class="px-6 py-4">
+                                                    <td className="px-6 py-4">
                                                     24x2.125
                                                     </td>
                                                 </tr>

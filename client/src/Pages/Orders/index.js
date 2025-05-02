@@ -79,7 +79,8 @@ const Orders = () => {
         Tensp: item.productTitle,
         Anhsp: item.image,
         Giasp: item.price,
-        Soluong: item.quantity
+        Soluong: item.quantity,
+        MauSp: item.colorChose
 
       }))
     
@@ -151,7 +152,9 @@ const Orders = () => {
                     <TableRow>
                       <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Mã sản phẩm</TableCell>
                       <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Tên sản phẩm</TableCell>
+                      <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Màu</TableCell>
                       <TableCell align="center" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Hình ảnh</TableCell>
+                     
                       <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Giá (VND)</TableCell>
                       <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Số lượng</TableCell>
                       <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Thành tiền</TableCell>
@@ -164,12 +167,14 @@ const Orders = () => {
                           {historyRow.Msp}
                         </TableCell>
                         <TableCell align="left" sx={{ width: '200px' }} className='text-l'>{historyRow.Tensp}</TableCell>
+                        <TableCell align="left" sx={{ }} className='text-l'>{historyRow.MauSp}</TableCell>
                         <TableCell  align="center"> 
                           <img
                           alt="" src={historyRow.Anhsp}
                           className="img w-[100px] pl-0 rounded-md"
                           />
                         </TableCell>
+                       
                         <TableCell align="right">{VND.format(historyRow.Giasp)}</TableCell>
                         <TableCell align="right">{historyRow.Soluong}</TableCell>
                         <TableCell align="right">

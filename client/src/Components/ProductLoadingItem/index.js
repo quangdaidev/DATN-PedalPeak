@@ -18,11 +18,11 @@ const ProductLoadingItem = () => {
                     </svg>
                 </div>
 
-                <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4 mb-10"></div>
+                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4 mb-10"></div>
             </div>
 
             <div className="boxPro productItem !bg-slate-100 shadow-lg rounded-md overflow-hidden border-[1px] border-gray-500 border-1 mb-14">
@@ -32,11 +32,11 @@ const ProductLoadingItem = () => {
                     </svg>
                 </div>
 
-                <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
             </div>
 
             <div className="boxPro productItem !bg-slate-100 shadow-lg rounded-md overflow-hidden border-[1px] border-gray-500 border-1 mb-14">
@@ -46,11 +46,11 @@ const ProductLoadingItem = () => {
                     </svg>
                 </div>
 
-                <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
             </div>
 
             <div className="boxPro productItem !bg-slate-100 shadow-lg rounded-md overflow-hidden border-[1px] border-gray-500 border-1 mb-14">
@@ -60,11 +60,11 @@ const ProductLoadingItem = () => {
                     </svg>
                 </div>
 
-                <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-                <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+                <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
             </div>
         </>
     )

@@ -7,7 +7,7 @@ import { response } from "express";
 export const addToCartItemController = async (request, response) => {
   try {
     const userId = request.userId; //middleware
-    const { productTitle, image, price, quantity, subTotal, productId, color} = request.body;
+    const { productTitle, image, price, quantity, subTotal, productId, color, reviews} = request.body;
 
     if (!productId) {
       return response.status(402).json({
@@ -33,9 +33,11 @@ export const addToCartItemController = async (request, response) => {
       price: price,
       quantity: quantity,
       color: color,
+      colorChose:color[0].name,
       subTotal: subTotal,
       productId: productId,
-      userId: userId
+      userId: userId,
+      reviews: reviews
     });
     
     const save = await cartItem.save();
@@ -75,7 +77,7 @@ export const getCartItemController = async (request, response) => {
 
     const cartItems = await CartProductModel.find({
       userId: userId,
-    });
+    }).populate("productId color reviews");
 
 
     return response.json({
@@ -159,7 +161,7 @@ export const updateCartItemColorController = async (request, response) => {
     const updateCartItem = await CartProductModel.findByIdAndUpdate(
         _id,
         {
-          color: color,
+          colorChose: color,
         },
         { new: true }
       );

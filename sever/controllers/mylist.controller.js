@@ -7,14 +7,15 @@ export const addToMyListController = async (request, response) => {
             productId, 
             productTitle, 
             image, 
-            rating, 
+            // rating, 
             price, 
             oldPrice, 
             brand, 
             discount,
             color,
             quantity,
-            countInStock
+            // countInStock 
+            reviews,
         } = request.body; 
 
         const item = await MyListModel.findOne({
@@ -32,7 +33,7 @@ export const addToMyListController = async (request, response) => {
             productId, 
             productTitle, 
             image, 
-            rating, 
+            // rating, 
             price, 
             oldPrice, 
             brand, 
@@ -40,7 +41,8 @@ export const addToMyListController = async (request, response) => {
             userId,
             color,
             quantity,
-            countInStock
+            reviews,
+            // countInStock
         })
 
         const save = await myList.save();
@@ -107,7 +109,7 @@ export const getMyListController = async (request, response) => {
 
         const myListItems = await MyListModel.find({
             userId:userId
-        })
+        }).populate("reviews")
 
         return response.status(200).json({
             error: false,

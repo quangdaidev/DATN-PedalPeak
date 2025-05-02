@@ -18,11 +18,11 @@ const ProductLoading = () => {
     //             </svg>
     //         </div>
 
-    //         <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+    //         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
     //     </div>
 
     //     <div className="col w-[20%] h-[580px]">
@@ -32,11 +32,11 @@ const ProductLoading = () => {
     //             </svg>
     //         </div>
 
-    //         <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+    //         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
     //     </div>
 
     //     <div className="col w-[20%] h-[580px]">
@@ -46,11 +46,11 @@ const ProductLoading = () => {
     //             </svg>
     //         </div>
 
-    //         <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+    //         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
     //     </div>
 
     //     <div className="col w-[20%] h-[580px]">
@@ -60,11 +60,11 @@ const ProductLoading = () => {
     //             </svg>
     //         </div>
 
-    //         <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-    //         <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+    //         <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+    //         <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
     //     </div>
     
     // </div>
@@ -88,11 +88,11 @@ const ProductLoading = () => {
                                 </svg>
                             </div>
 
-                            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+                            <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
                         </div>
                     </div>
                 </SwiperSlide>
@@ -106,11 +106,11 @@ const ProductLoading = () => {
                                 </svg>
                             </div>
 
-                            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+                            <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
                         </div>
                     </div>
                 </SwiperSlide>
@@ -124,11 +124,11 @@ const ProductLoading = () => {
                                 </svg>
                             </div>
 
-                            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+                            <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-2.5"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
                         </div>
                     </div>
                 </SwiperSlide>
@@ -142,11 +142,11 @@ const ProductLoading = () => {
                                 </svg>
                             </div>
 
-                            <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-3"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
-                            <div class="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
+                            <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-4 mt-8"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-full mb-3"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-[280px] mb-2"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mt-8"></div>
+                            <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mt-4"></div>
                         </div>
                     </div>
                 </SwiperSlide>

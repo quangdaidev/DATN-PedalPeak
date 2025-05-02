@@ -134,7 +134,7 @@ const Home =()=>{
       
 
     return ( 
-        <main ClassName="scrollbar">
+        <main className="scrollbar">
             <div className="slider mb-14 mt-20">
                 <HomeBanner/>
                 {/* <img className="bg-cover bg-center " src="/img/products/banner1.jpg"></img>
@@ -281,7 +281,7 @@ const Home =()=>{
                 context?.catData?.length !==0 && context?.catData?.map((cat, index) => {
                     const filteredProducts = getProductsByCategory(cat.name);
                     return (                                                     
-                        <section className="bg-white pt-4 mb-20">
+                        <section key={index} className="bg-white pt-4 mb-20">
                             <div className="container">
                                 <div className="flex items-center justify-between pl-3">
                                     <div className="leftSec py-8 w-[60%]">

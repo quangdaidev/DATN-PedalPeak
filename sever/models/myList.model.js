@@ -17,10 +17,6 @@ const myListSchema = new mongoose.Schema({
         type: String, 
         required: true
     },
-    rating: {
-        type: Number, 
-        required: true
-    },
     price: {
         type: Number, 
         required: true
@@ -42,14 +38,16 @@ const myListSchema = new mongoose.Schema({
         type: String, 
         required: true
     },
-    countInStock: {
-        type: Number,
-        required: true
-    },
     discount: {
         type: Number, 
         default: ""
     },
+    reviews: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "reviews",
+        }
+    ],
 } , {
     timestamps: true
 });

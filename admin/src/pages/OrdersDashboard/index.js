@@ -79,7 +79,8 @@ const OrdersDashboard = ()=>{
                 Tensp: item.productTitle,
                 Anhsp: item.image,
                 Giasp: item.price,
-                Soluong: item.quantity  
+                Soluong: item.quantity,
+                Mausp: item.colorChose
             }))
         };
     }
@@ -131,7 +132,9 @@ const OrdersDashboard = ()=>{
                         <TableRow>
                             <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Mã sản phẩm</TableCell>
                             <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Tên sản phẩm</TableCell>
+                            <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Màu sản phẩm</TableCell>
                             <TableCell align="center" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Hình ảnh</TableCell>
+                           
                             <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Giá (VND)</TableCell>
                             <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Số lượng</TableCell>
                             <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Thành tiền</TableCell>
@@ -144,12 +147,14 @@ const OrdersDashboard = ()=>{
                                 {historyRow.Msp}
                             </TableCell>
                             <TableCell align="left" sx={{ width: '200px' }} className='text-l'>{historyRow.Tensp}</TableCell>
+                            <TableCell align="left" sx={{ }} className='text-l'>{historyRow.Mausp}</TableCell>
                             <TableCell  align="center" sx={{ width: '260px' }} className='img card shadow m-0'> 
                                 <img
                                 alt="" src={historyRow.Anhsp}
                                 className="w-50 h-50" 
                                 />
                             </TableCell>
+                           
                             <TableCell align="right">{VND.format(historyRow.Giasp)}</TableCell>
                             <TableCell align="right">{historyRow.Soluong}</TableCell>
                             <TableCell align="right">

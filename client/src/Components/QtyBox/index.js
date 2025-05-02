@@ -1,15 +1,33 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import Button from "@mui/material/Button"; 
 import { FaAngleUp } from "react-icons/fa6"; 
 import { FaAngleDown} from "react-icons/fa6"; 
+import { fetchDataFromApi } from '../../utils/api';
 
-export const QtyBox = () => {
+export const QtyBox = (props) => {
+
+    const [proColor, setProColor] = useState("");
+
+    useEffect(()=>{
+        if(props?.selectedColor!==undefined){
+            fetchDataFromApi(`/api/productColor/${props?.selectedColor}`).then((res)=>{
+                if(res?.error===false){
+                    console.log("sl:::",res.data)
+                    setProColor(res.data)
+                }
+            })
+        }
+      
+    },[props?.selectedColor])
+
 
     const [qtyVal, setQtyVal] = useState(1);
 
     const plusQty=()=>{
-        setQtyVal(qtyVal+1)
+        if (qtyVal < proColor.countInStock) {
+            setQtyVal(qtyVal+1)
+        }
     }
 
     const minusQty=()=>{
@@ -26,6 +44,8 @@ export const QtyBox = () => {
                 type="number"
                 className="w-full h-[40px] p-2 p1-5 text-[15px] focus:outline-none border border-black rounded-md"
                 value={qtyVal}
+                max={12}
+                readOnly
             />
         
             <div className="flex items-center flex-col justify-between h-[40px] absolute top-0 right-0 z-50">
@@ -40,9 +60,6 @@ export const QtyBox = () => {
                     <FaAngleDown className="text-[12px] opacity-55"/>
                 </Button>
             </div>
-
-            
-
         </div>
     )
     }

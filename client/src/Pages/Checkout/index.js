@@ -309,7 +309,7 @@ const Checkout = () => {
                                                         address.district + " - "+
                                                         address.city }
                                                     </p>
-                                                    <p className="mb-0 font-[500]">{context?.userData?.mobile}</p>
+                                                    <p className="mb-0 font-[500]">{context?.address?.mobile}</p>
                                                 </div>
                                                 <Button variant="text" className="!absolute top-[15px] right-[15px]" size="small">Cập nhật</Button>
                                             </label>
@@ -361,7 +361,7 @@ const Checkout = () => {
                                                     <div className="info">
                                                         <h4 className="text-[14px]">{item?.productTitle?.substr(0,20)+'...'}</h4>
                                                         <span className="text-[13px]">Số lượng: {item?.quantity}</span>
-                                                        <div className="text-[13px]">Màu sắc: {item?.color}</div>
+                                                        <div className="text-[13px]">Màu sắc: {item?.colorChose}</div>
                                                     </div>
                                                 </div>
 

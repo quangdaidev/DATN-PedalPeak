@@ -136,7 +136,7 @@ function App() {
       if(res?.error===false){
      
         setCartData(res?.data)
-        console.log("cartData",cartData)
+        console.log("cartData1",res?.data)
         setProductColorsData(res?.data.map(item => ({ _id: item._id, color: item.color })));
         
       }
@@ -148,7 +148,7 @@ function App() {
       setCatData(res?.data.filter(category => category.status === true));
     });
     fetchDataFromApi("/api/product/getAllProducts").then((res)=>{
-      // console.log("po::",res.data)
+      console.log("po::",res.data)
       setProductsData(res?.data.filter(product => product.status === true));
     })
 
@@ -170,6 +170,7 @@ function App() {
       subTotal:parseInt(product?.price !==0 ? product?.price*quantity : product?.oldPrice*quantity),
       productId: product?._id,
       userId:userId,
+      reviews: product?.reviews
     };
 
 

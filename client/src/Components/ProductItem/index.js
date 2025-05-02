@@ -45,12 +45,13 @@ const ProductItem =(props)=>{
                 productTitle:item?.name, 
                 image:item?.images[0],
                 color:item?.color,
-                countInStock:item?.countInStock,
-                rating:item?.rating,
+                // countInStock:item?.countInStock,
+                // rating:item?.rating,
                 price:item?.price,
                 oldPrice: item?.oldPrice,
                 brand: item?.brand,
-                discount: item?.discount
+                discount: item?.discount,
+                reviews: item?.reviews
             }
     
             postData(`/api/myList/add?token=${localStorage.getItem('accessToken')}`, obj).then((res)=>{

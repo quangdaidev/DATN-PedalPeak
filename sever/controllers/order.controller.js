@@ -1,6 +1,7 @@
 import OrderModel from "../models/order.model.js"; 
 import ProductModel from '../models/product.model.js'; 
 import mongoose from "mongoose";
+import ProductColorModel from '../models/productColor.model.js';
 // import paypal from "@paypal/checkout-server-sdk";
 
 export const createOrderController = async (request, response) => { 
@@ -24,10 +25,30 @@ export const createOrderController = async (request, response) => {
 
         for (let i = 0; i < request.body.products.length; i++) {
 
-            await ProductModel.findByIdAndUpdate(
-                request.body.products[i].productId,
+            const productColor = await ProductColorModel.findOne({ name: request.body.products[i].colorChose });
+
+            if (!productColor) {
+                return response.status(500).json({
+                    message: 'Không tìm thấy màu sản phẩm',
+                    error: true,
+                    success: false
+                })
+            }
+
+            const newStock = parseInt(productColor.countInStock - request.body.products[i].quantity);
+
+            if (newStock < 0) {
+                return response.status(500).json({
+                    message: 'Không đủ hàng trong kho',
+                    error: true,
+                    success: false
+                })
+            }
+
+            await ProductColorModel.findOneAndUpdate(
+                { name: request.body.products[i].colorChose},
                 {
-                    countInStock: parseInt(request.body.products[i].countInStock - request.body.products[i].quantity),
+                    countInStock: newStock,
                 },
                 { new: true }
             );

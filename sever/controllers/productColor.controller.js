@@ -66,4 +66,31 @@ export async function deleteProductColor(request, response) {
   });
 }
 
+// get single product
+export async function getProductColor(request, response) {
+    try {
+        const color = await ProductColorModel.findById(request.params.id);
+
+        if(!color) {
+            return response.status(404).json({
+                message:"Không tìm thấy!",
+                error: true,
+                success: false
+            })
+        }
+        
+        return response.status(200).json({
+            error: false,
+            success: true,
+            data: color
+        })
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
 
