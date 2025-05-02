@@ -4,7 +4,8 @@ import { loginUserController,logoutController,verifyEmailController,
     updateUserDetails,forgotPasswordController,verifyForgotPasswordOtp,
     resetpassword,refreshToken,userDetails,loginAdminController,
     addReview,getReviews,getAllReviews,getAllUsers,authWithGoogle,getAllUsersData,
-    sortBy, searchUserController
+    sortBy, searchUserController,
+    resendOTP
 } from '../controllers/user.controller.js'
 import auth from '../middlewares/auth.js';
 import upload from '../middlewares/multer.js';
@@ -12,6 +13,8 @@ import upload from '../middlewares/multer.js';
 const userRouter = Router()
 
 userRouter.post('/register', registerUserController);
+
+userRouter.put('/resendOTP/:id', resendOTP);
 
 userRouter.post('/sortBy', sortBy);
 userRouter.post('/search/get', searchUserController);

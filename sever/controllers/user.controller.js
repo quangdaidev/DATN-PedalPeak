@@ -93,6 +93,50 @@ return response.status(200).json({
     }
 }
 
+export async function resendOTP(request, response) {
+    try {
+        let email= request.params.id
+        let name= "bạn"
+        if (!email ) {
+            return response.status(400).json({
+                message: "Không tìm thấy email",
+                error: true,
+                success: false
+            })
+        }
+        const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+        const user = await UserModel.findOne({ email: email })
+
+        user.otpExpires = Date.now() + 600000;
+
+        user.otp = verifyCode;
+      
+        await user.save();
+
+        // Send verification email
+        const content = await sendEmailFun({
+            to: email,
+            subject: "Xác minh email từ trang web PedalPeak",
+            text: "",
+            html: VerificationEmail(name, verifyCode)
+        });
+
+        return response.status(200).json({
+            success: true,
+            error: false,
+            message: "Mã OTP gửi thành công"
+        });
+
+    } catch (error) {
+        return response.status(500).json({
+            message: error.message || error,
+            error: true,
+            success: false
+        })
+    }
+}
+
 export async function verifyEmailController(request, response) {
     try {
         const { email, otp } = request.body;

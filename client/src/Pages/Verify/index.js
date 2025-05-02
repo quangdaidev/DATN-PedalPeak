@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react"; 
 import OtpBox from "../../Components/OtpBox";
-import { postData } from "../../utils/api";
+import { editData, postData } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 // import MyAccount from "../MyAccount";
 import { MyContext } from "../../App";
+import { Button } from "@mui/material";
 
 // const userEmail= localStorage.getItem("userEmail");
 
@@ -66,7 +67,18 @@ const Verify = () => {
     
     }
 
-return (
+    const resendOTP =(email)=>{
+        editData(`/api/user/resendOTP/${email}`).then((res)=>{
+            if(res?.error===false){
+                context.openAlertBox("success", res?.message);
+                
+            }else{
+                context.openAlertBox("error", res?.message);
+            }
+        })
+    }
+
+    return (
     <section className="section py-10 mt-28">
         <div className="container">
             <div className="card shadow-md w-[400px] m-auto rounded-md bg-white p-5 px-10"> 
@@ -83,6 +95,10 @@ return (
 
                     <div className="flex items-center justify-center ">
                         <button type="submit" className=" ml-40 mt-6 bg-blue-900 text-white w-10/12 bottom-4 -translate-x-1/2  group-hover:animate-fadeIn ct-button">Xác nhận</button>
+                    </div>
+                    <p className="text-gray-800 text-lg mt-4 text-center">Hoặc</p>
+                    <div className="flex items-center justify-center ">
+                        <Button className="btn-org btn-border btn-sm w-3/5 flex gap-2 items-center" onClick={()=>resendOTP(userEmail)}>Gửi lại mã OTP</Button>
                     </div>
                 </form>
                 

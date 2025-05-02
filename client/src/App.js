@@ -164,13 +164,11 @@ function App() {
     const data={
       productTitle: product?.name !== undefined ? product?.name : product?.productTitle, 
       image: product?.images !== undefined ? product?.images[0] : product?.image,
-      rating: product?.rating, 
       price:product?.price !==0 ? product?.price : product?.oldPrice,
       color: product?.color,
       quantity: quantity,
       subTotal:parseInt(product?.price !==0 ? product?.price*quantity : product?.oldPrice*quantity),
       productId: product?._id,
-      countInStock: product?.countInStock,
       userId:userId,
     };
 

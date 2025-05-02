@@ -81,7 +81,7 @@ const userSchema = mongoose.Schema({
         default: false
     }
     
-}, {timestamps: true}) // Mongoose tự động cập nhật các trường này mỗi khi tài liệu được tạo ra hoặc thay đổi.
+}, {timestamps: true}) // Mongoose tự động cập nhật các trường này mỗi khi tài liệu được tạo ra hoặc thay đổi
 
 const UserModel = mongoose.model('User', userSchema)
 

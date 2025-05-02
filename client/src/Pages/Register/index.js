@@ -66,6 +66,21 @@ const Register=()=>{
             return false
         }
 
+        // Danh sách từ nhạy cảm (có thể mở rộng)
+        const sensitiveWords = ["ma túy", "hàng cấm", "fuck", "dm", "cc"];
+
+        const nameLower = formFields.name.toLowerCase();
+        const hasSensitiveWord = sensitiveWords.some(word => nameLower.includes(word));
+
+        if (hasSensitiveWord) {
+            context.openAlertBox(
+                "error",
+                "Tên người dùng chứa từ ngữ không phù hợp"
+            );
+            setIsLoading(false);
+            return false;
+        }
+
         if(formFields.email===""){
             context.openAlertBox(
                 "error",
@@ -75,6 +90,18 @@ const Register=()=>{
             return false
         }
 
+        // Kiểm tra định dạng email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(formFields.email)) {
+            context.openAlertBox(
+                "error",
+                "Email không đúng định dạng"
+            );
+            setIsLoading(false);
+            return false;
+        }
+
         if(formFields.password===""){
             context.openAlertBox(
                 "error",
@@ -82,6 +109,15 @@ const Register=()=>{
             )
             setIsLoading(false);
             return false
+        }
+
+        if (formFields.password.length < 8) {
+            context.openAlertBox(
+                "error",
+                "Mật khẩu phải có ít nhất 8 ký tự"
+            );
+            setIsLoading(false);
+            return false;
         }
 
         if(formFields.confirmPassword===""){

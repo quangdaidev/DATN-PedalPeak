@@ -9,10 +9,6 @@ const cartProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    rating: {
-        type: Number,
-        required: true
-    },
     price: {
         type: Number,
         required: true
@@ -33,10 +29,6 @@ const cartProductSchema = new mongoose.Schema({
     productId: {
         type: String,
         required:true
-    },
-    countInStock: {
-        type: Number,
-        required: true
     },
     userId: {
         type:String,

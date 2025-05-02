@@ -7,8 +7,7 @@ import { response } from "express";
 export const addToCartItemController = async (request, response) => {
   try {
     const userId = request.userId; //middleware
-    const { productTitle, image, rating, price, quantity, subTotal, productId,
-    countInStock, color} = request.body;
+    const { productTitle, image, price, quantity, subTotal, productId, color} = request.body;
 
     if (!productId) {
       return response.status(402).json({
@@ -31,13 +30,11 @@ export const addToCartItemController = async (request, response) => {
     const cartItem = new CartProductModel({
       productTitle:productTitle,
       image: image,
-      rating: rating,
       price: price,
       quantity: quantity,
       color: color,
       subTotal: subTotal,
       productId: productId,
-      countInStock: countInStock,
       userId: userId
     });
     

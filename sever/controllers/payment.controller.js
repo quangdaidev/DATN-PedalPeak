@@ -1,6 +1,7 @@
 import moment from 'moment';
 import qs from 'qs';
 import crypto from 'crypto';
+import OrderModel from "../models/order.model.js"; 
 
 export const payment = async (req, res) => { 
 
@@ -112,11 +113,55 @@ export const paymentReturn = async (req, res) => {
     let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
 
     if(secureHash === signed){
+
+        const paymentId = vnp_Params['vnp_TxnRef'];
+
+        try {
+            const order = await OrderModel.findOne({ 
+                paymentId: paymentId, 
+                payment_status: "Chờ thanh toán online" 
+            });
+    
+            if (!order) {
+                return res.status(404).json({ message: "Không tìm thấy đơn hàng hoặc đơn hàng đã được xử lý" });
+            }
+    
+            // Cập nhật trạng thái thanh toán
+            order.payment_status = "Thanh toán online thành công";
+            await order.save();
+    
+            // Trả về kết quả cho VNPAY
+            return res.status(200).json({ code: vnp_Params['vnp_ResponseCode'] });
+        } catch (error) {
+            console.error("Lỗi xử lý thanh toán:", error);
+            return res.status(500).json({ code: '99', message: "Lỗi hệ thống" });
+        }
         
         //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-        res.status(200).json({code: vnp_Params['vnp_ResponseCode']})
+        // res.status(200).json({code: vnp_Params['vnp_ResponseCode']})
     } else{
-        res.status(500).json({code: '97'})
+        const paymentId = vnp_Params['vnp_TxnRef'];
+
+        try {
+            const order = await OrderModel.findOne({ 
+                paymentId: paymentId, 
+                payment_status: "Chờ thanh toán online" 
+            });
+    
+            if (!order) {
+                return res.status(404).json({ message: "Không tìm thấy đơn hàng hoặc đơn hàng đã được xử lý" });
+            }
+    
+            // Cập nhật trạng thái thanh toán
+            order.payment_status = "Thanh toán online thất bại";
+            await order.save();
+    
+            // Trả về kết quả cho VNPAY
+            return res.status(500).json({code: '97'})
+        } catch (error) {
+            console.error("Lỗi xử lý thanh toán:", error);
+            return res.status(500).json({ code: '99', message: "Lỗi hệ thống" });
+        }
     }
 
 }

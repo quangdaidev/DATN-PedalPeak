@@ -164,11 +164,12 @@ const Checkout = () => {
         const user = context?.userData;
 
         if(userData?.address_details?.length !==0){
+            let date = new Date();
             const payLoad = { 
                 userId: user?._id,
                 products: context?.cartData, 
-                paymentId: '',
-                payment_status: "Thanh toán online", 
+                paymentId:  moment(date).format('DDHHmmss'),
+                payment_status: "Chờ thanh toán online", 
                 delivery_address: selectedAddress,
                 totalAmt: totalAmount,
                 date: new Date().toLocaleString("en-US", {
@@ -177,6 +178,13 @@ const Checkout = () => {
                     year: "numeric",
                 })
             };
+
+            postData(`/api/order/create?token=${localStorage.getItem("accessToken")}`, payLoad).then((res) => { 
+                deleteData(`/api/cart/emptyCart/${user?._id}`).then((res) =>{
+                    // context?.setCartData();
+                    context?.getCartItems()
+                })
+            });
 
             postData("/api/payment/create_payment_url",{ amount: amount }).then((res)=>{
                 window.open(res?.data, '_blank', 'width=1100,height=900');
