@@ -187,8 +187,11 @@ const Checkout = () => {
             });
 
             postData("/api/payment/create_payment_url",{ amount: amount }).then((res)=>{
-                window.open(res?.data, '_blank', 'width=1100,height=900');
+                // window.open(res?.data, '_blank', 'width=1200,height=900');
+                window.open(res?.data);
             })
+
+            history("/");
 
             // Xử lý sau khi thanh toán thành công hoặc thất bại
             // window.addEventListener("paymentResult", function(event) {

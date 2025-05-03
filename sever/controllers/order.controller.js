@@ -25,7 +25,7 @@ export const createOrderController = async (request, response) => {
 
         for (let i = 0; i < request.body.products.length; i++) {
 
-            const productColor = await ProductColorModel.findOne({ name: request.body.products[i].colorChose });
+            const productColor = await ProductColorModel.findOne({ _id: request.body.products[i].colorChoseId });
 
             if (!productColor) {
                 return response.status(500).json({
@@ -34,8 +34,10 @@ export const createOrderController = async (request, response) => {
                     success: false
                 })
             }
-
-            const newStock = parseInt(productColor.countInStock - request.body.products[i].quantity);
+            let newStock = Number(productColor.countInStock);
+            if( request.body.payment_status!=="Chờ thanh toán online"){
+                newStock = parseInt(productColor.countInStock - request.body.products[i].quantity);
+            } 
 
             if (newStock < 0) {
                 return response.status(500).json({
@@ -46,7 +48,7 @@ export const createOrderController = async (request, response) => {
             }
 
             await ProductColorModel.findOneAndUpdate(
-                { name: request.body.products[i].colorChose},
+                { _id: request.body.products[i].colorChoseId },
                 {
                     countInStock: newStock,
                 },

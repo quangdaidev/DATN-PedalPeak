@@ -45,7 +45,7 @@ const OrdersDashboard = ()=>{
     fetchDataFromApi('/api/order/getAllOrders').then((res)=>{
         console.log("orderList::",res)
         if(res?.error===false){
-            const pendingOrders = res.data.filter(order => order.order_status === "chờ xác nhận");
+            const pendingOrders = res.data.filter(order => order.order_status === "chờ xác nhận" && order.payment_status !== "Thanh toán online thất bại");
             setOrders(pendingOrders);
         }
     })
@@ -58,6 +58,7 @@ const OrdersDashboard = ()=>{
         Ngay_dat,
         Sdt_nguoi_nhan,
         Dia_chi,
+        Thanh_toan,
         Trang_thai,
        
       ) {
@@ -71,6 +72,7 @@ const OrdersDashboard = ()=>{
             Ngay_dat,
             Sdt_nguoi_nhan,
             Dia_chi,
+            Thanh_toan,
             Trang_thai,
         
             Chi_tiet: donHang.products.map(item => ({
@@ -106,6 +108,7 @@ const OrdersDashboard = ()=>{
                 {row.Ma_don_hang}
                 </TableCell>
                 <TableCell sx={{width: '260px'}} align="left">{row.Tong_tien}</TableCell>
+                <TableCell align="left">{row.Thanh_toan}</TableCell>
                 <TableCell align="right">{VND.format(row.Ngay_dat)}</TableCell>
                 <TableCell align="right">{row.Sdt_nguoi_nhan}</TableCell>
                 <TableCell align="right">{row.Dia_chi}</TableCell>
@@ -179,6 +182,7 @@ const OrdersDashboard = ()=>{
             order.totalAmt,      // Tổng tiền
             moment(order.updatedAt).format('DD/MM/YYYY'),       // Ngày tạo đơn
             order.delivery_address?.mobile,           // Số điện thoại
+            order.payment_status ==="Thanh toán online thành công"? order.payment_status="Đã thanh toán online":order.payment_status,
             order.order_status,          // Trạng thái đơn
         )
     );
@@ -297,6 +301,7 @@ const OrdersDashboard = ()=>{
                                 <TableCell />
                                 <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Mã đơn hàng</TableCell>
                                 <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Địa chỉ giao hàng</TableCell>
+                                <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Thanh toán</TableCell>
                                 <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Tổng tiền&nbsp;(VND)</TableCell>
                                 <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Ngày đặt hàng</TableCell>
                                 <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>SĐT người nhận</TableCell>

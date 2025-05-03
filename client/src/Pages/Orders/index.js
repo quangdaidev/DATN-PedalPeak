@@ -34,8 +34,7 @@ const Orders = () => {
     fetchDataFromApi(`/api/order/order-list?token=${localStorage.getItem('accessToken')}`).then((res)=>{
       console.log("orderList::",res)
       if(res?.error===false){
-        setOrders(res?.data);
-
+        setOrders(res?.data.filter(order => order.payment_status!== "Thanh toán online thất bại"));
       }
     })
   },[])
@@ -58,12 +57,13 @@ const Orders = () => {
     Ngay_dat,
     Sdt_nguoi_nhan,
     Dia_chi,
+    Thanh_toan,
     Trang_thai,
    
   ) {
     const donHang = orders.find(order => order._id === Ma_don_hang);
 
-    console.log("gggg",donHang)
+    // console.log("don hang",donHang)
 
     return {
       Ma_don_hang,
@@ -71,6 +71,7 @@ const Orders = () => {
       Ngay_dat,
       Sdt_nguoi_nhan,
       Dia_chi,
+      Thanh_toan,
       Trang_thai,
 
       Chi_tiet: donHang.products.map(item => ({
@@ -125,10 +126,11 @@ const Orders = () => {
           <TableCell align="left" component="th" scope="row">
             {row.Ma_don_hang}
           </TableCell>
-          <TableCell sx={{width: '260px'}} align="left">{row.Tong_tien}</TableCell>
+          <TableCell sx={{width: '200px'}} align="left">{row.Tong_tien}</TableCell>
+          <TableCell align="left">{row.Thanh_toan}</TableCell>
           <TableCell align="right">{VND.format(row.Ngay_dat)}</TableCell>
           <TableCell align="right">{row.Sdt_nguoi_nhan}</TableCell>
-          <TableCell align="right">{row.Dia_chi}</TableCell>
+          <TableCell sx={{width: '100px'}} align="right">{row.Dia_chi}</TableCell>
           {/* Có thể là: "primary" | "secondary" | "error" | "info" | "success" | "warning"  hoặc "outlined" */}
           <TableCell align="left">
             {
@@ -155,7 +157,7 @@ const Orders = () => {
                       <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Màu</TableCell>
                       <TableCell align="center" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Hình ảnh</TableCell>
                      
-                      <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Giá (VND)</TableCell>
+                      <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Giá</TableCell>
                       <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Số lượng</TableCell>
                       <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Thành tiền</TableCell>
                     </TableRow>
@@ -166,7 +168,7 @@ const Orders = () => {
                         <TableCell align="left" component="th" scope="row">
                           {historyRow.Msp}
                         </TableCell>
-                        <TableCell align="left" sx={{ width: '200px' }} className='text-l'>{historyRow.Tensp}</TableCell>
+                        <TableCell align="left" sx={{  }} className='text-l'>{historyRow.Tensp}</TableCell>
                         <TableCell align="left" sx={{ }} className='text-l'>{historyRow.MauSp}</TableCell>
                         <TableCell  align="center"> 
                           <img
@@ -215,7 +217,9 @@ const Orders = () => {
       order.delivery_address?.street + ", " +  order.delivery_address?.ward + ", " + order.delivery_address?.district + ", " + order.delivery_address?.city,        
       order.totalAmt,      // Tổng tiền
       moment(order.updatedAt).format('DD/MM/YYYY'),       // Ngày tạo đơn
-      order.userId?.mobile,           // Số điện thoại
+      order.userId?.mobile,   
+      order.payment_status ==="Thanh toán online thành công"? order.payment_status="Thanh toán online":order.payment_status,
+      // Số điện thoại
       order.order_status,          // Trạng thái đơn
     )
   );
@@ -256,9 +260,10 @@ const Orders = () => {
                               <TableCell />
                               <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Mã đơn hàng</TableCell>
                               <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Địa chỉ giao hàng</TableCell>
-                              <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Tổng tiền&nbsp;(VND)</TableCell>
-                              <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Ngày đặt hàng</TableCell>
-                              <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>SĐT người nhận</TableCell>
+                              <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Thanh toán</TableCell>
+                              <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Tổng tiền</TableCell>
+                              <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Ngày đặt</TableCell>
+                              <TableCell align="right" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Liên hệ</TableCell>
                               <TableCell align="left" style={{fontSize: '12px',  color: 'darkblue', fontWeight: 'bold', textTransform: 'uppercase'}}>Trạng thái</TableCell>
                             </TableRow>
                           </TableHead>

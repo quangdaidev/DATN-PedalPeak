@@ -28,6 +28,9 @@ const orderSchema = new mongoose.Schema({
             colorChose: {
                 type: String 
             },
+            colorChoseId: {
+                type: String 
+            },
         }
     ],
     paymentId: {

@@ -23,6 +23,10 @@ const cartProductSchema = new mongoose.Schema({
         type: String,
         default:""
     },
+    colorChoseId: {
+        type: String,
+        default:""
+    },
     quantity: {
         type: Number,
         required: true

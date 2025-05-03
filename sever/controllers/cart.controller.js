@@ -34,6 +34,7 @@ export const addToCartItemController = async (request, response) => {
       quantity: quantity,
       color: color,
       colorChose:color[0].name,
+      colorChoseId:color[0]._id,
       subTotal: subTotal,
       productId: productId,
       userId: userId,
@@ -141,7 +142,7 @@ export const updateCartItemQtyController = async (request, response) => {
 export const updateCartItemColorController = async (request, response) => {
   try {
     const userId = request.userId;
-    const { _id, color} = request.body;
+    const { _id, color, colorId} = request.body;
 
     if (!_id || !color) {
       return response.status(400).json({
@@ -162,6 +163,7 @@ export const updateCartItemColorController = async (request, response) => {
         _id,
         {
           colorChose: color,
+          colorChoseId: colorId,
         },
         { new: true }
       );

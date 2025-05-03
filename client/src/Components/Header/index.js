@@ -232,14 +232,15 @@ const Header =()=>{
    
     const [isChecked, setIsChecked] = useState(0);
 
-    const handleChange=(e,index,itemId)=>{
+    const handleChange=(e,index,itemId,colorId)=>{
         if(e.target.checked){
             setIsChecked(index);
             setSelectedColor(e.target.value)
 
             const obj = {
                 _id: itemId,
-                color: e.target.value
+                color: e.target.value,
+                colorId:colorId
             }
 
             // console.log("change",obj)
@@ -572,7 +573,7 @@ const Header =()=>{
                                                                                                             return (
                                                                                                                 color.countInStock===0 ? 
                                                                                                                 "" 
-                                                                                                                : <FormControlLabel checked={isChecked === index} onChange={(e)=>handleChange(e,index,item._id)} key={index} value={color.name} control={<Radio />} label={color.name + " (" + color.countInStock + ")"} />
+                                                                                                                : <FormControlLabel checked={isChecked === index} onChange={(e)=>handleChange(e,index,item._id,color._id)} key={index} value={color.name} control={<Radio />} label={color.name + " (" + color.countInStock + ")"} />
                                                                                                             )
                                                                                                         })
                                                                                                     }
