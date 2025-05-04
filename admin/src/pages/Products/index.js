@@ -141,7 +141,7 @@ const Products = () => {
     })
   }
 
-  const productStatus=(status,id)=>{
+  const productStatus=(status,id,color)=>{
       fetchDataFromApi(`/api/product/${id}`).then((res)=>{
         const product ={
             // userId: res.data._id,
@@ -153,16 +153,22 @@ const Products = () => {
             // date: res.data.createAt,
             status: status
         }
-        context.openAlertBox("success", "Cập nhật trạng thái thành công");
-        editData(`/api/product/${id}`,product).then((res)=>{
-          fetchDataFromApi(`/api/product/getAllProducts?page=${currentPage}&perPage=8`).then((res)=>{
-            setProData(res.data);
-            window.scrollTo({
-              top: 200,
-              behavior: 'smooth',
+
+        if(color>0){
+          context.openAlertBox("success", "Cập nhật trạng thái thành công");
+          editData(`/api/product/${id}`,product).then((res)=>{
+            fetchDataFromApi(`/api/product/getAllProducts?page=${currentPage}&perPage=8`).then((res)=>{
+              setProData(res.data);
+              window.scrollTo({
+                top: 200,
+                behavior: 'smooth',
+              })
             })
           })
-        })
+        } else {
+          context.openAlertBox("error", "Bạn chưa cập nhật màu");
+        }
+        
       })
   }
 
@@ -456,7 +462,7 @@ const Products = () => {
                                   onClick={()=>setIsShow(!isShow)}
                                   >
                                   {
-                                     item?.status===true ?  <IoMdEye onClick={()=>productStatus("false",item._id)}/> :  <IoMdEyeOff onClick={()=>productStatus("true",item._id)}/>
+                                     item?.status===true ?  <IoMdEye onClick={()=>productStatus("false",item._id,item.color.length)}/> :  <IoMdEyeOff onClick={()=>productStatus("true",item._id,item.color.length)}/>
                                   }                          
                                 </Button>                             
                               </Link>
@@ -520,7 +526,7 @@ const Products = () => {
           },
         }}
       >
-        <DialogTitle>Cập nhật danh mục</DialogTitle>
+        <DialogTitle>Cập nhật màu</DialogTitle>
         <form>
           <DialogContent>
             

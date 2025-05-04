@@ -177,9 +177,10 @@ const ProductUpload = () => {
         }
         
         // setFiles(imgArr);
-
+        setIsLoading(true);
         await postData(apiEndPoint, formdata).then((res) => {
             console.log("res::::",res)
+            setIsLoading(false);
             formFields.images = res.images
             setPreviews(res.images);
             console.log("formFields",formFields)
@@ -187,6 +188,8 @@ const ProductUpload = () => {
         } catch (error) {
             console.log(error)
         }
+
+      
     }
 
     const onChangeInput= (e) => {
@@ -205,7 +208,7 @@ const ProductUpload = () => {
         await deleteImages(`/api/product/deleteImage?img=${image}`).then((res) => {
             imageArr.splice (index, 1);
             console.log("delete res::::",res)
-            
+            setIsLoading(false);
             console.log("remove::::::", imageArr)
             setPreviews ([]);
 
@@ -610,10 +613,15 @@ const ProductUpload = () => {
 
                                 <div className='uploadBox'>
                                     <input type="file" multiple name="images" onChange={(e) => onChangeFile(e, '/api/product/uploadImages')} />
-                                    <div className='info'>
-                                        <FaRegImages />
-                                        <h5>chọn ảnh</h5>
-                                    </div>
+                                    {
+                                        isLoading===true 
+                                        ? <CircularProgress color="inherit" className="ml-2 loader"/>
+                                        : 
+                                        <div className='info'>
+                                            <FaRegImages />
+                                            <h5>chọn ảnh</h5>
+                                        </div>
+                                    } 
                                 </div>
                             </div>
 
