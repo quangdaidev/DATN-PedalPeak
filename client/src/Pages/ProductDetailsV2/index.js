@@ -185,7 +185,7 @@ export const ProductDetailsV2 = () => {
                                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                                     Màu sắc/Colors</th>
                                                     <td className="px-6 py-4">
-                                                   {productData?.color.join(", ")}
+                                                    {productData?.color?.map(c => c.name).join(", ")}
                                                     </td>
                                                 </tr>
                                                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">

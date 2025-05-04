@@ -179,7 +179,7 @@ const Home =()=>{
                         </div>
                         <div className=" rightSec pr-10">
                             <h2 className="text-[20px] font-[600]">Sản phẩm phổ biến</h2>
-                            <p className="text-[14px] font-[400]">Đừng bỏ lỡ các ưu đãi hiện tại dành cho tháng 4</p>
+                            <p className="text-[14px] font-[400]">Đừng bỏ lỡ các ưu đãi hiện tại dành cho tháng 5</p>
                         </div>
                     </div>
                     <CustomTabPanel value={value} index={0}>
@@ -246,9 +246,9 @@ const Home =()=>{
                             <div className="ct-sub-headline-label !text-slate-700">Sản phẩm mới</div>
                         </div>
                         <div className=" rightSec pr-6">
-                            <Button variant="contained" className="!bg-slate-700" disableElevation>
+                            {/* <Button variant="contained" className="!bg-slate-700" disableElevation>
                                 Xem thêm
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                     <Swiper
@@ -279,7 +279,12 @@ const Home =()=>{
 
             {
                 context?.catData?.length !==0 && context?.catData?.map((cat, index) => {
+
                     const filteredProducts = getProductsByCategory(cat.name);
+                    
+                    if (!filteredProducts || filteredProducts.length === 0) {
+                        return null;
+                    }
                     return (                                                     
                         <section key={index} className="bg-white pt-4 mb-20">
                             <div className="container">
@@ -288,9 +293,11 @@ const Home =()=>{
                                         <div className="ct-sub-headline-label !text-slate-700">{cat.name}</div>
                                     </div>
                                     <div className=" rightSec pr-6">
-                                        <Button variant="contained" className="!bg-slate-700" disableElevation>
-                                            Xem thêm
-                                        </Button>
+                                        <Link className="" to={`/products?catId=${cat._id}`}>
+                                            <Button variant="contained" className="!bg-slate-700" disableElevation>
+                                                Xem thêm
+                                            </Button>
+                                        </Link>
                                     </div>
                                 </div>
                                 <Swiper

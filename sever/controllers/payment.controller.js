@@ -158,6 +158,7 @@ export const paymentReturn = async (req, res) => {
             }
         }
 
+
         if(vnp_Params['vnp_ResponseCode'] ==="24"){
             try {
                 const order = await OrderModel.findOne({ 
@@ -185,7 +186,6 @@ export const paymentReturn = async (req, res) => {
         // res.status(200).json({code: vnp_Params['vnp_ResponseCode']})
     } else{
         
-
         try {
             const order = await OrderModel.findOne({ 
                 paymentId: paymentId, 

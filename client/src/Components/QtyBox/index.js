@@ -27,14 +27,17 @@ export const QtyBox = (props) => {
     const plusQty=()=>{
         if (qtyVal < proColor.countInStock) {
             setQtyVal(qtyVal+1)
+            props.setQty(qtyVal+1)
         }
     }
 
     const minusQty=()=>{
         if(qtyVal===1){
-            setQtyVal(1)
+            setQtyVal(1);
+            props.setQty(1)
         }else{
-            setQtyVal(qtyVal-1)
+            setQtyVal(qtyVal-1);
+            props.setQty(qtyVal-1)
         }
     }
 

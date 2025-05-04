@@ -1,19 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField';
-import { Button } from '@mui/material';
+import { Button,CircularProgress } from '@mui/material';
 import { BsFillBagCheckFill } from 'react-icons/bs';
 import {MyContext} from '../../App';
 import { FaPlus } from 'react-icons/fa';
 import Radio from '@mui/material/Radio';
-import { deleteData, fetchDataFromApi, postData } from '../../utils/api';
+import { deleteData, editData, fetchDataFromApi, postData } from '../../utils/api';
 import moment from 'moment';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 
-const VITE_APP_RAZORPAY_KEY_ID = "zsp_test_lh06WJjtmN7Evj";
-const VITE_APP_RAZORPAY_KEY_SECRET = "cQ1LJqRbvB92QhrWUF042X7";
+
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+
+import { PhoneInput } from 'react-international-phone';
+
 
 const Checkout = () => {
 
@@ -41,38 +50,6 @@ const Checkout = () => {
     const [selectedAddress, setSelectedAddress] = useState("");
     const [totalAmount, setTotalAmount] = useState();
 
-    const [vnpSecureHash, setVnpSecureHash] = useState('');
-
-    const vnpHashSecret = '57G56MRY30CVNJ9MC3S0S24IXJJGK2ZG';  // Thay thế bằng khóa bảo mật của bạn từ VNPAY
-
-    // Hàm tạo chuỗi query từ đối tượng options
-    function createQueryString(params) {
-        return Object.keys(params).map(key => {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
-        }).join('&');
-    }
-    
-  // Hàm tạo SecureHash
-    const createVnpSecureHash = (params) => {
-    // Sắp xếp các tham số theo thứ tự từ A đến Z (theo key)
-        const sortedKeys = Object.keys(params).sort();
-        let hashString = '';
-
-        // Xây dựng chuỗi các tham số
-        sortedKeys.forEach((key) => {
-            if (params[key]) {
-                hashString += `${key}=${params[key]}&`;
-            }
-        });
-
-        // Loại bỏ dấu "&" thừa ở cuối chuỗi
-        hashString = hashString.slice(0, -1);
-
-        // Tạo SecureHash bằng HMAC-SHA512
-        const secureHash = CryptoJS.HmacSHA512(hashString, vnpHashSecret).toString(CryptoJS.enc.Hex).toUpperCase();
-
-        return secureHash;
-    };
 
     useEffect(() => {
         setUserData(context?.userData)
@@ -103,61 +80,6 @@ const Checkout = () => {
             setSelectedAddress(e.target.value)
         }
     }
-
-    // const checkout=(e)=>{
-    //     e.preventDefault();
-
-    //     var options = {
-    //         key: VITE_APP_RAZORPAY_KEY_ID,
-    //         key_secret: VITE_APP_RAZORPAY_KEY_SECRET,
-    //         amount: parseInt(totalAmount * 100),
-    //         currency: "INR",
-    //         order_receipt: context?.userData?.name,
-    //         name: "PedalPeak Shop",
-    //         description: "cho mục đích thử ngiệm",
-    //         handler: function (response) {
-    //             // console.log(response);
-
-    //             const paymentId = response.Razorpay_payment_id;
-
-    //             const user = context?.userData;
-
-    //             const payLoad = {
-    //                 userId: user?._id,
-    //                 products: context?.cartData,
-    //                 paymentId: paymentId,
-    //                 payment_status:"COMPLETED",
-    //                 delivery_address: selectedAddress,
-    //                 totalAmt: totalAmount,
-    //                 date: new Date().toLocaleString("en-US", {
-    //                     month: "short",
-    //                     day: "2-digit",
-    //                     year: "numeric",
-    //                 })
-    //             };
-
-    //             // postData(`/api/order/create`, payLoad).then((res) => { 
-    //             //     context.openAlertBox("success", res?.message);
-    //             //     if (res?.error === false) {
-    //             //     deleteData(`/api/cart/emptyCart/${user?._id}`).then((res) => {
-    //             //         context?.getCartItems();
-    //             //     })
-    //             //     history("/");
-    //             //     } else {
-    //             //         context.alertBox("error", res?.message);
-    //             //     }
-    //             // });               
-    //         },
-
-    //         theme: {
-    //             color: "#ff5252",
-    //         },
-    //     }
-
-    //     var pay = new window.Razorpay(options);
-    //     pay.open();
-
-    // }
 
     const checkout = (e) => {
         e.preventDefault();
@@ -193,48 +115,7 @@ const Checkout = () => {
 
             history("/");
 
-            // Xử lý sau khi thanh toán thành công hoặc thất bại
-            // window.addEventListener("paymentResult", function(event) {
-            //     const result = event.detail;
-                
-            //     // Kiểm tra kết quả thanh toán
-            //     if (result.vnp_ResponseCode === '00') {
-            //         // Thanh toán thành công
-            //         const paymentId = result.vnp_PaymentId;
-        
-            //         const user = context?.userData;
-        
-            //         const payLoad = {
-            //             userId: user?._id,
-            //             products: context?.cartData,
-            //             paymentId: paymentId,
-            //             payment_status: "COMPLETED",
-            //             delivery_address: selectedAddress,
-            //             totalAmt: totalAmount,
-            //             date: new Date().toLocaleString("en-US", {
-            //                 month: "short",
-            //                 day: "2-digit",
-            //                 year: "numeric",
-            //             }),
-            //         };
-        
-            //         // // Gửi dữ liệu đơn hàng lên server
-            //         // postData(`/api/order/create`, payLoad).then((res) => {
-            //         //     context.openAlertBox("success", res?.message);
-            //         //     if (res?.error === false) {
-            //         //         deleteData(`/api/cart/emptyCart/${user?._id}`).then((res) => {
-            //         //             context?.getCartItems();
-            //         //         });
-            //         //         history("/");
-            //         //     } else {
-            //         //         context.alertBox("error", res?.message);
-            //         //     }
-            //         // });
-            //     } else {
-            //         // Thanh toán thất bại
-            //         context.alertBox("error", "Thanh toán không thành công!");
-            //     }
-            // });
+
         } else {
             context.openAlertBox("error", "Bạn cần thêm địa chỉ nhận hàng");
         } 
@@ -278,7 +159,204 @@ const Checkout = () => {
         }
     }
             
+    const [mode,setMode] = useState("Thêm");
+    const [address, setAddress] = useState([]);
+    const [addressType, setAddressType] = useState("");
+    const [isOpenModel, setIsOpenModel] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [phone,setPhone] = useState('');
+    const [addressId, setAddressId] = useState("");
+
+    const [formFields, setFormFields] = useState({
+        street:"",   
+        ward:"",
+        district:"",
+        city:"",
+        mobile: phone,
+        status:true,
+        addressType:"",
+        userId:context?.userData?._id 
+    });
+
+    const onChangeInput = (e) => {
+        const {name, value} = e.target;
+        setFormFields(()=>{
+            return {
+                ...formFields,
+                [name]: value
+            }
+        })
+    }
+
+
+    const handleClose = () => {
+        setIsOpenModel(false);
+        // setSelectedValue(value);
+    };
+
+    const handleChangeAddressType=(event)=>{
+        setAddressType(event.target.value);
+        setFormFields((prevState) => ({
+            ...prevState,
+            addressType: event.target.value
+        }))
+    }
+
+    
+    const handleSubmit = (e) => {
         
+        e.preventDefault();
+
+        setIsLoading(true);
+
+        if (formFields.street === "") {
+            context.openAlertBox("error", "Vui lòng điền địa chỉ nhà");
+            setIsLoading(false);
+            return false
+        }
+
+        if (formFields.ward === "") {
+            context.openAlertBox("error", "Vui lòng điền tên phường" );
+            setIsLoading(false);
+            return false
+        }
+
+        if (formFields.district === "") {
+            context.openAlertBox("error", "Vui lòng điền tên quận/huyện");
+            setIsLoading(false);
+            return false
+        }
+
+        if (formFields.city === "") {
+            context.openAlertBox("error", "Vui lòng điền tên thành phố/tỉnh");
+            setIsLoading(false);
+            return false
+        }
+
+        if (formFields.phone === "") {
+            context.openAlertBox("error", "Vui lòng điền số điện thoại");
+            setIsLoading(false);
+            return false
+        }
+
+        
+        if (!/^\+?\d{8,15}$/.test(formFields.mobile)) {
+            context.openAlertBox("error", " Vui lòng nhập đúng định dạng quốc tế (ví dụ: +84912345678).");
+            setIsLoading(false);
+            return false;
+        }
+
+        if (formFields.addressType === "") {
+            context.openAlertBox("error", "Vui lòng chọn loại địa chỉ");
+            setIsLoading(false);
+            return false
+        }
+
+        if(mode === "Thêm"){
+            const token = localStorage.getItem('accessToken');
+
+            postData(`/api/address/add?token=${token}`, formFields, {withCredentials: true}).then((res) => {
+                console.log("address",res)
+                if(res?.error !== true) {
+                    setTimeout(()=>{
+                        setIsLoading(false);
+                        setIsOpenModel(false);
+                    },500)
+                    // console.log("success",res?.message)
+                    context.openAlertBox("success", res?.message);
+                    
+    
+                    // context?.setisOpenFullScreenPanel({
+                    //     open: false
+                    // })
+    
+                    // fetchDataFromApi(`/api/address/get?userId=${context?.userData?._id}`).then((res) => {
+                    //     context?.setAddress(res.data);
+                    // })
+                    fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
+                        setAddress(res.data?.address_details);
+                        setFormFields({
+                            street:"",   
+                            ward:"",
+                            district:"",
+                            city:"",
+                            mobile: "",
+                            status:true,
+                            addressType:"",
+                            userId:context?.userData?._id 
+                        })
+                        setAddressType("");
+                        setPhone("");
+                        context?.setUserData(res.data);
+                    })
+                } else {
+                    context.openAlertBox("error", res?.data?.message);
+                    setIsLoading(false);
+                }
+            })   
+        }
+
+        // console.log("address---bf-bf",formFields);
+        if(mode==="Cập nhật"){
+            setIsLoading(true);
+            editData(`/api/address/${addressId}?token=${localStorage.getItem('accessToken')}`,formFields, {withCredentials: true}).then((res)=> {
+                // console.log("allAddress::",res);
+                
+                context.openAlertBox("success", res?.message);
+                fetchDataFromApi(`/api/address/get?userId=${context?.userData?._id}&&token=${localStorage.getItem('accessToken')}`).then((res) => {
+                    setAddress(res.data);
+                    setTimeout(()=>{
+                        setIsLoading(false);
+                        setIsOpenModel(false);
+                    },500)
+                    setFormFields({
+                        street:"",   
+                        ward:"",
+                        district:"",
+                        city:"",
+                        mobile: "",
+                        status:true,
+                        addressType:"",
+                        userId:context?.userData?._id 
+                    })
+                    setAddressType("");
+                    setPhone("");
+
+                    fetchDataFromApi(`/api/user/user-details?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+                        context?.setUserData(res.data);
+                    })
+                })
+            })
+        }
+    }
+
+    const editAddress=(id)=>{
+        setMode("Cập nhật");
+        setIsOpenModel(true);
+
+        setAddressId(id);
+
+        const token = localStorage.getItem('accessToken');
+        
+        fetchDataFromApi(`/api/address/${id}?token=${token}`).then((res)=>{
+            setFormFields({
+                street: res?.data?.street,   
+                ward: res?.data?.ward,
+                district: res?.data?.district,
+                city: res?.data?.city,
+                mobile: res?.data?.mobile,
+                status: res?.data?.status,
+                addressType: res?.data?.addressType,
+                userId: res?.data?.userId
+            })
+
+            const ph = `"${res?.data?.mobile}"`;
+            setPhone(ph);
+
+            // setPhone(res?.data?.mobile);
+            setAddressType(res?.data?.addressType)
+        })
+    }
 
     return(
         <section className='py-10 mt-28'>
@@ -288,7 +366,7 @@ const Checkout = () => {
                         <div className="card bg-white shadow-md p-5 rounded-md w-full"> 
                             <div className="flex items-center justify-between">
                                 <h2>Địa chỉ nhận hàng</h2>
-                                <Button variant="outlined"><FaPlus/>THÊM ĐỊA CHỈ MỚI</Button>
+                                <Button  onClick={() => setIsOpenModel(true)} variant="outlined"><FaPlus/>THÊM ĐỊA CHỈ MỚI</Button>
                             </div>
 
                             <br/>
@@ -314,7 +392,7 @@ const Checkout = () => {
                                                     </p>
                                                     <p className="mb-0 font-[500]">{context?.address?.mobile}</p>
                                                 </div>
-                                                <Button variant="text" className="!absolute top-[15px] right-[15px]" size="small">Cập nhật</Button>
+                                                <Button onClick={()=>editAddress(address?._id)} variant="text" className="!absolute top-[15px] right-[15px]" size="small">Cập nhật</Button>
                                             </label>
                                         )
                                     })
@@ -418,6 +496,118 @@ const Checkout = () => {
                     </div>
                 </div>
             </form>
+            <Dialog open={isOpenModel}>
+                <DialogTitle>{mode==="Thêm" ? 'Thêm' : 'Cập nhật'} địa chỉ</DialogTitle>
+                <form className="p-8 py-3 pb-8" onSubmit={handleSubmit}>
+                    <div className="flex items-center gap-5 pb-5">
+                        <div className='col w-[100%]'>
+                            <TextField 
+                                className="w-full" 
+                                label="địa chỉ nhà" 
+                                variant="outlined" 
+                                size="small"
+                                name="street" 
+                                value={formFields.street || ''}
+                                onChange={onChangeInput} 
+                            />
+                        </div>               
+                    </div>
+
+                    <div className="flex items-center gap-5 pb-5">
+                        <div className='col w-[50%]'>
+                            <TextField 
+                                className="w-full" 
+                                label="Phường/Xã" 
+                                variant="outlined" 
+                                size="small"
+                                name="ward" 
+                                onChange={onChangeInput} 
+                                value={formFields.ward || ''}
+                            />
+                        </div>     
+                        <div className='col w-[50%]'>
+                            <TextField 
+                                className="w-full" 
+                                label="Quận/Huyện" 
+                                variant="outlined" 
+                                size="small"
+                                name="district" 
+                                onChange={onChangeInput} 
+                                value={formFields.district || ''}
+                            />
+                        </div>                         
+                    </div>
+
+                    <div className="flex items-center gap-5 pb-5">
+                        <div className='col w-[50%]'>
+                            <TextField 
+                                className="w-full" 
+                                label="Thành phố/Tỉnh" 
+                                variant="outlined" 
+                                size="small"
+                                name="city" 
+                                onChange={onChangeInput} 
+                                value={formFields.city || ''}
+                            />
+                        </div> 
+                        <div className='col w-[50%]'>
+                            <PhoneInput
+                                defaultCountry='vn'
+                                value={phone}
+                                onChange={(phone) => {
+                                    setPhone(phone);
+                                    setFormFields({
+                                        street:formFields.street,   
+                                        ward:formFields.ward,
+                                        district:formFields.district,
+                                        city:formFields.city,
+                                        mobile: phone,
+                                        status:formFields.status,
+                                        userId:context?.userData?._id ,
+                                        selected: false
+                                    })
+                                }}
+                            />
+                        </div>                      
+                    </div>
+
+                    <div className="flex gap-5 pb-5 flex-col">
+                        <FormControl>
+                            <FormLabel id="demo-row-radio-buttons-group-label">Địa chỉ này là: </FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                name="row-radio-buttons-group"
+                                className='flex items-center gap-5'
+                                value={addressType}
+                                onChange={handleChangeAddressType}
+                            >
+                                <FormControlLabel value="Nhà riêng" control={<Radio />} label="Nhà riêng" />
+                                <FormControlLabel value="Nơi làm việc" control={<Radio />} label="Nơi làm việc" />
+                                
+                            </RadioGroup>
+                        </FormControl>
+                    
+                        <div className='col w-[50%]'>
+                        
+                        </div>                      
+                    </div>
+
+                    <div className="flex items-center gap-5">
+                    {
+                        isLoading === true ?
+                        <Button type="submit" disabled={true} className="btn-org btn-lg w-full flex gap-2 items-center CircularProgress">
+                            <CircularProgress color="inherit"/>                                          
+                        </Button>
+                        :
+                        <Button type="submit" disabled={false} className="btn-org btn-lg w-full flex gap-2 items-center">Lưu</Button>
+                    }
+                    
+                        <Button className="btn-org btn-border btn-lg w-full flex gap-2 items-center" onClick={handleClose}>Hủy</Button>
+                    </div>
+                </form>
+                
+            </Dialog> 
         </section>
     )
 }

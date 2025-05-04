@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 import "../ProductItemListView/style.css";
@@ -45,8 +45,8 @@ const ProductItemListView =(props)=>{
                 productTitle:item?.name, 
                 image:item?.images[0],
                 color:item?.color,
-                countInStock:item?.countInStock,
-                rating:item?.rating,
+                // countInStock:item?.countInStock,
+                // rating:item?.rating,
                 price:item?.price,
                 oldPrice: item?.oldPrice,
                 brand: item?.brand,
@@ -77,30 +77,22 @@ const ProductItemListView =(props)=>{
             setIsAddedInMyList(false);
         }
     },[])
+
+    const history = useNavigate();
+
+    const addToPayment = (product, userId, quantity)=>{
+        if(userId === undefined){
+            context?.openAlertBox("error", "Bạn cần đăng nhập");
+            return false;
+          }
+        context?.addToCart(product, userId,quantity)
+
+        history("/checkout");
+    }
     
 
     return (
         <>
-            {/* <div className="ct-product-card mb-12">
-                <div style={{backgroundImage: `url('/img/products/2022_Escape1_MattingGalaxyGray-600x600.jpg')`,}} className="h-[350px] bg-contain bg-no-repeat ">
-                    <div>
-                        <div className=" h-[346px] hover:bg-gray-900 hover:bg-opacity-10 hover:transition-all hover:ease-in-out hover:duration-500 relative group">              
-                            <div className="absolute w-[100px] bg-slate-200 py-2 px-4 top-3 right-3 text-center font-semibold text-blue-800">giá sale</div>       
-                            <button className="absolute bg-white text-gray-900 w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-                        </div>
-                    </div>
-                </div>
-                <div className="text-center my-8">
-                    <Link to="/product/1">
-                        <div className="text-xl  mb-3 hover:text-blue-900 overflow-hidden line-clamp-2"> Xe Đạp Đường Phố Fixed Gear VINBIKE Megatron – Bánh 700C</div>
-                    </Link>
-                    <div className="">
-                        <span className="text-xl text-blue-900">6.990.000đ VND</span>
-                        <span className="ml-2 text-gray-400 line-through">7.200.000000 VND</span>
-                    </div>
-                </div>
-            </div> */}
-
             <div className="productItemListView !bg-slate-100 shadow-lg rounded-md overflow-hidden border-[1px] border-gray-500 border-1 mb-14 flex items-center">
                 <div className="group imgWrapper w-[30%] h-[350px] overflow-hidden rounded-md relative"> 
                     <Link to={`/product/${props?.item?._id}`}>
@@ -167,7 +159,7 @@ const ProductItemListView =(props)=>{
                     }
 
                     <div className="mt-3">
-                        <Button className="btn-org flex gap-2"><tt className="text-[20px]"/>Thêm vào giỏ hàng</Button>
+                        <Button onClick={()=>addToPayment(props?.item, context?.userData?._id, 1)} className="btn-org flex gap-2"><tt className="text-[20px]"/>Đặt mua sản phẩm</Button>
                     </div>
 
                 </div>

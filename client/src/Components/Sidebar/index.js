@@ -51,7 +51,7 @@ export const Sidebar = (props) => {
       window.scrollTo(0,0);
     } else {
       postData(`/api/product/filters`, filters).then((res)=>{
-        console.log("api::",res)
+        console.log("apiFilters::",res)
         props.setProductsData(res.data);
         props.setTotalPro(res.total);
         props.setIsLoading(false);
@@ -167,24 +167,23 @@ export const Sidebar = (props) => {
           {/* <CategoryCollapse/> */}
       </div>
 
-      <div className='box mt-3'>
-          <h3 className="w-full mb-3 text-[16px] font-[600] flex items-center pr-5">Có thể bạn đang tìm
-            <Button className="!w-[30px] !h-[30px] !min-w-[30px] !rounded-full !ml-auto !text-black"
-            onClick={()=>setIsOpenAvailFilter(!isOpenAvailFilter)}>
-              {
-                isOpenCategoryFilter===true ? <FaAngleUp/> : <FaAngleDown/>
-              }
-            </Button>
-          </h3>
-          <Collapse isOpened={isOpenAvailFilter}>
-            <div className="scroll px-3 relative -left-[10px] text-[14px] flex items-start flex-col">
-                <FormControlLabel control={<Checkbox />} label="Sản phẩm khuyến mãi (17)" className="w-full"/>
-                <FormControlLabel control={<Checkbox />} label="Sản phẩm mới ra (12)" className="w-full"/>
-                <FormControlLabel control={<Checkbox />} label="Sản phẩm bán chạy (18)" className="w-full"/>
-            </div>   
-          </Collapse>
-          {/* <CategoryCollapse/> */}
-      </div>
+      {/* <div className='box mt-3'>
+        <h3 className="w-full mb-3 text-[16px] font-[600] flex items-center pr-5">Có thể bạn đang tìm
+          <Button className="!w-[30px] !h-[30px] !min-w-[30px] !rounded-full !ml-auto !text-black"
+          onClick={()=>setIsOpenAvailFilter(!isOpenAvailFilter)}>
+            {
+              isOpenCategoryFilter===true ? <FaAngleUp/> : <FaAngleDown/>
+            }
+          </Button>
+        </h3>
+        <Collapse isOpened={isOpenAvailFilter}>
+          <div className="scroll px-3 relative -left-[10px] text-[14px] flex items-start flex-col">
+              <FormControlLabel control={<Checkbox />} label="Sản phẩm khuyến mãi (17)" className="w-full"/>
+              <FormControlLabel control={<Checkbox />} label="Sản phẩm mới ra (12)" className="w-full"/>
+              <FormControlLabel control={<Checkbox />} label="Sản phẩm bán chạy (18)" className="w-full"/>
+          </div>   
+        </Collapse>
+      </div> */}
 
       <div className="box mt-4">
         <h3 className="w-full mb-3 text-[16px] font-[600] flex items-center pr-5">Lọc theo giá

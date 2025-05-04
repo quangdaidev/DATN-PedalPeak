@@ -99,6 +99,21 @@ const MyAccount = () => {
             return false
         }
 
+        // Danh sách từ nhạy cảm (có thể mở rộng)
+        const sensitiveWords = ["ma túy", "hàng cấm", "fuck", "dm", "cc"];
+
+        const nameLower = formFields.name.toLowerCase();
+        const hasSensitiveWord = sensitiveWords.some(word => nameLower.includes(word));
+
+        if (hasSensitiveWord) {
+            context.openAlertBox(
+                "error",
+                "Tên người dùng chứa từ ngữ không phù hợp"
+            );
+            setIsLoading(false);
+            return false;
+        }
+
         if(formFields.email===""){
             context.openAlertBox(
                 "error",
@@ -115,6 +130,12 @@ const MyAccount = () => {
             )
             setIsLoading(false);
             return false
+        }
+
+        if (!/^\+?\d{8,15}$/.test(formFields.mobile)) {
+            context.openAlertBox("error", " Vui lòng nhập đúng định dạng quốc tế (ví dụ: +84912345678).");
+            setIsLoading(false);
+            return false;
         }
 
         const token = localStorage.getItem('accessToken');

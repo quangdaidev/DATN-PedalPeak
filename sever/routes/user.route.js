@@ -4,7 +4,7 @@ import { loginUserController,logoutController,verifyEmailController,
     updateUserDetails,forgotPasswordController,verifyForgotPasswordOtp,
     resetpassword,refreshToken,userDetails,loginAdminController,
     addReview,getReviews,getAllReviews,getAllUsers,authWithGoogle,getAllUsersData,
-    sortBy, searchUserController,
+    sortBy, searchUserController, getUser,updatedStatus,
     resendOTP
 } from '../controllers/user.controller.js'
 import auth from '../middlewares/auth.js';
@@ -37,6 +37,9 @@ userRouter.get('/getReviews',getReviews);
 userRouter.get('/getAllReviews',getAllReviews);
 userRouter.get('/getAllUsers',getAllUsers);
 userRouter.get('/getAllUsersData',getAllUsersData);
+
+userRouter.get("/:id",getUser);
+userRouter.put("/updateStatus/:id", updatedStatus);
 
 
 

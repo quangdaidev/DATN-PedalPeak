@@ -122,6 +122,10 @@ const Login=()=>{
                 
             } else{
                 context.openAlertBox("error", res?.message);
+                if(res?.message==="Email chưa được xác thực, mời bạn nhập lại mã OTP"){
+                    localStorage.setItem("userEmail",formFields.email);
+                    history("/verify")
+                }
                 setIsLoading(false);
             }
         })   

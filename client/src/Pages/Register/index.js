@@ -67,7 +67,29 @@ const Register=()=>{
         }
 
         // Danh sách từ nhạy cảm (có thể mở rộng)
-        const sensitiveWords = ["ma túy", "hàng cấm", "fuck", "dm", "cc"];
+        const sensitiveWords = [
+            // Từ thô tục, chửi bậy
+            "fuck", "f*ck", "fck", "dm", "dmm", "đm", "đmm", "cc", "cl", "vl", "vcl", "shit", "sh*t",
+            "bitch", "wtf", "dcm", "đcm", "đéo",
+          
+            // Từ liên quan đến hàng cấm, tội phạm
+            "ma túy", "hàng cấm", "buôn người", "chất cấm", "ma tuy", "mt", "thuốc phiện", "đâm chém",
+          
+            // Từ xúc phạm cá nhân, kỳ thị
+            "chó", "óc chó", "đần", "ngu", "óc lợn", "mọi", "đồ mọi", "đồ nhà quê", "bố láo", "mất dạy",
+            "khốn nạn", "thằng", "con kia", "thằng ngu", "con ngu",
+          
+            // Từ nhạy cảm tình dục
+            "xxx", "jav", "porn", "18+", "xvideos",  "đồ chơi người lớn", 
+          
+            // Từ mang tính spam/quảng cáo
+            "giảm giá", "mua ngay", "sale", "click", "truy cập", "nhận quà", "hack", "tool", "kiếm tiền",
+            "shop", "fb.com", "zalo.me", "t.me", "tele", "telegram", "youtube", "kênh kiếm tiền",
+          
+            // Tên chính trị, tôn giáo (tránh gây nhạy cảm hoặc bị lạm dụng)
+            "trump", "putin", "hitler", "mao", "thiên chúa", "hồi giáo", "công giáo", "phật", "chúa",
+            "đảng", "cách mạng", "khủng bố"
+        ];
 
         const nameLower = formFields.name.toLowerCase();
         const hasSensitiveWord = sensitiveWords.some(word => nameLower.includes(word));

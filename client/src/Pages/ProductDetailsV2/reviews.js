@@ -50,13 +50,81 @@ export const Reviews = (props) => {
         }))
     }
 
- 
+    const toxicWords = [
+        // Thô tục, xúc phạm phổ biến
+        "đồ ngu", "vô học", "đần", "chó", "cút", "ngu", "đồ chó", "bố láo", "mất dạy", "khốn nạn",
+        "đm", "dmm", "cc", "cl", "vcl", "vl", "fuck", "f*ck", "shit", "sh*t", "bitch", "wtf", "dcm",
+      
+        // Lừa đảo, dịch vụ kém
+        "lừa đảo", "treo đầu dê bán thịt chó", "làm ăn như ***", "bán đồ dởm", "đồ rác", "đồ đểu", 
+        "đồ tào lao", "đồ dỏm", "treo hàng", "giao hàng như cc", "dịch vụ tệ", "dịch vụ như c", "giao hàng lừa",
+      
+        // Đe dọa, quá khích
+        "tao kiện", "tao đập", "vả vào mặt", "sút vào mặt", "phang vỡ mặt", "đấm vỡ mồm", "cho mày bay màu",
+      
+        // Phân biệt, xúc phạm cá nhân
+        "thằng này", "con kia", "đồ nhà quê", "đồ mọi", "mặt ngu", "óc chó", "óc lợn", "đầu bò",
+      
+        // Spam/quảng cáo rác
+        "kiếm tiền online", "nhấp vào link", "click nhận quà", "truy cập trang này", "hack giá", "hack giảm giá",
+      
+        // Viết tắt lách luật
+        "n*g", "fck", "sh1t", "đ*o", "clm", "vlcc"
+    ];
 
-    const addReview=(e)=>{
+    const isToxicComment = (text) => {
+        const lowerText = text.toLowerCase();
+        return toxicWords.some((word) => lowerText.includes(word));
+    };
+
+    const isToxicWithPerspective = async (text) => {
+        const apiKey = "AIzaSyByUDLeZU32h6zbD1AW0240JolGpuireEQ"; // 🔴 Thay bằng khóa thực tế của bạn
+        const url = `https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=${apiKey}`;
+    
+        const body = {
+            comment: { text },
+            languages: ["vi", "en"], // Có thể chỉ cần ["vi"] nếu chỉ dùng tiếng Việt
+            requestedAttributes: { TOXICITY: {} }
+        };
+    
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                body: JSON.stringify(body),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+    
+            const result = await response.json();
+            const score = result.attributeScores.TOXICITY.summaryScore.value;
+            console.log("Toxicity score:", score);
+    
+            return score > 0.7; // 🔴 Ngưỡng (threshold): > 0.7 là toxic
+        } catch (error) {
+            console.error("Perspective API error:", error);
+            return false; // Nếu có lỗi, vẫn cho phép gửi
+        }
+    };
+
+    const addReview= async (e)=>{
         e.preventDefault();
         // console.log("review::",reviews)
 
         if(reviews?.review!==""){
+
+            // if (isToxicComment(reviews.review)) {
+            //     context.openAlertBox("error", "Bình luận chứa từ ngữ không phù hợp!");
+            //     return;
+            // }
+
+            const isToxic = await isToxicWithPerspective(reviews.review);
+
+            if (isToxic) {
+                context.openAlertBox("error", "Bình luận của bạn có thể mang nội dung không phù hợp. Vui lòng chỉnh sửa.");
+                return;
+            }
+    
             postData(`/api/user/addReview?token=${localStorage.getItem("accessToken")}`, reviews).then((res)=>{
                 if(res?.error === false){
                     context.openAlertBox("success", res?.message);

@@ -82,6 +82,7 @@ function App() {
       open: status,
       item: item
     });
+    console.log(" setOpenProductDetailsModal",item)
   };
 
 
@@ -258,54 +259,54 @@ function App() {
             <Footer />
               {/* {children} */}
 
-            {/* <div className="bg-white pt-8 pb-1">
-              <div className="content-wrapper font-Karla max-w-screen-2xl text-base mx-auto px-8">
-                <Footer />
-              </div> 
-            </div>   */}
-            {/* </SearchProvider> */}
-          {/* </ReduxProviders> */}
+              {/* <div className="bg-white pt-8 pb-1">
+                <div className="content-wrapper font-Karla max-w-screen-2xl text-base mx-auto px-8">
+                  <Footer />
+                </div> 
+              </div>   */}
+              {/* </SearchProvider> */}
+              {/* </ReduxProviders> */}
+        
+            <ToastContainer theme="colored"/>
+            {/* <Toaster position="top-right"/> */}
+
+            <Dialog
+              fullWidth={fullWidth}
+              maxWidth={maxWidth}
+              open={openProductDetailsModal.open}
+              onClose={handleCloseProductDetailsModal}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              className="productDetailsModal"
+            >
+
+              <DialogContent>         
+                <div className="flex items-center w-full productDetailsModalContainer relative"> 
+                  <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000]
+                  !absolute top-[15px] right-[15px] !bg-slate-200" onClick={handleCloseProductDetailsModal}
+                  >
+                    <IoCloseSharp className="text-[20px]"/>
+                  </Button>
+
+                  {
+                    openProductDetailsModal?.item?.length!==0 && 
+                    <>
+                      <div className="col1 w-[40%] px-3">
+                        <ProductZoom images={openProductDetailsModal?.item?.images}/>
+                      </div>
+
+                      <div className="col2 w-[60%] py-8 px-16 pr-16 productContent">
+                        <ProductDetailsComponent item={openProductDetailsModal?.item}/>
+                      </div>
+                    </>
+                  }
+                
+                </div>
+              </DialogContent>
+            </Dialog>
           </MyContext.Provider>
         </BrowserRouter>
       </div>
-      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-      <ToastContainer theme="colored"/>
-      {/* <Toaster position="top-right"/> */}
-
-      <Dialog
-        fullWidth={fullWidth}
-        maxWidth={maxWidth}
-        open={openProductDetailsModal.open}
-        onClose={handleCloseProductDetailsModal}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        className="productDetailsModal"
-      >
-
-        <DialogContent>         
-          <div className="flex items-center w-full productDetailsModalContainer relative"> 
-            <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !text-[#000]
-            !absolute top-[15px] right-[15px] !bg-slate-200" onClick={handleCloseProductDetailsModal}
-            >
-              <IoCloseSharp className="text-[20px]"/>
-            </Button>
-
-            {
-              openProductDetailsModal?.item?.length!==0 && 
-              <>
-                <div className="col1 w-[40%] px-3">
-                  <ProductZoom images={openProductDetailsModal?.item?.images}/>
-                </div>
-
-                <div className="col2 w-[60%] py-8 px-16 pr-16 productContent">
-                  <ProductDetailsComponent item={openProductDetailsModal?.item}/>
-                </div>
-              </>
-            }
-           
-          </div>
-        </DialogContent>
-      </Dialog>
     </>          
   );
 }

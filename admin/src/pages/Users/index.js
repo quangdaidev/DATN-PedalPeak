@@ -34,10 +34,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DashboardBox from "../Dashboard/components/dashboardBox";
 
 import Checkbox from "@mui/material/Checkbox";
-import { fetchDataFromApi, postData } from "../../utils/api";
+import { editData, fetchDataFromApi, postData } from "../../utils/api";
 
 import { IoInformationCircle } from "react-icons/io5";
 import SearchBox from "../../components/SearchBox";
+import { useContext } from "react";
+import { MyContext } from "../../App";
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
@@ -78,6 +80,8 @@ const Users = () => {
 
   // const [productList, setProductList] = useState([]);
   const [usersData, setUsersData] = useState([]);
+
+  const context = useContext(MyContext);
 
   const [isShow, setIsShow] = useState(true);
 
@@ -124,6 +128,28 @@ const Users = () => {
     fetchDataFromApi('/api/user/getAllUsersData?page=1&perPage=8').then((res)=>{
       setUsersData(res.data)
       setPage(res.totalPages)
+    })
+  }
+
+const userStatus=(status,id)=>{
+    fetchDataFromApi(`/api/user/${id}`).then((res)=>{
+      const user ={
+          // userId: res.data._id,
+          // products: res.data.products, 
+          // paymentId: res.data.paymentId,
+          // payment_status:res.data.payment_status, 
+          // delivery_address: res.data.delivery_address,
+          // totalAmt: res.data.totalAmt,
+          // date: res.data.createAt,
+          status: status
+      }
+      context.openAlertBox("success", "Cập nhật trạng thái thành công");
+      editData(`/api/user/updateStatus/${id}`,user).then((res)=>{
+        fetchDataFromApi('/api/user/getAllUsersData?page=1&perPage=8').then((res)=>{
+          setUsersData(res.data)
+          setPage(res.totalPages)
+        })
+      })
     })
   }
 
@@ -229,8 +255,8 @@ const Users = () => {
                                 <Button className="secondary" color="secondary"
                                   onClick={()=>setIsShow(!isShow)}
                                   >
-                                  {
-                                      isShow===true ?  <IoMdEye/> :  <IoMdEyeOff/>
+                                  {                                    
+                                    item.status===true ?  <IoMdEye onClick={()=>userStatus("false",item._id)}/> :  <IoMdEyeOff onClick={()=>userStatus("true",item._id)}/>                                     
                                   }                          
                                 </Button>                             
                               </Link>

@@ -1100,7 +1100,7 @@ export async function filters(request, response) {
 
     if(rating?.length){
 
-        const products = await ProductModel.find().populate("reviews");
+        const products = await ProductModel.find().populate("reviews").populate("color");
 
         const fiveStarProducts = products.filter((product) => {
             if ( product.reviews.length === 0) return false;
@@ -1118,7 +1118,7 @@ export async function filters(request, response) {
 
     try {
 
-        const products = await ProductModel.find(filters).populate("category").populate("reviews").skip((page - 1) * limit).limit(parseInt(limit));
+        const products = await ProductModel.find(filters).populate("category").populate("reviews").populate("color").skip((page - 1) * limit).limit(parseInt(limit));
         const total = await ProductModel.countDocuments(filters);
         return response.status (200).json({
             error: false, 

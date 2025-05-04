@@ -196,7 +196,7 @@ export async function loginUserController(request, response) {
 
         if (user.verify_email!==true) {
             response.status(400).json({
-                message: "Email chưa được xác thực",
+                message: "Email chưa được xác thực, mời bạn nhập lại mã OTP",
                 error: true,
                 success: false
             });
@@ -214,7 +214,6 @@ export async function loginUserController(request, response) {
         const accesstoken = await generatedAccessToken(user._id);
      
         const refreshtoken = await generatedRefreshToken(user._id);
-      
 
         // const updateUser = await UserModel.findByIdAndUpdate(user?._id, {
         //     last_login_date: new Date()
@@ -1187,6 +1186,56 @@ export async function searchUserController(request, response) {
           success: false
       })
   }
+}
+
+//get single category
+export async function getUser(request, response) {
+  try {
+    const user = await UserModel.findById(request.params.id);
+
+    if (!user) {
+      response.status(500).json({
+        message: "Không tìm thấy tài khoản",
+        error: true,
+        success: false,
+      });
+    }
+    return response.status(200).json({
+      error: false,
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+}
+
+export async function updatedStatus(request, response) {
+  const user = await UserModel.findByIdAndUpdate(
+    request.params.id,
+    {
+      status: request.body.status,
+    },
+    { new: true }
+  );
+
+  if (!user) {
+    return response.status(500).json({
+      message: "Không tìm thấy",
+      success: false,
+      error: true,
+    });
+  }
+
+  response.status(200).json({
+    error: false,
+    success: true,
+    data:  user,
+  });
 }
 
 

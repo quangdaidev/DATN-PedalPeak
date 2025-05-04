@@ -86,6 +86,7 @@ const Address = () => {
             const token = localStorage.getItem('accessToken');
             fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
                 setAddress(res.data?.address_details);
+                context?.setUserData(res.data);
             })
             } else {
                 context.openAlertBox("error", res?.data?.message);
@@ -138,6 +139,13 @@ const Address = () => {
             return false
         }
 
+        
+        if (!/^\+?\d{8,15}$/.test(formFields.mobile)) {
+            context.openAlertBox("error", " Vui lòng nhập đúng định dạng quốc tế (ví dụ: +84912345678).");
+            setIsLoading(false);
+            return false;
+        }
+
         if (formFields.addressType === "") {
             context.openAlertBox("error", "Vui lòng chọn loại địa chỉ");
             setIsLoading(false);
@@ -179,6 +187,7 @@ const Address = () => {
                         })
                         setAddressType("");
                         setPhone("");
+                        context?.setUserData(res.data);
                     })
                 } else {
                     context.openAlertBox("error", res?.data?.message);
@@ -247,41 +256,7 @@ const Address = () => {
             setAddressType(res?.data?.addressType)
         })
 
-        // postData(`/api/address/add?token=${token}`, formFields, {withCredentials: true}).then((res) => {
-        //     console.log("address",res)
-        //     if(res?.error !== true) {
-        //         setIsLoading(false);
-        //         console.log("success",res?.message)
-        //         context.openAlertBox("success", res?.message);
-        //         setIsOpenModel(false);
-
-        //         // context?.setisOpenFullScreenPanel({
-        //         //     open: false
-        //         // })
-
-        //         // fetchDataFromApi(`/api/address/get?userId=${context?.userData?._id}`).then((res) => {
-        //         //     context?.setAddress(res.data);
-        //         // })
-        //         fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
-        //             setAddress(res.data?.address_details);
-        //             setFormFields({
-        //                 street:"",   
-        //                 ward:"",
-        //                 district:"",
-        //                 city:"",
-        //                 mobile: "",
-        //                 status:true,
-        //                 addressType:"",
-        //                 userId:context?.userData?._id 
-        //             })
-        //             setAddressType("");
-        //             setPhone("");
-        //         })
-        //     } else {
-        //         context.openAlertBox("error", res?.data?.message);
-        //         setIsLoading(false);
-        //     }
-        // })   
+      
     }
 
 

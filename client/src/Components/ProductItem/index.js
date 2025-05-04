@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 import "../ProductItem/style.css";
@@ -28,8 +28,20 @@ const ProductItem =(props)=>{
     
     const context = useContext(MyContext);
 
+    const history = useNavigate();
+
     const addToCart = (product, userId, quantity)=>{
         context?.addToCart(product, userId,quantity)
+    }
+
+    const addToPayment = (product, userId, quantity)=>{
+        if(userId === undefined){
+            context?.openAlertBox("error", "Bạn cần đăng nhập");
+            return false;
+          }
+        context?.addToCart(product, userId,quantity)
+
+        history("/checkout");
     }
 
     const handleAddToMyList = (item) => {
@@ -118,8 +130,9 @@ const ProductItem =(props)=>{
 
                     }
                     
-                    <button className="absolute bg-blue-900 text-white w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
-
+                    
+                    <button onClick={()=>addToPayment(props?.item, context?.userData?._id, 1)} className="absolute bg-blue-900 text-white w-11/12 bottom-4 left-1/2 -translate-x-1/2 hidden group-hover:block group-hover:animate-fadeIn ct-button">Đặt hàng</button>
+                    
                     <div className="actions absolute top-[-200px] right-[5px] z-50 flex items-center gap-4 flex-col w-[50px] transition-all duration-300 group-hover:top-[15px]">
                         <Tooltip title="Chi tiết" placement="left-start">
                             <Button className="!w-[40px] !h-[40px] !min-w-[40px] !rounded-full !bg-gray-100 text-black  hover:!bg-primary-600 hover:text-white group"
