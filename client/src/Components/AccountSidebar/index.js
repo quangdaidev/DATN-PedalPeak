@@ -5,11 +5,11 @@ import Logout from '@mui/icons-material/Logout';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { Button } from '@mui/material';
 import { MyContext } from '../../App';
 import { CircularProgress } from "@mui/material";
-import {  uploadImage } from '../../utils/api';
+import {  fetchDataFromApi, uploadImage } from '../../utils/api';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 const AccountSidebar = () => {
@@ -70,6 +70,24 @@ const AccountSidebar = () => {
         } catch (error) {
             console.log(error)
         }
+    }
+
+    const history = useNavigate();
+
+    const logout=()=>{
+
+        fetchDataFromApi(`/api/user/logout?token=${localStorage.getItem('accessToken')}`,{withCredentials: true}).then((res)=>{
+            console.log("logout",res);
+            if(res?.error === false){
+                context.setIsLogin(false);
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("refreshToken"); 
+                context.setUserData(null);
+                context?.setCartData([]);
+                context?.setMyListData([]);
+                history("/")
+            }
+        })
     }
 
     return (
@@ -154,8 +172,8 @@ const AccountSidebar = () => {
                 </li>
 
                 <li className="w-full">
-                    <NavLink to="/logout" exact={true} activeClassName="isActive">
-                        <Button className="w-full  !text-left !py-3 !px-5 !justify-start !capitalize !text-black !rounded-none flex items-center gap-2">
+                    <NavLink to="" exact={true} activeClassName="isActive">
+                        <Button onClick={logout} className="w-full  !text-left !py-3 !px-5 !justify-start !capitalize !text-black !rounded-none flex items-center gap-2">
                             <Logout color="action" className=" text-[17px]"/>Đăng xuất
                         </Button>
                     </NavLink>

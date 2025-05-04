@@ -61,7 +61,7 @@ export const Sidebar = (props) => {
     }
   }
 
-  const [price, setPrice] = useState([0, 600000]);
+  const [price, setPrice] = useState([0, 30000000]);
 
   const handleCheckboxChange = (field, value) => {
 
