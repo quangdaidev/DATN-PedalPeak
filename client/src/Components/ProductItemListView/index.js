@@ -143,7 +143,20 @@ const ProductItemListView =(props)=>{
 
                     <p className="text-[14px] mb-3">{props?.item?.description}</p>
                     
-                    <Rating name="size-small" defaultValue={(props?.item.reviews.reduce((sum, review) => sum + Number(review.rating), 0))/ props?.item.reviews.length} size="small" readOnly/>
+                    <Rating 
+                        name="size-small" 
+                        defaultValue={
+                            (() => {
+                                const validReviews = props?.item.reviews?.filter(r => r.rating !== "");
+                                if (!validReviews || validReviews.length === 0) return 0;
+
+                                const total = validReviews.reduce((sum, r) => sum + Number(r.rating), 0);
+                                return total / validReviews.length;
+                            })()
+                            } 
+                        size="small" 
+                        readOnly
+                    />
 
                     {
                         props?.item?.price !== 0 

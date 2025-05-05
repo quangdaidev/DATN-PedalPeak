@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { emphasize, styled } from "@mui/material/styles";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Chip from "@mui/material/Chip";
@@ -22,9 +22,12 @@ import { MdWarehouse } from "react-icons/md";
 import { FaShoppingCart } from "react-icons/fa";
 import { MdRateReview } from "react-icons/md";
 import { BsPatchCheckFill } from "react-icons/bs";
-import { fetchDataFromApi } from "../../utils/api";
+import { deleteData, fetchDataFromApi } from "../../utils/api";
 
 import { useParams } from 'react-router-dom';
+
+import { MdDelete } from "react-icons/md";
+import { MyContext } from "../../App";
 
 //breadcrumb code
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
@@ -85,8 +88,9 @@ const ProductDetails = () => {
     fetchDataFromApi(`/api/product/${id}`).then((res)=>{
       setProData(res.data);
       // console.log("props:::",proData)
-  
-      console.log(res.data)
+      setReviewData(res.data.reviews);
+      console.log("proData:;",res.data);
+      console.log("reviewData",res.data.reviews)
     })
   }, [id]);
 
@@ -99,7 +103,38 @@ const ProductDetails = () => {
 
   // Định dạng theo kiểu ngày/tháng/năm
   const formattedDateUp = dateUp.toLocaleDateString('vi-VN');
+
   
+
+  const ratingCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+  proData?.reviews?.forEach((review) => {
+    const rating = Number(review.rating);
+    if (rating >= 1 && rating <= 5) {
+      ratingCounts[rating]++;
+    }
+  });
+
+  const totalReviews = Object.values(ratingCounts).reduce((sum, count) => sum + count, 0);
+  
+  const [reviewData, setReviewData] = useState([]);
+
+   const context = useContext(MyContext);
+
+  const deleteReview=(id)=>{
+    deleteData(`/api/user/${id}`).then(res=>{
+      if(res?.error===false){
+        context.openAlertBox("success", "Xóa bình luận thành công");
+        fetchDataFromApi(`/api/product/${proData._id}`).then((res)=>{
+          setReviewData(res.data.reviews);
+        })
+      } else{
+        context.openAlertBox("error", "Xóa bình luận thất bại");
+      }
+    }
+  )
+    
+  }
 
   return (
     <>
@@ -151,15 +186,14 @@ const ProductDetails = () => {
                 >
                   {
                     proData?.images?.length !== 0 &&  proData?.images?.map((item, index) => {
-                      console.log("index::",index+1)
-                        return (
-                          <div className="item" onClick={() => goToSlide(index)}>
-                            <img
-                              src={item} alt=""
-                              className="w-100"
-                            />
-                          </div>
-                        )
+                      return (
+                        <div className="item" onClick={() => goToSlide(index)}>
+                          <img
+                            src={item} alt=""
+                            className="w-100"
+                          />
+                        </div>
+                      )
                     })
                   }
                 
@@ -302,7 +336,7 @@ const ProductDetails = () => {
                     </div>
 
                     <div className="col-sm-9">
-                      <span>({ proData?.reviewsCount>0? proData?.reviewsCount:0}) Bình luận</span>
+                      <span>({ proData?.reviews?.length >0? proData?.reviews?.length :0}) Bình luận</span>
                     </div>
                   </div>
 
@@ -350,9 +384,33 @@ const ProductDetails = () => {
 
             <br />
 
-            <h6 className="mt-4 mb-4">Rating Analytics</h6>
+            <h6 className="mt-4 mb-4">Đánh giá sao ({totalReviews})</h6>
 
             <div className="ratingSection">
+              {[5, 4, 3, 2, 1].map((star) => {
+                const count = ratingCounts[star];
+                const percentage = totalReviews ? (count / totalReviews) * 100 : 0;
+
+                return (
+                  <div className="ratingrow d-flex align-items-center" key={star}>
+                    <span className="col1">{star} Star</span>
+
+                    <div className="col2">
+                      <div className="progress">
+                        <div
+                          className="progress-bar"
+                          style={{ width: `${percentage}%` }}
+                        ></div>
+                      </div>
+                    </div>
+
+                    <span className="col3">({count})</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* <div className="ratingSection">
               <div className="ratingrow d-flex align-items-center">
                 <span className="col1">5 Star</span>
 
@@ -427,13 +485,61 @@ const ProductDetails = () => {
 
                 <span className="col3">(2)</span>
               </div>
-            </div>
+            </div> */}
 
             <br />
 
-            <h6 className="mt-4 mb-4">Customer_reviews</h6>
+            <h6 className="mt-4 mb-4">Bình luận khách hàng</h6>
 
-            <div className="reviewsSecrion">
+            {
+                reviewData?.length!==0 && reviewData?.map((item,index)=>{
+                  return(
+                    <div className="reviewsSecrion" key={index}>
+                      <div className="reviewsRow">
+                        <div className="row">
+                          <div className="col-sm-7 d-flex">
+                            <div className="d-flex flex-column">
+                              <div className="userInfo d-flex align-items-center mb-3">
+                                <UserAvatarImgComponent
+                                  img="https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/477713Dpz/anh-mo-ta.png"
+                                  lg={true}
+                                />
+
+                                <div className="info pl-3">
+                                  <h6>{item.userName}</h6>
+                                  <span>{new Date(item.updatedAt).toLocaleDateString('vi-VN')}</span>
+                                </div>
+                              </div>
+                              {
+                                item.rating !=="" ?
+                                <Rating
+                                name="read-only"
+                                value={item.rating}
+                                readOnly
+                              />
+                              :
+                              ""
+                              }
+                            </div>
+                          </div>
+
+                          <div className="col-md-5 d-flex align-items-center">
+                            <div className="ml-auto">
+                              <Button className="error" color="error" onClick={()=>deleteReview(item._id)}>
+                                <MdDelete size={32}/>
+                              </Button>
+                            </div>
+                          </div>
+
+                          <p className="mt-3">{item.review}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                )}
+           
+
+            {/* <div className="reviewsSecrion">
               <div className="reviewsRow">
                 <div className="row">
                   <div className="col-sm-7 d-flex">
@@ -581,9 +687,9 @@ const ProductDetails = () => {
                   <p className="mt-3">Lorem ipsum dolor sit</p>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <h6 className="mt-4 mb-4">Review Reply Form</h6>
+            {/* <h6 className="mt-4 mb-4">Review Reply Form</h6>
 
             <form className="reviewForm">
               <textarea placeholder="write here "></textarea>
@@ -591,7 +697,7 @@ const ProductDetails = () => {
               <Button className="btn-blue btn-big btn-lg w-100 mt-4">
                 drop your replies
               </Button>
-            </form>
+            </form> */}
           </div>
         </div>
       </div>

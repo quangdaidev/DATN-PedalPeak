@@ -4,7 +4,7 @@ import { loginUserController,logoutController,verifyEmailController,
     updateUserDetails,forgotPasswordController,verifyForgotPasswordOtp,
     resetpassword,refreshToken,userDetails,loginAdminController,
     addReview,getReviews,getAllReviews,getAllUsers,authWithGoogle,getAllUsersData,
-    sortBy, searchUserController, getUser,updatedStatus,
+    sortBy, searchUserController, getUser,updatedStatus, deleteReview,
     resendOTP
 } from '../controllers/user.controller.js'
 import auth from '../middlewares/auth.js';
@@ -41,6 +41,7 @@ userRouter.get('/getAllUsersData',getAllUsersData);
 userRouter.get("/:id",getUser);
 userRouter.put("/updateStatus/:id", updatedStatus);
 
+userRouter.delete("/:id", deleteReview);
 
 
 export default userRouter

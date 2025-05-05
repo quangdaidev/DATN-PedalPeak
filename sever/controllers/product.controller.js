@@ -1098,23 +1098,29 @@ export async function filters(request, response) {
         filters.price = {$gte: +minPrice || 0, $lte: +maxPrice || Infinity}
     };
 
-    if(rating?.length){
-
-        const products = await ProductModel.find().populate("reviews").populate("color");
-
+    if (rating?.length) {
+        const products = await ProductModel.find()
+            .populate("reviews")
+            .populate("color");
+      
         const fiveStarProducts = products.filter((product) => {
-            if ( product.reviews.length === 0) return false;
-      
-            const total = product.reviews.reduce((sum, review) => sum + Number(review.rating), 0);
-            const avg = total / product.reviews.length;
-      
-            const roundedAvg = Math.round(avg);
+            // Lọc các review hợp lệ có rating khác ""
+            const validReviews = product.reviews.filter((review) => review.rating !== "");
+        
+            if (validReviews.length === 0) return false;
+        
+            const total = validReviews.reduce((sum, review) => sum + Number(review.rating), 0);
+            const avg = total / validReviews.length;
+        
+            const roundedAvg = Math.round(avg); // Làm tròn trung bình
+        
+            // Kiểm tra xem rating làm tròn có nằm trong danh sách lọc
             return rating.includes(roundedAvg);
         });
-
-        const productIds = fiveStarProducts.map(p => p._id);
+      
+        const productIds = fiveStarProducts.map((p) => p._id);
         filters._id = { $in: productIds };
-    };
+    }
 
     try {
 

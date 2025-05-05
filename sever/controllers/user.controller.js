@@ -920,6 +920,24 @@ export async function getReviews(request, response) {
     }
 }
 
+export async function deleteReview(request, response) {
+
+  const deletedReview = await ReviewModel.findByIdAndDelete(request.params.id);
+  if (!deletedReview) {
+    response.status(404).json({
+      message: "Không tìm thấy bình luận!",
+      success: false,
+      error: true,
+    });
+  }
+
+  response.status(200).json({
+    success: true,
+    error: false,
+    message: "Đã xóa bình luận!",
+  });
+}
+
 // export async function verifyEmailController(request, response) {
 //     try {
 //         const { email } = request.body;

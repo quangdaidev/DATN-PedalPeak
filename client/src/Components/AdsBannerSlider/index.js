@@ -18,28 +18,28 @@ const AdsBannerSlider = (props) =>{
                 className="smlBtn"
             >
                 <SwiperSlide>
-                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                    <BannerBox img={'/img/products/banner2.jpg'} link={`/`}/>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                    <BannerBox img={'/img/products/banner1.jpg'} link={'/'}/>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                    <BannerBox img={'/img/products/banner3.jpg'} link={'/'}/>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                    <BannerBox img={'/img/products/banner4.jpg'} link={'/'}/>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                    <BannerBox img={'/img/products/banner5.jpeg'} link={'/'}/>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                    <BannerBox img={'/img/products/banner6.jpeg'} link={'/'}/>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                    <BannerBox img={'/img/products/banner7.jpeg'} link={'/'}/>
                 </SwiperSlide>
                 <SwiperSlide>
-                    <BannerBox img={'/img/products/banner2.jpg'} link={'/'}/>
+                    <BannerBox img={'/img/products/banner8.jpeg'} link={'/'}/>
                 </SwiperSlide>
             </Swiper>
         </div>

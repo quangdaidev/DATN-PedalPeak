@@ -84,10 +84,20 @@ function App() {
   const [userData, setUserData] = useState(null);
 
   useEffect(()=>{
-      
     const token = localStorage.getItem('accessToken');
   
     if(token!==undefined || token!==null || token !==""){
+      setIsLogin(true);
+    }else{
+        window.location.href = "/login"
+    }
+  },[])
+
+  useEffect(()=>{
+      
+    const token = localStorage.getItem('accessToken');
+  
+    if(token!==undefined && token!==null && token !==""){
       setIsLogin(true);
 
       fetchDataFromApi(`/api/user/user-details?token=${token}`).then((res)=>{
@@ -104,21 +114,17 @@ function App() {
 
         setUserData(res.data);
         // console.log("userData::",res.data)
-      })
+      }).catch((error) => {
+        console.error("API error:", error);
+        setIsLogin(false);
+        openAlertBox("error", "Lỗi kết nối tới máy chủ.");
+      });
     }else{
       setIsLogin(false);
     }
-  },[isLogin])
-
-  useEffect(()=>{
-    const token = localStorage.getItem('accessToken');
-  
-    if(token!==undefined || token!==null || token !==""){
-      setIsLogin(true);
-    }else{
-        window.location.href = "/login"
-    }
   },[])
+
+
 
   const values = {
     isToggleSidebar,

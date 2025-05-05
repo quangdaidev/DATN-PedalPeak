@@ -75,8 +75,19 @@ const Home =()=>{
     // console.log("lll",catData)
       
     // console.log("pi::",context?.productsData)
- 
-    const productsDataHot = context?.productsData?.filter(product => product.rating === 5).slice(0, 8);
+
+    const productsDataHot = context?.productsData
+    ?.filter(product => {
+    const validReviews = product.reviews?.filter(r => r.rating !== "");
+    if (!validReviews || validReviews.length === 0) return 0;
+
+    const total = validReviews.reduce((sum, review) => sum + Number(review.rating), 0);
+    const average = total / validReviews.length;
+
+    return average === 5;
+    })
+    .slice(0, 8);
+
     const productsDataSale = context?.productsData?.filter(product => product.price !== 0).slice(0, 8);
     const productsDataInStock  = [...context?.productsData].sort((a, b) => b.countInStock - a.countInStock).slice(0, 8);
     const productsDataNew = context?.productsData?.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated)).slice(0, 8);
