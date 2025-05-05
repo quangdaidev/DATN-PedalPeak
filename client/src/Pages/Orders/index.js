@@ -130,7 +130,7 @@ const Orders = () => {
           <TableCell align="left">{row.Thanh_toan}</TableCell>
           <TableCell align="right">{VND.format(row.Ngay_dat)}</TableCell>
           <TableCell align="right">{row.Sdt_nguoi_nhan}</TableCell>
-          <TableCell sx={{width: '100px'}} align="right">{row.Dia_chi}</TableCell>
+          <TableCell sx={{width: '100px'}} align="right">+{row.Dia_chi}</TableCell>
           {/* Có thể là: "primary" | "secondary" | "error" | "info" | "success" | "warning"  hoặc "outlined" */}
           <TableCell align="left">
             {
@@ -239,7 +239,7 @@ const Orders = () => {
       order.delivery_address?.street + ", " +  order.delivery_address?.ward + ", " + order.delivery_address?.district + ", " + order.delivery_address?.city,        
       order.totalAmt,      // Tổng tiền
       moment(order.updatedAt).format('DD/MM/YYYY'),       // Ngày tạo đơn
-      order.userId?.mobile,   
+      order.delivery_address?.mobile,   
       order.payment_status ==="Thanh toán online thành công"? order.payment_status="Thanh toán online":order.payment_status,
       // Số điện thoại
       order.order_status,          // Trạng thái đơn

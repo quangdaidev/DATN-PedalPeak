@@ -115,7 +115,7 @@ const Login = () => {
                                 <input 
                                     type='email' 
                                     className='form-control' 
-                                    placeholder='tranquangdai2257@gmail.com' 
+                                    placeholder='admin001@pedalpeak.com' 
                                     onFocus={() => focusInput(0)} 
                                     onBlur={() => setInputIndex(null)} 
                                     autoFocus
@@ -131,7 +131,7 @@ const Login = () => {
                                 <input 
                                 type={`${isShowPassword === true ? 'text' : 'password'}`} 
                                 className='form-control' 
-                                placeholder='12345' 
+                                placeholder='12345678' 
                                 onFocus={() => focusInput(1)} 
                                 onBlur={() => setInputIndex(null)} 
                                 name="password"

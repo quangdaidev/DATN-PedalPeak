@@ -172,11 +172,11 @@ const AccountSidebar = () => {
                 </li>
 
                 <li className="w-full">
-                    <NavLink to="" exact={true} activeClassName="isActive">
+               
                         <Button onClick={logout} className="w-full  !text-left !py-3 !px-5 !justify-start !capitalize !text-black !rounded-none flex items-center gap-2">
                             <Logout color="action" className=" text-[17px]"/>Đăng xuất
                         </Button>
-                    </NavLink>
+                  
                 </li>
             </ul>
         </div>

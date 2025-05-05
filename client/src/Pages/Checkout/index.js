@@ -91,6 +91,7 @@ const Checkout = () => {
                 userId: user?._id,
                 products: context?.cartData, 
                 paymentId:  moment(date).format('DDHHmmss'),
+                // payment_status: "Thanh toán online thành công", 
                 payment_status: "Chờ thanh toán online", 
                 delivery_address: selectedAddress,
                 totalAmt: totalAmount,

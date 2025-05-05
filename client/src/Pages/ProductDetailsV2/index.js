@@ -251,9 +251,11 @@ export const ProductDetailsV2 = () => {
                                     <div className="ct-sub-headline-label !text-slate-700">Có thể bạn muốn xem</div>
                                 </div>
                                 <div className=" rightSec pr-6">
-                                    <Button variant="contained" className="!bg-slate-700" disableElevation>
-                                        Xem thêm
-                                    </Button>
+                                        <Button variant="contained" className="!bg-slate-700" disableElevation>
+                                 
+                                            Xem thêm
+                                    
+                                        </Button>
                                 </div>
                             </div>
                              <Swiper

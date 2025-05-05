@@ -175,7 +175,7 @@ const Register=()=>{
                 })
                 
                 
-                // history("/verify")
+                history("/verify")
               
             } else{
                 context.openAlertBox("error", res?.message);

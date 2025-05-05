@@ -64,13 +64,13 @@ export async function registerUserController(request, response) {
         });
         await user.save();
 
-        // // Send verification email
-        // const content = await sendEmailFun({
-        //     to: email,
-        //     subject: "Xác minh email từ trang web PedalPeak",
-        //     text: "",
-        //     html: VerificationEmail(name, verifyCode)
-        // });
+        // Send verification email
+        const content = await sendEmailFun({
+            to: email,
+            subject: "Xác minh email từ trang web PedalPeak",
+            text: "",
+            html: VerificationEmail(name, verifyCode)
+        });
 
 // Create a JWT token for verification purposes
 const token = jwt.sign(
@@ -341,7 +341,7 @@ export async function loginAdminController(request, response) {
         const user = await UserModel.findOne({ email: email });
 
         if (user.status!==true) {
-            response.status(400).json({
+            return response.status(400).json({
                 message: "Liên hệ admin để kích hoạt lại tài khoản",
                 error: true,
                 success: false
@@ -349,7 +349,7 @@ export async function loginAdminController(request, response) {
         }
 
         if (user.verify_email!==true) {
-            response.status(400).json({
+            return response.status(400).json({
                 message: "Email chưa được xác thực",
                 error: true,
                 success: false
@@ -357,7 +357,7 @@ export async function loginAdminController(request, response) {
         }
 
         if (user.role!=="ADMIN") {
-            response.status(400).json({
+            return response.status(400).json({
                 message: "Tài khoản không có quyền truy cập",
                 error: true,
                 success: false

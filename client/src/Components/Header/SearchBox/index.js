@@ -15,7 +15,7 @@ const SearchBox=()=>{
 
         const obj = {
             page: 1,
-            limit: 3,
+            limit: 4,
             query: e.target.value
         }
 
