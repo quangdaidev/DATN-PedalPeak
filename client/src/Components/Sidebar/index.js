@@ -52,6 +52,18 @@ export const Sidebar = (props) => {
     } else {
       postData(`/api/product/filters`, filters).then((res)=>{
         console.log("apiFilters::",res)
+
+        // const filteredProducts = res?.data.filter((product) => {
+        //   const isActive = product.status === true;
+      
+        //   // Kiểm tra nếu có ít nhất một color còn hàng 
+        //   const hasStock = product.color?.some(color => Number(color.countInStock) > 0); //Hàm some() trả về ít nhất một phần tử trong mảng thỏa điều kiện countInStock > 0
+        
+        //   return isActive && hasStock;
+        // });
+  
+        // props.setProductsData(filteredProducts);
+
         props.setProductsData(res.data);
         props.setTotalPro(res.total);
         props.setIsLoading(false);

@@ -35,6 +35,7 @@ import Address from './Pages/MyAccount/address';
 import { OrderSuccess } from './Pages/Orders/success';
 import { OrderFailed } from './Pages/Orders/failed';
 import SearchPage from './Pages/Search';
+import NotFound from './Pages/NotFound';
 
 const alertBox = (msg, type)=>{
   if(type==="success"){
@@ -149,8 +150,20 @@ function App() {
       setCatData(res?.data.filter(category => category.status === true));
     });
     fetchDataFromApi("/api/product/getAllProducts").then((res)=>{
-      console.log("po::",res.data)
-      setProductsData(res?.data.filter(product => product.status === true));
+      console.log("getAllProduct::",res.data)
+
+      const filteredProducts = res?.data.filter((product) => {
+        const isActive = product.status === true;
+    
+        // Kiểm tra nếu có ít nhất một color còn hàng 
+        const hasStock = product.color?.some(color => Number(color.countInStock) > 0); //Hàm some() trả về ít nhất một phần tử trong mảng thỏa điều kiện countInStock > 0
+      
+        return isActive && hasStock;
+      });
+
+      setProductsData(filteredProducts);
+
+      // setProductsData(res?.data.filter(product => product.status === true));
     })
 
   },[])
@@ -255,6 +268,8 @@ function App() {
               <Route path="/order/failed" exact={true} element={<OrderFailed/>} />
               <Route path="/address" exact={true} element={<Address/>} />
               <Route path="/search" exact={true} element={<SearchPage/>} />
+
+              <Route path="*" element={< NotFound/>} />
             </Routes>
             <Footer />
               {/* {children} */}

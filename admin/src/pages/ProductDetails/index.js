@@ -393,7 +393,7 @@ const ProductDetails = () => {
 
                 return (
                   <div className="ratingrow d-flex align-items-center" key={star}>
-                    <span className="col1">{star} Star</span>
+                    <span className="col1">{star} Sao</span>
 
                     <div className="col2">
                       <div className="progress">

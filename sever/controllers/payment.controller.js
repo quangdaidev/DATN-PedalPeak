@@ -3,6 +3,9 @@ import qs from 'qs';
 import crypto from 'crypto';
 import OrderModel from "../models/order.model.js"; 
 import ProductColorModel from '../models/productColor.model.js';
+import UserModel from "../models/user.model.js";
+import OrderEmail from "../utils/orderEmailTemplate.js";
+import sendEmailFun from "../config/sendEmail.js";
 
 export const payment = async (req, res) => { 
 
@@ -148,10 +151,19 @@ export const paymentReturn = async (req, res) => {
                 }
 
                 await order.save();
+
+                const user = await UserModel.findById(order.userId)
+
+                const content = await sendEmailFun({
+                    to: user.email,
+                    subject: "Chi tiết đơn hàng từ trang web PedalPeak",
+                    text: "",
+                    html: OrderEmail(user.name, order)
+                });
         
                 // Trả về kết quả cho VNPAY
                 // return res.status(200).json({ code: vnp_Params['vnp_ResponseCode'] });
-                return res.status(200).json( "Thanh toán online thành công, hệ thống chuyển về trang chủ" );
+                return res.status(200).json( "Thanh toán online thành công, chi tiết đơn hàng đã gửi qua mail" );
             } catch (error) {
                 console.error("Lỗi xử lý thanh toán:", error);
                 return res.status(500).json({ code: '99', message: "Lỗi hệ thống" });

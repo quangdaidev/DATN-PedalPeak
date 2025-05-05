@@ -230,12 +230,34 @@ const Header =()=>{
     }
 
    
-    const [isChecked, setIsChecked] = useState(0);
+    const [isChecked, setIsChecked] = useState({});
+
+    // useEffect(() => {
+    //     if (context?.cartData?.length > 0) {
+    //       const initialChecked = {};
+      
+    //       context.cartData.forEach(item => {
+    //         // Chọn index = 0 nếu còn hàng
+    //         const availableColors = item.color?.filter(c => c.countInStock > 0);
+    //         if (availableColors.length > 0) {
+    //           const firstAvailableIndex = item.color.findIndex(c => c._id === availableColors[0]._id);
+    //           initialChecked[item._id] = firstAvailableIndex;
+    //         }
+    //       });
+      
+    //       setIsChecked(initialChecked);
+    //     }
+    // }, [context?.cartData]);
 
     const handleChange=(e,index,itemId,colorId)=>{
         if(e.target.checked){
-            setIsChecked(index);
-            setSelectedColor(e.target.value)
+            setIsChecked(prev => ({
+                ...prev,
+                [itemId]: index
+              }));
+            
+            // setIsChecked(index);
+            // setSelectedColor(e.target.value)
 
             const obj = {
                 _id: itemId,
@@ -248,11 +270,11 @@ const Header =()=>{
     
             editData(`/api/cart/update-color?token=${localStorage.getItem('accessToken')}`,obj).then((res)=>{
                 // context.openAlertBox("success", res?.message);
-                fetchDataFromApi(`/api/cart/get?token=${localStorage.getItem('accessToken')}`).then((res)=>{
-                    if(res?.error===false){
-                    context.setCartData(res?.data)
-                    }
-                })
+                // fetchDataFromApi(`/api/cart/get?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+                //     if(res?.error===false){
+                //     context.setCartData(res?.data)
+                //     }
+                // })
                 console.log("addColor:::",res)
             })
     
@@ -573,7 +595,17 @@ const Header =()=>{
                                                                                                             return (
                                                                                                                 color.countInStock===0 ? 
                                                                                                                 "" 
-                                                                                                                : <FormControlLabel checked={isChecked === index} onChange={(e)=>handleChange(e,index,item._id,color._id)} key={index} value={color.name} control={<Radio />} label={color.name + " (" + color.countInStock + ")"} />
+                                                                                                                : 
+                                                                                                                <FormControlLabel 
+                                                                                                                    checked={isChecked[item._id] === index} 
+                                                                                                                    // checked={isChecked === index} 
+                                                                                                                    onChange={(e)=>handleChange(e,index,item._id,color._id)} 
+                                                                                                                    key={index} 
+                                                                                                                    value={color.name} 
+                                                                                                                    control={<Radio />} 
+                                                                                                                    label={color.name + " (" + color.countInStock + ")"} 
+
+                                                                                                                />
                                                                                                             )
                                                                                                         })
                                                                                                     }
@@ -626,7 +658,7 @@ const Header =()=>{
                                                                                                     </Button>
                                                                                                     <span>{item.quantity}</span>
                                                                                                     <Button className="!min-w-[35px] !w-[35px] !h-[30px] !bg-main-400 !rounded-none"
-                                                                                                    onClick={()=>addQty(item.color[isChecked].countInStock, item._id, item.price !== 0 ? item.price : item.oldPrice)}>
+                                                                                                    onClick={()=>addQty(item.color[isChecked[item._id]]?.countInStock, item._id, item.price !== 0 ? item.price : item.oldPrice)}>
                                                                                                         <FaPlus className="text-white"/>
                                                                                                     </Button> 
                                                                                                 </div>
@@ -649,7 +681,7 @@ const Header =()=>{
                                                                         }                                                            
                                                                         
                                                                         <div className="flex">
-                                                                            <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                            <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 mt-3 mb-6">
                                                                                 Xóa tất cả
                                                                             </button>
                                                                         </div>

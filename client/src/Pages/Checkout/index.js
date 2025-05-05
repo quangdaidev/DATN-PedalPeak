@@ -55,7 +55,7 @@ const Checkout = () => {
         setUserData(context?.userData)
         setSelectedAddress(context?.userData?.address_details[0]?._id);
 
-        fetchDataFromApi(`/api/order/order-list`).then((res)=>{
+        fetchDataFromApi(`/api/order/order-list?token=${localStorage.getItem("accessToken")}`).then((res)=>{
             console.log("order-list:::",res)
         })
     },[context?.userData, userData])

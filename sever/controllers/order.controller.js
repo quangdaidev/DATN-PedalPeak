@@ -2,7 +2,11 @@ import OrderModel from "../models/order.model.js";
 import ProductModel from '../models/product.model.js'; 
 import mongoose from "mongoose";
 import ProductColorModel from '../models/productColor.model.js';
+import UserModel from "../models/user.model.js";
+import OrderEmail from "../utils/orderEmailTemplate.js";
+import sendEmailFun from "../config/sendEmail.js";
 // import paypal from "@paypal/checkout-server-sdk";
+
 
 export const createOrderController = async (request, response) => { 
     try {
@@ -56,14 +60,23 @@ export const createOrderController = async (request, response) => {
             );
             
             order = await order.save();
+
+            const user = await UserModel.findById(order.userId)
+
+            const content = await sendEmailFun({
+                to: user.email,
+                subject: "Chi tiết đơn hàng từ trang web PedalPeak",
+                text: "",
+                html: OrderEmail(user.name, order)
+            });
             
             return response.status(200).json({
                 error: false,
                 success: true,
-                message: "Đặt hàng thành công",
+                message: "Đặt hàng thành công, kiểm tra email để xem chi tiết đơn hàng",
                 data: order
             })
-        }
+        }       
     } catch (error) {
         return response.status(500).json({
             message: error.message || error,
