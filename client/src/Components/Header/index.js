@@ -229,6 +229,17 @@ const Header =()=>{
         })
     }
 
+    const deleteAllCart=(userId)=>{
+        deleteData(`/api/cart/emptyCart/${userId}?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+            fetchDataFromApi(`/api/cart/get?token=${localStorage.getItem('accessToken')}`).then((res)=>{
+                if(res?.error===false){
+                context.setCartData(res?.data)
+                }
+            })
+            context.openAlertBox("success", res?.message);
+        })
+    }
+
    
     const [isChecked, setIsChecked] = useState({});
 
@@ -681,7 +692,7 @@ const Header =()=>{
                                                                         }                                                            
                                                                         
                                                                         <div className="flex">
-                                                                            <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 mt-3 mb-6">
+                                                                            <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 mt-3 mb-6" onClick={()=>deleteAllCart(context?.userData._id)}>
                                                                                 Xóa tất cả
                                                                             </button>
                                                                         </div>
