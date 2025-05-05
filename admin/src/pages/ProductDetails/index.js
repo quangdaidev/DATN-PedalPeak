@@ -143,48 +143,6 @@ const ProductDetails = () => {
                   })
                 }
                  
-                  {/* <div className="item">
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item">
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item">
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item">
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item">
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item">
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item">
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div> */}
                 </Slider>
                 <Slider
                   {...productSliderSmlOptions}
@@ -204,49 +162,7 @@ const ProductDetails = () => {
                         )
                     })
                   }
-                 
-                  {/* <div className="item" onClick={() => goToSlide(2)}>
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item" onClick={() => goToSlide(3)}>
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item" onClick={() => goToSlide(4)}>
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item" onClick={() => goToSlide(5)}>
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item" onClick={() => goToSlide(6)}>
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item" onClick={() => goToSlide(7)}>
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div>
-                  <div className="item" onClick={() => goToSlide(8)}>
-                    <img
-                      src="https://xedapgiakho.com/wp-content/uploads/2024/06/Xe-Dap-Dia-Hinh-MTB-Califa-CS500-26-Inch-11-600x398.jpg" alt=""
-                      className="w-100"
-                    />
-                  </div> */}
+                
                 </Slider>
               </div>
             </div>
@@ -335,11 +251,11 @@ const ProductDetails = () => {
                         <div className="row">
                           <ul className="list list-inline tags sml">
 
-                           {
-                              proData?.color?.length !== 0 &&  proData?.color?.map((item, index) => {
+                            {
+                              proData?.color?.length !== 0 &&  proData?.color?.map((color,index)=>{
                                   return (
                                     <li className="list-inline-item"  key={index}>
-                                      <span> {item}</span>
+                                      <span> {color.name + " (" + color.countInStock + ")"}</span>
                                     </li>
                                   )
                               })
@@ -351,7 +267,7 @@ const ProductDetails = () => {
                     </div>
                   </div>
               
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-sm-3 d-flex align-items-center">
                       <span className="icon">
                         <FaWeightScale />
@@ -362,9 +278,9 @@ const ProductDetails = () => {
                     <div className="col-sm-9">
                       <span>{proData?.catName==="Xe đạp trẻ em" ? "5 Kg" : "10 Kg"}</span>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-sm-3 d-flex align-items-center">
                       <span className="icon">
                         <MdWarehouse />
@@ -375,7 +291,7 @@ const ProductDetails = () => {
                     <div className="col-sm-9">
                       <span>{proData?.countInStock}</span>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="row">
                     <div className="col-sm-3 d-flex align-items-center">
@@ -386,7 +302,7 @@ const ProductDetails = () => {
                     </div>
 
                     <div className="col-sm-9">
-                      <span>(03) Bình luận</span>
+                      <span>({ proData?.reviewsCount>0? proData?.reviewsCount:0}) Bình luận</span>
                     </div>
                   </div>
 

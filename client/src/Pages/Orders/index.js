@@ -134,11 +134,33 @@ const Orders = () => {
           {/* Có thể là: "primary" | "secondary" | "error" | "info" | "success" | "warning"  hoặc "outlined" */}
           <TableCell align="left">
             {
-              row.Trang_thai === "chờ xác nhận" ?
-              <Chip label={row.Trang_thai} color="warning" variant="filled" size="small"/>
-              :
-              <Chip label={row.Trang_thai} color="success" variant="filled" size="small"/>
-            }
+            row.Trang_thai === "chờ xác nhận" ? (
+                <>
+                  <Chip 
+                    label={row.Trang_thai} 
+                    color="warning" 
+                    variant="filled" 
+                    size="small" 
+                  />
+                </>
+            ) : row.Trang_thai === "đang giao" ? (
+                <>
+                  <Chip 
+                    label={row.Trang_thai} 
+                    color="info" 
+                    variant="filled" 
+                    size="small" 
+                  />
+                </>
+            ) : (
+              <Chip 
+                  label={row.Trang_thai} 
+                  color= {row.Trang_thai==="đã hủy" ? "error" : "success"}
+                  variant="filled" 
+                  size="small" 
+              />
+            )
+          }
           
           </TableCell> 
         </TableRow>

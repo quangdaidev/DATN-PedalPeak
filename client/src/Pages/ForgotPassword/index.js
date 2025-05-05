@@ -53,6 +53,16 @@ const ForgotPassword=()=>{
             return false
         }
 
+        
+        if (formFields.newPassword.length < 8) {
+            context.openAlertBox(
+                "error",
+                "Mật khẩu phải có ít nhất 8 ký tự"
+            );
+            setIsLoading(false);
+            return false;
+        }
+
         if(formFields.confirmPassword===""){
             context.openAlertBox(
                 "error",

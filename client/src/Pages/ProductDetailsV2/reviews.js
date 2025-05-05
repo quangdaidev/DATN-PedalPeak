@@ -113,10 +113,10 @@ export const Reviews = (props) => {
 
         if(reviews?.review!==""){
 
-            // if (isToxicComment(reviews.review)) {
-            //     context.openAlertBox("error", "Bình luận chứa từ ngữ không phù hợp!");
-            //     return;
-            // }
+            if (isToxicComment(reviews.review)) {
+                context.openAlertBox("error", "Bình luận chứa từ ngữ không phù hợp!");
+                return;
+            }
 
             const isToxic = await isToxicWithPerspective(reviews.review);
 

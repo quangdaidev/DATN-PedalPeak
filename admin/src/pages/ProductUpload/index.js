@@ -325,7 +325,7 @@ const ProductUpload = () => {
 
    
 
-        if(formFields.images.length===0){
+        if(formFields?.images?.length===0){
             context.openAlertBox(
                 "error",
                 "Bạn chưa chọn ảnh sản phẩm"

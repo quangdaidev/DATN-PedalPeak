@@ -143,11 +143,50 @@ const Orders = ()=>{
                 <TableCell align="right">{row.Dia_chi}</TableCell>
                 {/* Có thể là: "primary" | "secondary" | "error" | "info" | "success" | "warning"  hoặc "outlined" */}
                 <TableCell align="left">
-                    {
+                    {/* {
                         row.Trang_thai === "chờ xác nhận" ?
                         <Chip label={row.Trang_thai} color="warning" variant="filled" size="small" onClick={()=>orderStatus("đang giao",row.Ma_don_hang)}/>
                         :
                         <Chip label={row.Trang_thai} color="success" variant="filled" size="small" onClick={()=>orderStatus("hoàn thành",row.Ma_don_hang)}/>
+                    } */}
+
+                    {
+                        row.Trang_thai === "chờ xác nhận" ? (
+                            <>
+                                <Chip 
+                                    label={row.Trang_thai} 
+                                    color="warning" 
+                                    variant="filled" 
+                                    size="small" 
+                                    onClick={() => orderStatus("đang giao", row.Ma_don_hang)} 
+                                />
+                            </>
+                        ) : row.Trang_thai === "đang giao" ? (
+                            <>
+                                <Chip 
+                                    label={row.Trang_thai} 
+                                    color="info" 
+                                    variant="filled" 
+                                    size="small" 
+                                    onClick={() => orderStatus("hoàn thành", row.Ma_don_hang)} 
+                                />
+                                <Chip 
+                                    label="Hủy" 
+                                    color="error" 
+                                    variant="outlined" 
+                                    size="small" 
+                                    onClick={() => orderStatus("đã hủy", row.Ma_don_hang)} 
+                                    style={{ marginLeft: 8 }}
+                                />
+                            </>
+                        ) : (
+                            <Chip 
+                                label={row.Trang_thai} 
+                                color= {row.Trang_thai==="đã hủy" ? "error" : "success"}
+                                variant="filled" 
+                                size="small" 
+                            />
+                        )
                     }
                 
                 </TableCell> 

@@ -143,6 +143,8 @@ const Login=()=>{
             // The signed-in user info.
             const user = result.user;
 
+            console.log("google resend::", result.user)
+
             const fields = {
                 name: user?.providerData[0]?.displayName,
                 email: user?.providerData[0]?.email,

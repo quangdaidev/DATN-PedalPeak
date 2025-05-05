@@ -366,7 +366,7 @@ const MyAccount = () => {
                                         <Button type="submit" disabled={false} className="btn-org w-[140px] CircularProgress">Xác nhận</Button>
                                     }
                                 
-                                    <Button className="btn-org btn-border w-[80px]">Hủy</Button>
+                                    <Button onClick={()=>setIsChangePasswordFormShow(!isChangePasswordFormShow)} className="btn-org btn-border w-[80px]">Hủy</Button>
                                 </div>
                             </form>
                         </div>

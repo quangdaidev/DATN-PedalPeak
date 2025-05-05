@@ -1204,7 +1204,7 @@ export async function searchProductController(request, response) {
                 { catName: {$regex: query, $options: "i"}},
             ],
         })
-        .populate("category").skip((page - 1) * limit).limit(parseInt(limit));
+        .populate("category color").skip((page - 1) * limit).limit(parseInt(limit));
 
         const total = await items?.length;
 
